@@ -1,0 +1,53 @@
+:root {
+    /* Neumorfismo base */
+    --color-base: #e0e5ec;
+    --color-shadow-dark: #babecc;
+    --color-shadow-light: #ffffff;
+
+    /* Paleta Geotrends - Colores principales */
+    --verde-oscuro: #002722;
+    --verde-principal: #024959;
+    --verde-medio: #277167;
+    --verde-claro: #498d84;
+    --verde-agua: #cbf1d9;
+    --verde-brillante: #12c151;
+    --verde-intenso: #096028;
+    --verde-pálido: #b7ecca;
+    --verde-mint: #70d996;
+
+    --azul-oscuro: #03112a;
+    --azul-intenso: #091f44;
+    --azul-media-noche: #314b77;
+    --azul-suave: #546c95;
+    --azul-claro: #5caac8;
+    --azul-brillante: #3693b6;
+    --azul-vivo: #05678d;
+    --azul-profundo: #04516e;
+
+    /* Colores neutros y de fondo */
+    --negro: #000000;
+    --gris-oscuro: #4d4d4d;
+    --gris: #a1a2a6;
+    --gris-claro: #cccccc;
+    --blanco: #ffffff;
+    --blanco-suave: #fefefe;
+
+    /* Colores de acento */
+    --amarillo-principal: #f2c12e;
+    --amarillo-alt: #f2ae30;
+    --marron: #593e25;
+
+    /* Estilos de texto y elementos */
+    --color-text: var(--verde-principal);
+    --color-principal: var(--verde-principal);
+    --color-secundario: var(--amarillo-principal);
+    --color-secundario-alt: var(--amarillo-alt);
+    --color-acento: var(--marron);
+    --color-gris: var(--gris);
+    --color-blanco: var(--blanco-suave);
+
+    /* Sidebar */
+    --color-sidebar-text: var(--verde-principal);
+    --color-sidebar-bg: var(--color-base);
+    --color-sidebar-hover: #d3d8df;
+}

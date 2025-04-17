@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sesión cerrada</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+  <style>
+    body {
+      text-align: center;
+      padding-top: 100px;
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .mensaje {
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .btn-volver {
+      margin-top: 2rem;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      background-color: #02735e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-volver:hover {
+      background-color: #025c4b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mensaje">Has cerrado sesión correctamente.</div>
+  <button class="btn-volver" onclick="window.location.href='/html/login.html'">Volver al inicio de sesión</button>
+
+</body>
+</html>

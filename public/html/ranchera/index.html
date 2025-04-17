@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ranchera - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/ranchera/ranchera.css">
+  <link rel="stylesheet" href="/css/ranchera/dashboard.css">
+  <style>
+    .grafico {
+      width: 100%;
+      height: 400px;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body class="ranchera">
+  <main class="container">
+    <header>
+      <h1>Panel General - Campaña Ranchera</h1>
+      <p>Visualiza el estado general de los perfiles, publicaciones y comentarios relacionados con Ranchera.</p>
+    </header>
+
+    <h2>Indicadores clave</h2>
+    <section id="resumen-estadisticas">
+      <p>Cargando indicadores...</p>
+    </section>
+    
+    
+    <section id="indicadores-semilla">
+      <p>Cargando indicadores...</p>
+    </section>
+
+    <h2>Visualizaciones</h2>
+    
+    <section id="graficos" class="graficos-grid">
+      <div class="grafico-wrapper">
+        <div id="grafico-scatter-seguidores" class="grafico"></div>
+        <div class="grafico-descripcion">Relación entre seguidores y seguidos. El tamaño representa el número de publicaciones, y el color el tipo de perfil.</div>
+      </div>
+      <div class="grafico-wrapper">
+        <div id="grafico-comparativo-publicaciones" class="grafico"></div>
+        <div class="grafico-descripcion">Número de publicaciones detectadas por cada perfil semilla.</div>
+      </div>
+     
+      <div class="grafico-wrapper">
+        <div id="grafico-tipo-perfil" class="grafico"></div>
+        <div class="grafico-descripcion">Comparación entre perfiles públicos y privados en el conjunto de semillas.</div>
+      </div>
+      <div class="grafico-wrapper">
+        <div id="grafico-comparativo-seguidores" class="grafico"></div>
+        <div class="grafico-descripcion">Comparativa del número de videos IGTV publicados por perfil semilla.</div>
+      </div>
+      <div class="grafico-wrapper">
+        <div id="grafico-linea-tiempo" class="grafico"></div>
+        <div class="grafico-descripcion">Distribución temporal de publicaciones relacionadas con la campaña Ranchera.</div>
+      </div>
+      <div class="grafico-wrapper">
+        <div id="grafico-categorias" class="grafico"></div>
+        <div class="grafico-descripcion">Distribución de categorías de negocio entre los perfiles semilla.</div>
+      </div>
+
+
+    </section>
+
+    <div class="grafico-wrapper">
+      <label for="selectorPerfiles"><strong>Seleccionar perfiles para nube de palabras:</strong></label>
+      <select id="selectorPerfiles" multiple style="width: 100%; height: 8rem; margin: 0.5rem 0;"></select>
+      <section style="margin: 1rem 0;">
+        <label for="frecuenciaSliderBiografias"><strong>Frecuencia mínima:</strong> <span id="frecuenciaValorBiografias">6</span></label>
+        <input type="range" id="frecuenciaSliderBiografias" min="1" max="20" value="0" step="1" style="width: 100%;">
+      </section>
+      <div id="grafico-wordcloud-biografias" class="grafico" style="height: 400px;"></div>
+      
+      <div class="grafico-descripcion">Nube de palabras generada a partir de las biografías de los perfiles seleccionados.</div>
+    </div>
+  </main>
+<script type="module" src="/js/ranchera/main.js"></script>
+</body>
+</html>

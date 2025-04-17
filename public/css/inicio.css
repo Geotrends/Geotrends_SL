@@ -1,0 +1,82 @@
+
+  /* Logo a la izquierda */
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    height: 40px;
+    object-fit: contain;
+  }
+  
+  /* Info del usuario a la derecha */
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .user-text {
+    font-weight: bold;
+  }
+  
+  .logout-btn {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+  }
+  
+  .logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Botón de configuración */
+.settings-dropdown {
+    position: relative;
+  }
+  
+  .settings-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .settings-menu {
+    position: absolute;
+    right: 0;
+    top: 2.2rem;
+    background: white;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 160px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+  }
+  
+  .settings-menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  .settings-menu a:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Ocultar por defecto */
+  .d-none {
+    display: none;
+  }
+  
+  

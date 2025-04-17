@@ -1,0 +1,203 @@
+/* perfil.css + editar perfil estilos */
+
+.perfil {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+.perfil h2 {
+  text-align: center;
+  color: #02735e;
+  margin-bottom: 1.5rem;
+}
+
+.perfil-datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.perfil-info {
+  flex: 1;
+  min-width: 250px;
+}
+
+.perfil-foto-clickeable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.perfil-foto-clickeable img {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 3px solid #02735e;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.icono-subir-foto {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: white;
+  background-color: #02735e;
+  padding: 0.4rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.perfil-datos p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.perfil-datos strong {
+  color: #333;
+}
+
+.perfil-foto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.perfil-foto input[type="file"] {
+  display: none; /* Ocultar el input de archivo */
+}
+
+.perfil-foto-clickeable {
+  cursor: pointer; /* Hacer clickeable la imagen */
+}
+
+#btnSubirFoto {
+  background-color: #02735e;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#btnSubirFoto:hover {
+  background-color: #025f50;
+}
+
+.perfil-acciones {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.perfil-acciones button {
+  flex: 1;
+}
+
+.perfil-bitacora {
+  margin-top: 2rem;
+}
+
+.perfil-bitacora h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: #02735e;
+}
+
+.perfil-bitacora ul {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.mensaje {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: green;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background-color: #02735e;
+  color: white;
+}
+
+.btn-outline-secondary {
+  background-color: white;
+  color: #02735e;
+  border: 1px solid #02735e;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #02735e;
+  color: white;
+}
+
+/* Estilo para el formulario de editar perfil */
+.form-perfil {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-perfil .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-perfil label {
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-perfil input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.form-perfil button[type="submit"] {
+  justify-self: start;
+  background-color: #02735e;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.form-perfil button[type="submit"]:hover {
+  background-color: #025f50;
+}
+

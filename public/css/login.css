@@ -1,0 +1,81 @@
+/* Fondo completo */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)),
+    /* ← Degradado overlay */ url("/images/panoramica1.jpg") no-repeat center
+      center fixed;
+  background-size: cover;
+}
+
+/* Contenedor centrado */
+.login-box {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Logo */
+.login-box .logo {
+  width: 240px;
+  margin-bottom: 1rem;
+}
+
+/* Título */
+.login-box h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  color: #02735e;
+}
+
+/* Inputs alineados */
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  box-sizing: border-box;
+  color: #333;
+}
+
+/* Botón */
+.login-box button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #02735e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-box button:hover {
+  background-color: #025c4b;
+}
+
+/* Mensaje de error */
+#mensajeError {
+  margin-top: 1rem;
+  color: #c62828;
+  font-weight: bold;
+}

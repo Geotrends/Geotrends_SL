@@ -1,0 +1,39 @@
+:root {
+    --ranchera-rojo: #b71c1c;
+    --ranchera-amarillo: #fdd835;
+    --ranchera-marron: #6d4c41;
+    --ranchera-verde: #388e3c;
+    --ranchera-naranja: #ff7043;
+    --ranchera-gris: #9e9e9e;
+  }
+
+  body.ranchera {
+    background-color: var(--ranchera-amarillo);
+    color: var(--ranchera-marron);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .ranchera .comentario-card {
+    border-left: 4px solid var(--ranchera-rojo);
+    background-color: var(--ranchera-naranja);
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+  }
+  
+  .ranchera .sentimiento-positivo {
+    background-color: var(--ranchera-verde);
+  }
+  
+  .ranchera .sentimiento-negativo {
+    background-color: var(--ranchera-rojo);
+  }
+
+  .tarjeta-resumen {
+    border-left: 5px solid var(--ranchera-rojo);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: var(--ranchera-gris);
+    color: #fff;
+  }

@@ -1,0 +1,193 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 1. Fuente base para toda la interfaz */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: var(--blanco);
+    color: var(--color-text);
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Títulos */
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.6rem;
+}
+
+/* 3. Párrafos */
+p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* 4. Botones */
+button {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: bold;
+    background-color: #02735e;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #025c4b;
+}
+
+/* 5. Enlaces */
+a {
+    font-family: inherit;
+    color: #02735e;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 6. Inputs */
+input, select, textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.icon {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    min-width: 24px;
+    text-align: center;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 60px;
+    width: 100%;
+    background-color: var(--negro);
+    color: var(--blanco);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem;
+    z-index: 1000;
+    overflow: visible;
+    box-shadow: 8px 8px 16px #000000, -8px -8px 16px #1a1a1a;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 38px;
+    object-fit: contain;
+    max-width: 160px;
+    margin-left: 25px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Botones */
+.logout-btn,
+.settings-btn {
+    background: #000;
+    border: 1px solid var(--blanco);
+    color: var(--blanco);
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    box-shadow: 3px 3px 6px #000000, -3px -3px 6px #1a1a1a;
+}
+
+.settings-btn i {
+    font-size: 1.1rem;
+}
+
+.logout-btn:hover,
+.settings-btn:hover {
+    background-color: #1a1a1a;
+    box-shadow: inset 3px 3px 6px #000000, inset -3px -3px 6px #1a1a1a;
+}
+
+.settings-dropdown {
+    position: relative;
+}
+
+.settings-menu {
+    position: absolute;
+    top: 2.2rem; /* Ajusta si necesitas */
+    right: 0;
+    background-color: var(--color-base);
+    color: var(--color-text);
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 160px;
+    box-shadow: 5px 5px 10px var(--color-shadow-dark), -5px -5px 10px var(--color-shadow-light);
+    z-index: 2000; /* 🔥 muy importante */
+}
+
+.user-header-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 0.75rem;
+    border: 2px solid white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: transparent;
+    border: 1px solid var(--blanco);
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.sidebar {
+    z-index: 1100;
+}
