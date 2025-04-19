@@ -30,6 +30,28 @@ exports.obtenerResumenDashboard = async (req, res) => {
   }
 };
 
+exports.obtenerPerfilesPorFuente = async (req, res) => {
+  try {
+    const { fuentes } = req.body;
+    if (!Array.isArray(fuentes) || fuentes.length === 0) {
+      return res.status(400).json({ error: "Debe proporcionar un arreglo de fuente_id" });
+    }
+
+    const params = fuentes.map((_, idx) => `$${idx + 1}`).join(",");
+    const query = `
+      SELECT *
+      FROM zenu_social_listening.perfiles_instagram
+      WHERE fuente_id IN (${params})
+    `;
+
+    const result = await pool.query(query, fuentes);
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error al obtener perfiles por fuente_id:", error);
+    res.status(500).json({ error: "Error al obtener perfiles por fuente_id" });
+  }
+};
+
 exports.obtenerEstadisticasSemilla = async (req, res) => {
   try {
     const resultado = await pool.query(`
@@ -47,19 +69,19 @@ exports.obtenerIndicadoresSemilla = async (req, res) => {
   try {
     const [top3, categorias, promedio, enlaces, privados, verificados] = await Promise.all([
       pool.query(`
-        SELECT username, followers_count AS "followersCount", profile_pic_url, full_name, follows_count 
+        SELECT username, fuente_id, followers_count AS "followersCount", profile_pic_url, full_name, follows_count 
         FROM zenu_social_listening.perfiles_semilla 
         ORDER BY followers_count DESC 
         LIMIT 6
       `),
       pool.query(`
-        SELECT TRIM(unnested) AS business_category_name, COUNT(*) 
+        SELECT TRIM(regexp_replace(unnested, '^None,', '')) AS business_category_name, COUNT(*) 
         FROM (
           SELECT UNNEST(string_to_array(business_category_name, ',')) AS unnested
           FROM zenu_social_listening.perfiles_semilla
           WHERE business_category_name IS NOT NULL
         ) AS sub
-        GROUP BY TRIM(unnested)
+        GROUP BY TRIM(regexp_replace(unnested, '^None,', ''))
         ORDER BY COUNT(*) DESC
       `),
       pool.query(`
@@ -227,3 +249,4 @@ exports.obtenerBiografiasWordCloud = async (req, res) => {
     res.status(500).json({ error: "Error al obtener biografías para wordcloud" });
   }
 };
+

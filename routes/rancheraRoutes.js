@@ -10,4 +10,8 @@ router.get('/stats-semilla', rancheraController.obtenerEstadisticasSemilla);
 router.get('/linea-tiempo', rancheraController.obtenerLineaTiempoSemillas);
 router.post('/biografias-wordcloud', rancheraController.obtenerBiografiasWordCloud);
 
+// perfiles
+// routes/rancheraRoutes.js
+router.post('/perfiles-por-fuente', rancheraController.obtenerPerfilesPorFuente);
+//router.get('/perfil/:id/seguidores', rancheraController.obtenerSeguidoresPorFuente);
 module.exports = router;

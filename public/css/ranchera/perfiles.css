@@ -1,0 +1,114 @@
+
+
+.contenedor-principal {
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+}
+
+.filtros-perfiles {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+select#selectorPerfil {
+    min-width: 250px;
+    min-height: 100px;
+    display: block;
+    background-color: white;
+    color: black;
+    border: 2px solid #666;
+    padding: 0.5rem;
+  }
+
+.resumen-perfil {
+  margin-bottom: 2rem;
+}
+
+.contenedor-matriz-graficos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.nube-palabras-biografias {
+  margin-top: 2rem;
+}
+
+.grafico-nube {
+  height: 400px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.controls-nube {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.indicadores-perfiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.tarjeta-indicador {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 0.75rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  
+  .tarjeta-indicador:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: scale(1.02);
+    background-color: #eef3ff;
+  }
+  
+  .tarjeta-indicador a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #0d6efd;
+  }
+  
+  .tarjeta-indicador a:hover {
+    text-decoration: underline;
+  }
+  
+.tarjeta-indicador img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+.contenedor-red {
+  height: 60vh;
+  min-height: 400px;
+  width: 100%;
+  margin-top: 1rem;
+}
+.contenedor-principal section {
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+select#selectorCategoria {
+  min-width: 250px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 5px;
+}

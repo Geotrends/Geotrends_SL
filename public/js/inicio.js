@@ -18,10 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const payload = parseJwt(token);
   const { usuario, rol, organizacion } = payload;
   const empresa = organizacion?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-  console.log("DEBUG - Token payload:", payload);
-  console.log("DEBUG - Usuario:", usuario);
-  console.log("DEBUG - Rol:", rol);
-  console.log("DEBUG - Organización:", organizacion);
+  // console.log("DEBUG - Token payload:", payload);
+  // console.log("DEBUG - Usuario:", usuario);
+  // console.log("DEBUG - Rol:", rol);
+  // console.log("DEBUG - Organización:", organizacion);
 
 
   // Mostrar usuario en el header
@@ -47,6 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
        
       ],
       gestor: [
+        { texto: "Ranchera", submenu: [
+          { texto: "Dashboard", page: "/html/ranchera/index.html" },
+          { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
+          { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+          { texto: "Insights", page: "/html/ranchera/insights.html" }
+        ]},
         { texto: "Configurar", page: "/html/secciones/configuracion.html" },
         { texto: "Ver datos", page: "/html/secciones/datos.html" },
         { texto: "Ver reportes", page: "/html/secciones/reportes.html" },
@@ -187,7 +193,13 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (url.includes("comentarios.html")) {
               cargarScriptDinamico("/js/ranchera/comentarios.js");
             } else if (url.includes("perfiles.html")) {
-              cargarScriptDinamico("/js/ranchera/perfiles.js");
+              import('/js/ranchera/perfiles.js').then(mod => {
+                if (mod.inicializarVistaPerfiles) {
+                  mod.inicializarVistaPerfiles();
+                }
+              }).catch(err => {
+                console.error("❌ Error al cargar módulo de perfiles:", err);
+              });
             } else if (url.includes("publicaciones.html")) {
               cargarScriptDinamico("/js/ranchera/publicaciones.js");
             } else if (url.includes("segmentos.html")) {

@@ -1,4 +1,5 @@
 import * as echarts from 'https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.esm.min.js';
+const colores = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
 
 export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, color = '#C62828', nombreEjeX = 'Perfiles', nombreEjeY = 'Cantidad' }) {
   const contenedor = document.getElementById(contenedorId);
@@ -11,6 +12,7 @@ export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, co
 
   const chart = echarts.init(contenedor);
   const maxPosts = Math.max(...datos.map(p => p.posts_count));
+  const colores = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
   const opciones = {
     title: {
       text: titulo,
@@ -84,10 +86,18 @@ export function crearGraficoLineas({ contenedorId, titulo, categorias, series })
   },
     xAxis: {
       type: 'category',
+      name: 'Fecha',
+      nameLocation: 'middle',
+      nameGap: 35,
       data: categorias,
       axisLabel: { rotate: 25 }
     },
-    yAxis: { type: 'value' },
+    yAxis: {
+      type: 'value',
+      name: 'Cantidad de publicaciones',
+      nameLocation: 'middle',
+      nameGap: 50
+    },
     series: series,
     grid: { containLabel: true }
   };
@@ -98,6 +108,7 @@ export function crearGraficoLineas({ contenedorId, titulo, categorias, series })
 
 export function crearGraficoScatter({ contenedorId, titulo, datos }) {
   const contenedor = document.getElementById(contenedorId);
+  console.log("📊 Datos para scatter:", datos);
   if (!contenedor) return;
 
   if (contenedor.offsetWidth === 0 || contenedor.offsetHeight === 0) {
@@ -106,45 +117,95 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
   }
 
   const chart = echarts.init(contenedor);
-  const maxPosts = Math.max(...datos.map(p => p.posts_count));
+  const seguidores = datos.map(p => p.followers_count ?? p.follower_count ?? 0);
+  const seguidos = datos.map(p => p.follows_count ?? p.following_count ?? 0);
+  const publicaciones = datos.map(p => p.posts_count ?? p.media_count ?? 0);
+  const maxPosts = Math.max(...publicaciones);
+  const minPosts = Math.min(...publicaciones);
+  const rango = maxPosts - minPosts || 1;
+
+  const perfilesSemillaGlobal = window.perfilesSemillaGlobal || [];
+  const nombresSemillas = {};
+  perfilesSemillaGlobal.forEach(p => {
+    if (p.fuente_id != null) {
+      nombresSemillas[p.fuente_id] = p.full_name || p.username || `Semilla ${p.fuente_id}`;
+    }
+  });
+
+  const seriesPorFuente = {};
+  datos.forEach(p => {
+    const fuente = p.fuente_id ?? 'sin_categoria';
+    if (!seriesPorFuente[fuente]) seriesPorFuente[fuente] = [];
+
+    seriesPorFuente[fuente].push({
+      value: [
+        p.follows_count ?? p.following_count ?? 0,
+        p.followers_count ?? p.follower_count ?? 0
+      ],
+      username: p.username,
+      fuente_id: fuente,
+      posts_count: p.posts_count ?? p.media_count ?? 0
+    });
+  });
+
+  const colores = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
+
+  const series = Object.entries(seriesPorFuente).map(([fuente, puntos], i) => ({
+    name: `@${nombresSemillas[fuente] || 'semilla_' + fuente}`,
+    type: 'scatter',
+    data: puntos,
+    itemStyle: {
+      color: colores[i % colores.length],
+      opacity: 0.8
+    },
+    symbolSize: function (val, params) {
+      const publicaciones = params.data?.posts_count || 1;
+      return 10 + ((publicaciones - minPosts) / rango) * 34;
+    },
+    label: { show: false }
+  }));
+
   const opciones = {
     title: { text: titulo, left: 'center' },
     tooltip: {
       trigger: 'item',
       formatter: function (params) {
-        return `<strong>@${params.data.username}</strong><br/>Seguidores: ${params.data.value[0].toLocaleString('es-CO')}<br/>Seguidos: ${params.data.value[1].toLocaleString('es-CO')}<br/>Publicaciones: ${params.data.posts_count}`;
+        return `<strong>@${params.data.username}</strong><br/>
+              Seguidos: ${params.data.value[0].toLocaleString('es-CO')}<br/>
+              Seguidores: ${params.data.value[1].toLocaleString('es-CO')}<br/>
+              Publicaciones: ${params.data.posts_count}<br/>
+              Fuente ID: ${params.data.fuente_id}`;
       }
     },
-  legend: {
-    data: ['Público', 'Privado'],
-    bottom: 0,
-    itemGap: 10
-  },
+    legend: {
+      data: series.map(s => s.name),
+      bottom: 0,
+      gap: 10,
+      type: 'scroll'
+    },
     xAxis: {
-      type: 'value',
-      name: 'Seguidores',
+      type: 'log',
+      name: 'Seguidos (log)',
+      logBase: 10,
+      min: Math.max(1, Math.min(...seguidos)),
+      max: Math.max(...seguidos),
       splitLine: { lineStyle: { type: 'dashed' } }
     },
     yAxis: {
-      type: 'value',
-      name: 'Seguidos',
+      type: 'log',
+      name: 'Seguidores (log)',
+      logBase: 10,
+      min: Math.max(1, Math.min(...seguidores)),
+      max: Math.max(...seguidores),
       splitLine: { lineStyle: { type: 'dashed' } }
     },
-    series: [{
-      name: 'Perfiles',
-      symbolSize: function (val, params) {
-        const normalizado = params.data.posts_count / maxPosts;
-        return 6 + normalizado * 50; // tamaño entre 6 y 30
-      },
-      data: datos.map(p => ({
-        value: [p.followers_count, p.follows_count],
-        username: p.username,
-        posts_count: p.posts_count,
-        itemStyle: { color: p.private ? '#C62828' : '#0288D1' },
-        label: { show: false }
-      })),
-      type: 'scatter'
-    }],
+    dataZoom: [
+      { type: 'slider', show: true, xAxisIndex: 0, height: 20, bottom: 20 },
+      { type: 'inside', xAxisIndex: 0, filterMode: 'weakFilter' },
+      { type: 'slider', show: true, yAxisIndex: 0, width: 20, right: 20 },
+      { type: 'inside', yAxisIndex: 0, filterMode: 'weakFilter' }
+    ],
+    series: series,
     grid: { containLabel: true }
   };
 

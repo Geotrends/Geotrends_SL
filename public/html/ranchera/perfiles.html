@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Perfiles Semilla - Análisis</title>
+    <link rel="stylesheet" href="/css/ranchera/perfiles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <main class="contenedor-principal">
+      <h1>Análisis de Perfiles Semilla</h1>
+      <section class="indicadores-perfiles" id="indicadoresPerfiles">
+        <!-- Tarjetas con indicadores de perfiles -->
+        <div class="tarjeta-indicador">
+          <i class="fa fa-users"></i>
+          <div>
+            <strong id="totalSeguidores">--</strong><br /><span
+              >Total seguidores</span
+            >
+          </div>
+        </div>
+        <div class="tarjeta-indicador">
+          <i class="fa fa-chart-line"></i>
+          <div>
+            <strong id="promedioSeguidores">--</strong><br /><span
+              >Promedio de seguidores</span
+            >
+          </div>
+        </div>
+        <div class="tarjeta-indicador">
+          <i class="fa fa-link"></i>
+          <div>
+            <strong id="seguidoresCompartidos">--</strong><br /><span
+              >Seguidores compartidos</span
+            >
+          </div>
+        </div>
+        <div class="tarjeta-indicador">
+          <i class="fa fa-robot"></i>
+          <div>
+            <strong id="porcentajeBots">--</strong><br /><span
+              >% Cuentas sospechosas</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="filtros-perfiles">
+        <label for="selectorPerfil">Seleccionar perfiles semilla:</label>
+        <select id="selectorPerfil" multiple size="8"></select>
+        <button id="generarAnalisisBtn">Generar análisis</button>
+      </section>
+
+      <section class="resumen-perfil" id="resumenPerfil">
+        <!-- Aquí se insertará el resumen del perfil seleccionado -->
+      </section>
+
+      <section class="grafico-scatter">
+        <h2>Distribución de seguidores vs. publicaciones</h2>
+        <div
+          id="scatterFollowersPosts"
+          style="height: 500px; width: 100%; margin-bottom: 2rem"
+        ></div>
+      </section>
+      <section class="red-conexiones-perfiles">
+        <h2>Red de Conexiones</h2>
+        <div id="contenedorRed" class="contenedor-red"></div>
+      </section>
+
+
+
+      <section class="contenedor-matriz-graficos" id="matrizGraficos">
+        <!-- Aquí se insertarán los gráficos generados -->
+      </section>
+
+      <section class="nube-palabras-biografias">
+        <h2>Nube de palabras de biografías</h2>
+        <div class="controls-nube">
+          <label for="selectorCategoria">Filtrar por categoría:</label>
+          <select id="selectorCategoria" multiple>
+            <option value="">-- Seleccione categoría --</option>
+          </select>
+        </div>
+        <div class="controls-nube">
+          <label for="frecuenciaSlider"
+            >Frecuencia mínima: <span id="frecuenciaValor">1</span></label
+          >
+          <input
+            type="range"
+            id="frecuenciaSlider"
+            min="1"
+            max="10"
+            value="2"
+          />
+        </div>
+        <div id="contenedorWordCloud" class="grafico-nube"></div>
+        <div id="contenedorWordCloudNombres" class="grafico-nube"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/js/ranchera/perfiles.js"></script>
+  </body>
+</html>
