@@ -1,3 +1,50 @@
+// Segmenta perfiles según reglas por palabras clave en campos de perfil
+exports.segmentarAudienciaPerfiles = async (req, res) => {
+  try {
+    const { fuentes, reglas } = req.body;
+
+    if (!Array.isArray(fuentes) || fuentes.length === 0) {
+      return res.status(400).json({ error: "Debe proporcionar un arreglo de fuente_id" });
+    }
+    if (!reglas || typeof reglas !== 'object') {
+      return res.status(400).json({ error: "Debe proporcionar un diccionario de reglas" });
+    }
+
+    const params = fuentes.map((_, idx) => `$${idx + 1}`).join(",");
+    const query = `
+      SELECT p.username, p.biography, p.business_category_name, a.keywords
+      FROM zenu_social_listening.perfiles_instagram p
+      LEFT JOIN zenu_social_listening.analisis_perfiles_instagram a 
+      ON p.username = a.username
+      WHERE p.fuente_id IN (${params})
+    `;
+
+    const result = await pool.query(query, fuentes);
+    const perfilesSegmentados = result.rows.map(p => {
+      // Concatenar campos relevantes y convertir a minúsculas
+      const texto = [
+        p.biography || "",
+        p.business_category_name || "",
+        ...(Array.isArray(p.keywords) ? p.keywords : [])
+      ].join(" ").toLowerCase();
+
+      // Buscar la primera categoría que haga match con alguna palabra clave
+      const categoria_detectada = Object.entries(reglas).find(([categoria, palabras]) =>
+        palabras.some(palabra => texto.includes(palabra.toLowerCase()))
+      )?.[0] || "Sin categoría";
+
+      return {
+        username: p.username,
+        categoria_detectada
+      };
+    });
+
+    res.json(perfilesSegmentados);
+  } catch (error) {
+    console.error("Error al segmentar audiencia:", error);
+    res.status(500).json({ error: "Error interno al segmentar audiencia" });
+  }
+};
 const pool = require('../db/conexion');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -39,7 +86,12 @@ exports.obtenerPerfilesPorFuente = async (req, res) => {
 
     const params = fuentes.map((_, idx) => `$${idx + 1}`).join(",");
     const query = `
-      SELECT *
+      SELECT username, fullname, biography, fuente_id, 
+             follower_count AS followers,
+             following_count AS follows_count,
+             media_count AS posts_count,
+             media_count,
+             business_category_name
       FROM zenu_social_listening.perfiles_instagram
       WHERE fuente_id IN (${params})
     `;
@@ -69,10 +121,17 @@ exports.obtenerIndicadoresSemilla = async (req, res) => {
   try {
     const [top3, categorias, promedio, enlaces, privados, verificados] = await Promise.all([
       pool.query(`
-        SELECT username, fuente_id, followers_count AS "followersCount", profile_pic_url, full_name, follows_count 
-        FROM zenu_social_listening.perfiles_semilla 
-        ORDER BY followers_count DESC 
-        LIMIT 6
+SELECT 
+  username,
+  fuente_id,
+  followers_count AS "followersCount",
+  profile_pic_url,
+  full_name,
+  follows_count,
+  business_category_name -- 👈 AÑADIR ESTE CAMPO
+FROM zenu_social_listening.perfiles_semilla 
+ORDER BY followers_count DESC 
+LIMIT 6
       `),
       pool.query(`
         SELECT TRIM(regexp_replace(unnested, '^None,', '')) AS business_category_name, COUNT(*) 
@@ -247,6 +306,37 @@ exports.obtenerBiografiasWordCloud = async (req, res) => {
   } catch (error) {
     console.error("Error al obtener biografías:", error);
     res.status(500).json({ error: "Error al obtener biografías para wordcloud" });
+  }
+};
+
+
+// Nueva función: obtener análisis de sentimiento de perfiles
+exports.obtenerAnalisisSentimientoPerfiles = async (req, res) => {
+  try {
+    console.log("📥 Recibido en analisis-sentimiento:", req.body);
+    const { fuentes } = req.body;
+
+    if (!Array.isArray(fuentes) || fuentes.length === 0) {
+      return res.status(400).json({ error: "Debe proporcionar un arreglo de fuente_id" });
+    }
+
+    const params = fuentes.map((_, idx) => `$${idx + 1}`).join(",");
+    const query = `
+      SELECT p.username, p.fullname AS full_name, p.biography, p.fuente_id,
+             COALESCE(a.followers, p.follower_count) AS followers, a.sentiment,
+             a.sentiment_score_positive AS positive, a.sentiment_score_negative AS negative,
+             a.most_common AS emoji_mas_comun, a.emoji_density, a.keywords, a.interpretation
+      FROM zenu_social_listening.perfiles_instagram p
+      LEFT JOIN zenu_social_listening.analisis_perfiles_instagram a 
+      ON p.username = a.username
+      WHERE p.fuente_id IN (${params})
+    `;
+
+    const result = await pool.query(query, fuentes);
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error al obtener análisis de sentimiento de perfiles:", error);
+    res.status(500).json({ error: "Error al obtener análisis de sentimiento de perfiles" });
   }
 };
 

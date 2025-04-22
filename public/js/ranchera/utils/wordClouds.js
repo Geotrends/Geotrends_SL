@@ -3,8 +3,8 @@ import 'https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcl
 
 export function crearWordCloud({ contenedorId, palabras }) {
   const contenedor = document.getElementById(contenedorId);
-  if (!contenedor || contenedor.offsetWidth === 0 || contenedor.offsetHeight === 0) {
-    console.warn("⛔ El contenedor no tiene tamaño visible o no existe. No se puede renderizar el gráfico.");
+  if (!contenedor || contenedor.offsetWidth < 100 || contenedor.offsetHeight < 100) {
+    console.warn("⛔ El contenedor no tiene tamaño visible o suficiente para renderizar:", contenedorId);
     return;
   }
   
@@ -22,7 +22,7 @@ export function crearWordCloud({ contenedorId, palabras }) {
       name: p.text,
       value: p.weight
     }));
-//   console.log("✅ Palabras válidas para wordcloud:", data);
+  console.log(`✅ Palabras válidas para wordcloud [${contenedorId}]:`, data);
 
   const option = {
     tooltip: { show: true },

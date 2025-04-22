@@ -13,5 +13,7 @@ router.post('/biografias-wordcloud', rancheraController.obtenerBiografiasWordClo
 // perfiles
 // routes/rancheraRoutes.js
 router.post('/perfiles-por-fuente', rancheraController.obtenerPerfilesPorFuente);
+router.post('/analisis-sentimiento', rancheraController.obtenerAnalisisSentimientoPerfiles);
+router.post('/segmentacion-audiencia', rancheraController.segmentarAudienciaPerfiles);
 //router.get('/perfil/:id/seguidores', rancheraController.obtenerSeguidoresPorFuente);
 module.exports = router;

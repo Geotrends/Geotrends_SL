@@ -117,7 +117,10 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
   }
 
   const chart = echarts.init(contenedor);
-  const seguidores = datos.map(p => p.followers_count ?? p.follower_count ?? 0);
+  // NUEVO BLOQUE: calcular seguidores filtrando solo > 0, minSeg, maxSeg
+  const seguidores = datos.map(p => p.followers ?? p.followers_count ?? 0).filter(v => v > 0);
+  const minSeg = seguidores.length ? Math.min(...seguidores) : 1;
+  const maxSeg = seguidores.length ? Math.max(...seguidores) : 10;
   const seguidos = datos.map(p => p.follows_count ?? p.following_count ?? 0);
   const publicaciones = datos.map(p => p.posts_count ?? p.media_count ?? 0);
   const maxPosts = Math.max(...publicaciones);
@@ -140,7 +143,7 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
     seriesPorFuente[fuente].push({
       value: [
         p.follows_count ?? p.following_count ?? 0,
-        p.followers_count ?? p.follower_count ?? 0
+        p.followers ?? p.followers_count ?? 0
       ],
       username: p.username,
       fuente_id: fuente,
@@ -195,8 +198,8 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
       type: 'log',
       name: 'Seguidores (log)',
       logBase: 10,
-      min: Math.max(1, Math.min(...seguidores)),
-      max: Math.max(...seguidores),
+      min: minSeg,
+      max: maxSeg,
       splitLine: { lineStyle: { type: 'dashed' } }
     },
     dataZoom: [
@@ -207,6 +210,66 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
     ],
     series: series,
     grid: { containLabel: true }
+  };
+
+  chart.setOption(opciones);
+  window.addEventListener('resize', () => chart.resize());
+}
+
+export function crearGraficoPie({ contenedorId, titulo, datos }) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor) return;
+
+  const chart = echarts.init(contenedor);
+  const opciones = {
+    title: { text: titulo, left: 'center' },
+    tooltip: { trigger: 'item' },
+    legend: { orient: 'vertical', left: 'left' },
+    series: [{
+      name: 'Sentimiento',
+      type: 'pie',
+      radius: '50%',
+      data: datos,
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }]
+  };
+
+  chart.setOption(opciones);
+  window.addEventListener('resize', () => chart.resize());
+}
+
+export function crearWordCloud({ contenedorId, palabras }) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor || palabras.length === 0) return;
+
+  const chart = echarts.init(contenedor);
+  const opciones = {
+    tooltip: {},
+    series: [{
+      type: 'wordCloud',
+      shape: 'circle',
+      keepAspect: false,
+      left: 'center',
+      top: 'center',
+      width: '100%',
+      height: '100%',
+      sizeRange: [12, 48],
+      rotationRange: [-90, 90],
+      gridSize: 2,
+      drawOutOfBound: true,
+      textStyle: {
+        fontFamily: 'sans-serif',
+        fontWeight: 'bold',
+        color: () => `hsl(${Math.random() * 360}, 100%, 50%)`
+      },
+      data: palabras
+    }]
   };
 
   chart.setOption(opciones);

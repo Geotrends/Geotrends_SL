@@ -118,7 +118,7 @@ async function cargarIndicadoresSemilla() {
         <img src="/api/ranchera/proxy-img?url=${encodeURIComponent(p.profile_pic_url)}" alt="${p.username}" class="perfil-img">
         <div class="perfil-info">
           <p class="nombre-completo"><strong>${p.full_name ?? 'Sin nombre completo'}</strong></p>
-          <p class="info">@${p.username}</p>
+          <p class="info">@${p.username} ${p.verified ? '<i class="fa fa-check-circle" style="color:#1da1f2;" title="Cuenta verificada"></i>' : ''}</p>
           <p class="info">${Number(p.followersCount).toLocaleString('es-CO')} seguidores</p>
           <p class="info">${Number(p.follows_count).toLocaleString('es-CO')} seguidos</p>
         </div>
@@ -144,8 +144,12 @@ async function renderizarGraficosDescriptivos() {
     crearGraficoBarras({
       contenedorId: 'grafico-categorias',
       titulo: 'Distribución por Categoría de Negocio',
-      categorias: data.categorias.map(c => c.business_category_name ?? 'Sin categoría'),
-      datos: data.categorias.map(c => c.count)
+      categorias: data.categorias.map(c =>
+        (c.business_category_name || '')
+          .split(',')
+          .map(cat => cat.trim())
+          .find(cat => cat.toLowerCase() !== 'none') || 'Sin categoría'
+      ),datos: data.categorias.map(c => c.count)
     });
 
     crearGraficoBarras({
