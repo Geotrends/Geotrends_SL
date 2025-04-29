@@ -9,6 +9,7 @@ router.get('/graficos-descriptivos', rancheraController.obtenerGraficosDescripti
 router.get('/stats-semilla', rancheraController.obtenerEstadisticasSemilla);
 router.get('/linea-tiempo', rancheraController.obtenerLineaTiempoSemillas);
 router.post('/biografias-wordcloud', rancheraController.obtenerBiografiasWordCloud);
+router.get('/indicadores-semilla-filtrado', rancheraController.obtenerIndicadoresSemillaFiltrado);
 
 // perfiles
 // routes/rancheraRoutes.js

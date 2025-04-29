@@ -21,11 +21,11 @@ export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, co
     tooltip: {
       trigger: 'axis'
     },
-  legend: {
-    data: [titulo],
-    bottom: 0,
-    itemGap: 10
-  },
+  // legend: {
+  //   data: [titulo],
+  //   bottom: 0,
+  //   itemGap: 10
+  // },
   xAxis: {
     type: 'category',
     name: nombreEjeX,
@@ -45,7 +45,7 @@ export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, co
       type: 'value',
       name: nombreEjeY,
       nameLocation: 'middle',
-      nameGap: 40
+      nameGap: 60
     },
     series: [{
       name: titulo,
@@ -108,7 +108,7 @@ export function crearGraficoLineas({ contenedorId, titulo, categorias, series })
 
 export function crearGraficoScatter({ contenedorId, titulo, datos }) {
   const contenedor = document.getElementById(contenedorId);
-  console.log("📊 Datos para scatter:", datos);
+ // console.log("📊 Datos para scatter:", datos);
   if (!contenedor) return;
 
   if (contenedor.offsetWidth === 0 || contenedor.offsetHeight === 0) {
@@ -173,11 +173,37 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
     tooltip: {
       trigger: 'item',
       formatter: function (params) {
-        return `<strong>@${params.data.username}</strong><br/>
-              Seguidos: ${params.data.value[0].toLocaleString('es-CO')}<br/>
-              Seguidores: ${params.data.value[1].toLocaleString('es-CO')}<br/>
-              Publicaciones: ${params.data.posts_count}<br/>
-              Fuente ID: ${params.data.fuente_id}`;
+        const username = params.data.username;
+        const perfilURL = `https://www.instagram.com/${username}`;
+        const bordeColor = params.color || '#1976d2';  // Color del grupo
+        return `
+          <div style="
+            min-width:220px;
+            font-size:14px;
+            line-height:1.6;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 10px 12px;
+            color: #333;
+            border: 2px solid ${bordeColor};
+            box-shadow: 0 2px 8px rgba(0,0,0,0);
+          ">
+            <strong style="font-size:15px;">@${username}</strong><br/>
+            <span>👥 <strong>Seguidores:</strong> ${params.data.value[1].toLocaleString('es-CO')}</span><br/>
+            <span>🔗 <strong>Seguidos:</strong> ${params.data.value[0].toLocaleString('es-CO')}</span><br/>
+            <span>📝 <strong>Publicaciones:</strong> ${params.data.posts_count}</span><br/>
+            <a href="${perfilURL}" target="_blank" style="color:#1976d2;font-weight:bold;">➡ Ver en Instagram</a>
+          </div>`;
+      },
+      confine: true,
+      alwaysShowContent: false,
+      enterable: true,
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+      borderWidth: 0,
+      textStyle: {
+        color: '#333',
+        fontSize: 12,
       }
     },
     legend: {
@@ -203,7 +229,7 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
       splitLine: { lineStyle: { type: 'dashed' } }
     },
     dataZoom: [
-      { type: 'slider', show: true, xAxisIndex: 0, height: 20, bottom: 20 },
+      { type: 'slider', show: true, xAxisIndex: 0, height: 20, bottom: 40 },
       { type: 'inside', xAxisIndex: 0, filterMode: 'weakFilter' },
       { type: 'slider', show: true, yAxisIndex: 0, width: 20, right: 20 },
       { type: 'inside', yAxisIndex: 0, filterMode: 'weakFilter' }

@@ -18,20 +18,30 @@
   <main class="container">
     <header>
       <h1>Panel General - Campaña Ranchera</h1>
-      <p>Visualiza el estado general de los perfiles, publicaciones y comentarios relacionados con Ranchera.</p>
+      <p>Visualiza el estado general de los perfiles semilla, publicaciones y comentarios relacionados con Ranchera.</p>
     </header>
 
-    <h2>Indicadores clave</h2>
-    <section id="resumen-estadisticas">
-      <p>Cargando indicadores...</p>
-    </section>
-    
-    
-    <section id="indicadores-semilla">
-      <p>Cargando indicadores...</p>
+    <h2>Información clave</h2>
+    <section id="informacion-clave">
+      <div id="resumen-estadisticas" class="resumen-estadisticas-grid"></div>
     </section>
 
-    <h2>Visualizaciones</h2>
+    <h2>Perfiles semilla</h2>
+    <section id="informacion-semilla" class="grid-3columnas">
+
+      <div class="grafico-wrapper">
+        <div id="grafico-seguidores-semillas" class="grafico"></div>
+      </div>
+      <div class="grafico-wrapper">
+        <div id="grafico-seguidos-semillas" class="grafico"></div>
+      </div>
+    </section>
+
+    <section id="top-perfiles-semilla" class="top-perfiles-grid">
+      <p>Cargando top perfiles...</p>
+    </section>
+
+    <!-- <h2>Visualizaciones</h2>
     
     <section id="graficos" class="graficos-grid">
       <div class="grafico-wrapper">
@@ -74,7 +84,7 @@
       
       <div class="grafico-descripcion">Nube de palabras generada a partir de las biografías de los perfiles seleccionados.</div>
     </div>
-  </main>
+  </main> -->
 <script type="module" src="/js/ranchera/main.js"></script>
 </body>
 </html>

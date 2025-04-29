@@ -1,23 +1,101 @@
 
+.resumen-quantitativo-perfiles {
+  width: 100%;
+  margin-top: 0.1rem;
+}
+
+.fila-resumen-quantitativo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+
+
+.tarjeta-quantitativa {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* === Nubes de palabras dobles, centradas y responsivas === */
+.contenedor-wordclouds-doble {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2%;
+  width: 100%;
+  margin-bottom: 2rem;
+  align-items: stretch;
+}
+
+.contenedor-wordclouds-doble .wordcloud-container {
+  flex: 1 1 49%;
+  max-width: 49%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.wordcloud-container label,
+.wordcloud-container button {
+  margin-top: 0.5rem;
+}
+
+.wordcloud-container .grafico-nube {
+  flex-grow: 1;
+  min-height: 550px;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+#selectorPerfil,
+#selectorPerfil + .select2 {
+  display: none !important;
+}
 
 .contenedor-principal {
   padding: 2rem;
   font-family: 'Arial', sans-serif;
 }
 
-.filtros-perfiles {
+/* .filtros-perfiles eliminado tras la integración */
+
+.analisis-nube-perfiles {
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 1rem;
-  margin-bottom: 2rem;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  border-radius: 8px;
   background-color: #f9f9f9;
 }
 
-.filtros-perfiles button {
+.analisis-nube-perfiles button {
   padding: 0.5rem 1rem;
   background-color: #1976d2;
   color: white;
@@ -25,20 +103,10 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
-.filtros-perfiles button:hover {
+.analisis-nube-perfiles button:hover {
   background-color: #115293;
 }
 
-select#selectorPerfil {
-    min-width: 250px;
-    min-height: 100px;
-    display: block;
-    background-color: white;
-    color: black;
-    border: 2px solid #666;
-    padding: 0.5rem;
-  }
 
 .resumen-perfil {
   margin-bottom: 2rem;
@@ -51,15 +119,20 @@ select#selectorPerfil {
   margin-bottom: 2rem;
 }
 
-.nube-palabras-biografias {
-  margin-top: 2rem;
-}
+/* .nube-palabras-biografias eliminado tras la integración */
 
 .grafico-nube {
-  height: 400px;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  margin-top: 1rem;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .controls-nube {
@@ -76,10 +149,14 @@ select#selectorPerfil {
   box-sizing: border-box;
 }
 
-.controls-nube select,
 .controls-nube label,
 .controls-nube input,
 .controls-nube button {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+/* Deja libres los selects que usan Choices.js */
+.controls-nube select:not([data-choice]) {
   flex: 1 1 200px;
   min-width: 200px;
 }
@@ -138,13 +215,6 @@ select#selectorPerfil {
   margin-bottom: 1.5rem;
 }
 
-select#selectorCategoria {
-  min-width: 250px;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 0.5rem;
-  border-radius: 5px;
-}
 
 #botonResetFiltros {
   padding: 0.5rem 1rem;
@@ -180,4 +250,74 @@ select#selectorCategoria {
   padding: 0.75rem;
   border-radius: 8px;
   border: 1px solid #ccc;
+}
+
+/* Ajuste para altura fija en selectores multiselección de Select2 */
+.select2-container--default .select2-selection--multiple {
+  height: 48px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding-bottom: 0.2rem;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  white-space: nowrap;
+}
+/* Ocultar el select original cuando se inicializa Select2 */
+.select2-hidden-accessible {
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+}
+.fila-selectores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+
+.fila-selectores select {
+  flex: 1 1 45%;
+  min-width: 220px;
+  max-width: 100%;
+  height: 48px;
+}
+
+
+
+@media (max-width: 768px) {
+  .fila-resumen-quantitativo {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ajuste para que el gráfico de emojis ocupe todo el ancho disponible */
+#grafico-emojis {
+  width: 100% !important;
+  height: 500px !important;
+  min-height: 300px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Asegurar que el wrapper del gráfico de emojis también se extienda completamente */
+.grafico-wrapper {
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }

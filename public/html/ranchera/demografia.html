@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Perfiles Semilla - Análisis</title>
+    <link rel="stylesheet" href="/css/ranchera/demografia.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+
+
+
+    <!-- controles-superiores section removed -->
+
+    <section class="grafico-segmentacion">
+      <h2>Distribución por segmento de audiencia</h2>
+      <p>Clasificación automática de perfiles basada en reglas temáticas definidas.</p>
+      <div id="grafico-segmentacion-audiencia" style="height: 400px; margin-bottom: 2rem;"></div>
+      <div id="editorReglasSegmentacion"></div>
+      <button id="botonSegmentarAudiencia" class="btn-verde">Segmentar audiencia</button>
+      <h2>Distribución de sentimientos</h2>
+      <p>Relación de sentimiento positivo, neutro y negativo detectado en los perfiles segmentados.</p>
+      <div id="grafico-sentimiento-por-categoria" style="height: 400px; margin-bottom: 2rem;"></div>
+
+      <h2>Red de usuarios segmentados</h2>
+      <p>Visualización de perfiles conectados según categoría y sentimiento detectado.</p>
+      <div id="contenedorRedSegmentacion" style="height: 600px; margin-top: 1rem; border: 1px solid #ccc; border-radius: 8px;"></div>
+    </section>
+
+    <section class="nube-palabras-por-segmento">
+      <h2>Nubes de palabras por sentimiento</h2>
+      <p>Palabras más representativas extraídas de biografías de usuarios, diferenciadas por sentimiento.</p>
+
+      <div class="controles-nube-palabras">
+        <label for="selectorCategoriaSegmentada">Filtrar por categoría:</label>
+        <select id="selectorCategoriaSegmentada"></select>
+      </div>
+
+      <div class="sliders-sentimiento">
+        <div class="control-slider">
+          <label for="sliderSegmentoPositivo">Frecuencia mínima (Positivo): <span id="valorSegmentoPositivo">1</span></label>
+          <input type="range" id="sliderSegmentoPositivo" min="1" max="10" value="1" />
+          <button onclick="descargarWordCloud('contenedorWordCloudSegmentoPositivo')">Descargar PNG</button>
+        </div>
+        <div class="control-slider">
+          <label for="sliderSegmentoNeutro">Frecuencia mínima (Neutro): <span id="valorSegmentoNeutro">1</span></label>
+          <input type="range" id="sliderSegmentoNeutro" min="1" max="10" value="1" />
+          <button onclick="descargarWordCloud('contenedorWordCloudSegmentoNeutro')">Descargar PNG</button>
+        </div>
+        <div class="control-slider">
+          <label for="sliderSegmentoNegativo">Frecuencia mínima (Negativo): <span id="valorSegmentoNegativo">1</span></label>
+          <input type="range" id="sliderSegmentoNegativo" min="1" max="10" value="1" />
+          <button onclick="descargarWordCloud('contenedorWordCloudSegmentoNegativo')">Descargar PNG</button>
+        </div>
+      </div>
+
+      <div class="contenedor-nubes">
+        <div id="contenedorWordCloudSegmentoPositivo" class="grafico-nube"></div>
+        <div id="contenedorWordCloudSegmentoNeutro" class="grafico-nube"></div>
+        <div id="contenedorWordCloudSegmentoNegativo" class="grafico-nube"></div>
+      </div>
+    </section>
+
+    <section id="topPerfilesPorSegmento" class="top-perfiles">
+      <h2>Top 5 Perfiles por Categoría</h2>
+    </section>
+
+    <style>
+    
+    </style>
+
+    <script src="/js/ranchera/demografia.js"></script>
+  </body>
+</html>

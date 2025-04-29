@@ -10,7 +10,7 @@
 
 .bienvenida-content h1 {
   font-size: 2.2rem;
-  color: var(--color-text);
+  color: var(--azul-vivo);
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -18,7 +18,7 @@
 .bienvenida-content .intro {
   font-size: 1.15rem;
   margin-bottom: 2rem;
-  color: var(--color-text);
+  color: var(--gris-oscuro);
   text-align: center;
 }
 
@@ -29,16 +29,17 @@
 .bienvenida-section h2 {
   font-size: 1.4rem;
   margin-bottom: 0.75rem;
-  color: var(--color-principal);
+  color: var(--azul-vivo);
 }
 
 .bienvenida-section ul {
   list-style: disc;
   padding-left: 1.5rem;
-  color: var(--color-text);
+  color: var(--gris-oscuro);
 }
 
 .bienvenida-section ul li {
   margin-bottom: 0.5rem;
   line-height: 1.6;
+  color: var(--gris-oscuro);
 }

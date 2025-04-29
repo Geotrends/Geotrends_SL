@@ -29,7 +29,15 @@ app.use('/api/usuarios', usuariosRoutes);
 const rancheraRoutes = require('./routes/rancheraRoutes');
 app.use('/api/ranchera', rancheraRoutes);
 
-// ✅ Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+const os = require('os');
+
+const networkInterfaces = os.networkInterfaces();
+const localIP = Object.values(networkInterfaces)
+  .flat()
+  .find((iface) => iface.family === 'IPv4' && !iface.internal)?.address;
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Servidor corriendo en:`);
+  console.log(`→ Localhost: http://localhost:${PORT}`);
+  if (localIP) console.log(`→ Red local: http://${localIP}:${PORT}`);
 });

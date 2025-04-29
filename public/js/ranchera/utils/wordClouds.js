@@ -22,7 +22,7 @@ export function crearWordCloud({ contenedorId, palabras }) {
       name: p.text,
       value: p.weight
     }));
-  console.log(`✅ Palabras válidas para wordcloud [${contenedorId}]:`, data);
+ // console.log(`✅ Palabras válidas para wordcloud [${contenedorId}]:`, data);
 
   const option = {
     tooltip: { show: true },
@@ -76,6 +76,10 @@ export function crearWordCloud({ contenedorId, palabras }) {
    * - textStyle.emphasis: estilo al hacer hover (sombra, color, etc.)
    * - data: arreglo de objetos con propiedades { name: 'palabra', value: número }
    */
+  if (data.length === 0) {
+    contenedor.innerHTML = "<div style='text-align:center; padding: 2rem;'>No hay palabras con la frecuencia mínima seleccionada</div>";
+    return;
+  }
   
   chart.setOption(option);
   window.addEventListener('resize', () => chart.resize());
@@ -83,37 +87,48 @@ export function crearWordCloud({ contenedorId, palabras }) {
 }
 
 export function procesarYActualizarWordCloudBiografias({ texto, sliderId, valorSliderId, contenedorId }) {
+  if (!texto || !sliderId || !valorSliderId || !contenedorId) {
+    console.warn("⚠️ Parámetros incompletos para actualizar WordCloud");
+    return;
+  }
+
+  const contenedor = document.getElementById(contenedorId);
   const slider = document.getElementById(sliderId);
   const valorSlider = document.getElementById(valorSliderId);
-  // Lista básica de stopwords en español e inglés
-  const stopwords = new Set([
-    // Español
-    "de", "la", "que", "el", "en", "y", "a", "los", "se", "del", "las", "por", "un", "para", "con", "no", "una", "su", "al", "lo", "como", "más", "pero", "sus", "le", "ya", "o", "este", "sí", "porque", "esta", "entre", "cuando", "muy", "sin", "sobre", "también", "me", "hasta", "hay", "donde", "quien", "desde", "todo", "nos", "durante", "todos", "uno", "les", "ni", "contra", "otros", "ese", "eso", "ante", "ellos", "e", "esto", "mí", "antes", "algunos", "qué", "unos", "yo", "otro", "otras", "otra", "él", "tanto", "esa", "estos", "mucho", "quienes", "nada", "muchos", "cual", "poco", "ella", "estar", "estas", "algunas", "algo", "nosotros",
-    // Inglés
-    "the", "and", "for", "are", "with", "that", "you", "this", "was", "but", "have", "not", "your", "from", "they", "his", "her", "she", "him", "our", "who", "would", "their", "there", "what", "about", "which", "when", "them", "been", "were", "will", "has", "can", "all", "we", "more", "if", "my", "or", "an", "so", "no", "he", "do", "at", "by", "as", "on", "in", "to", "of", "a", "is", "it", "be", "me"
-  ]);
 
+  if (!contenedor || !slider || !valorSlider) {
+    console.warn("⚠️ No se encontró algún elemento de WordCloud", { contenedorId, sliderId, valorSliderId });
+    return;
+  }
+ // console.log(`📄 Texto base para WordCloud [${contenedorId}]:`, texto.slice(0, 300));
   const palabras = texto
-    .toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/g, '')
     .split(/\s+/)
-    .filter(p => p.length > 2 && !stopwords.has(p));
+    .filter((word) => word.length > 3)
+    .map((word) => word.toLowerCase())
+    .reduce((acc, word) => {
+      acc[word] = (acc[word] || 0) + 1;
+      return acc;
+    }, {});
 
-  const conteo = {};
-  palabras.forEach(p => {
-    conteo[p] = (conteo[p] || 0) + 1;
-  });
+  const palabrasArray = Object.entries(palabras).map(([text, weight]) => ({ text, weight }));
 
-  const palabrasBiografia = Object.entries(conteo).map(([text, weight]) => ({ text, weight }));
+  function actualizarWordCloud() {
+    const minFrecuencia = parseInt(slider.value, 10) || 1;
+    valorSlider.textContent = minFrecuencia;
+    const palabrasFiltradas = palabrasArray.filter((p) => p.weight >= minFrecuencia);
 
-  const actualizar = () => {
-    const frecuenciaMin = parseInt(slider.value);
-    valorSlider.textContent = frecuenciaMin;
-    const filtradas = palabrasBiografia.filter(p => p.weight >= frecuenciaMin);
-    crearWordCloud({ contenedorId, palabras: filtradas });
-  };
+    crearWordCloud({
+      contenedorId,
+      palabras: palabrasFiltradas
+    });
+  }
 
-  slider.removeEventListener('input', actualizar);
-  slider.addEventListener('input', actualizar);
-  actualizar();
+  try {
+    slider.removeEventListener('input', actualizarWordCloud);
+  } catch (error) {
+    console.warn("⚠️ No había eventListener anterior en el slider:", sliderId);
+  }
+  slider.addEventListener('input', actualizarWordCloud);
+
+  actualizarWordCloud();
 }

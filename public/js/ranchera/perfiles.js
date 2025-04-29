@@ -10,31 +10,21 @@ export function inicializarVistaPerfiles() {
   console.log("✅ Vista de perfiles inicializada");
 
   const selector = document.getElementById("selectorPerfil");
-  const resumenContainer = document.getElementById("resumenPerfil");
+  // const resumenContainer = document.getElementById("resumenPerfil");
 
-  if (!selector || !resumenContainer) {
-    console.error("❌ Elementos no encontrados en el DOM.");
-    return;
-  }
+  // if (!selector || !resumenContainer) {
+  //   console.error("❌ Elementos no encontrados en el DOM.");
+  //   return;
+  // }
 
   // Obtener perfiles semilla desde el backend
   fetch("/api/ranchera/indicadores-semilla")
     .then((response) => response.json())
-
     .then((data) => {
       if (!Array.isArray(data.top3)) {
         console.error("❌ Estructura inesperada en la respuesta:", data);
         return;
       }
-      // console.log("Perfiles semillaffff:", data.top3);
-      document.getElementById("totalSeguidores").textContent =
-        data.total.toLocaleString("es-CO");
-      document.getElementById("promedioSeguidores").textContent = Number(
-        data.promedio.followers_count
-      ).toLocaleString("es-CO");
-      document.getElementById("seguidoresCompartidos").textContent = "--";
-      document.getElementById("porcentajeBots").textContent = "--";
-
       const perfiles = data.top3;
       perfilesSemillaGlobal = perfiles;
       window.perfilesSemillaGlobal = perfilesSemillaGlobal;
@@ -44,13 +34,22 @@ export function inicializarVistaPerfiles() {
           const option = document.createElement("option");
           option.value = p.fuente_id;
           option.setAttribute("data-username", p.username);
-          option.textContent = `${p.full_name || "Sin nombre"} (@${
-            p.username
-          })`;
+          option.textContent = `${p.full_name || "Sin nombre"} (@${p.username})`;
           option.selected = true;
           selector.appendChild(option);
         }
       });
+
+      // Inicializar select2 solo en el selector de perfiles
+      if (window.jQuery && $.fn.select2) {
+        $('#selectorPerfil').select2({
+          width: 'resolve',
+          placeholder: 'Selecciona perfiles semilla',
+          allowClear: true,
+          closeOnSelect: false,
+          tags: false
+        });
+      }
 
       const selectorTipoCuenta = document.createElement("select");
       selectorTipoCuenta.id = "selectorTipoCuenta";
@@ -69,11 +68,12 @@ export function inicializarVistaPerfiles() {
           document.getElementById("selectorPrivacidad").value;
         const tipoCuentaSeleccionada = selectorTipoCuenta.value;
 
-        const perfilesUsar = document
-          .getElementById("resumenPerfil")
-          .querySelector(".indicadores-perfiles")
-          ? window.ultimoPerfilesAnalizados || []
-          : perfilesSemillaGlobal;
+        // Usar window.perfilesCargadosGlobal si existe, si no, window.ultimoPerfilesAnalizados, si no, perfilesSemillaGlobal
+        const perfilesUsar = window.perfilesCargadosGlobal?.length
+          ? window.perfilesCargadosGlobal
+          : (window.ultimoPerfilesAnalizados?.length
+            ? window.ultimoPerfilesAnalizados
+            : perfilesSemillaGlobal);
 
         let perfilesFiltrados = perfilesUsar;
 
@@ -125,11 +125,11 @@ export function inicializarVistaPerfiles() {
       // Agregar bloque para identificar categorías únicas y poblar el selector de categorías
       const categoriasSet = new Set();
       perfiles.forEach((p) => {
-        const categoria = (p.business_category_name || "")
+        const categorias = (p.business_category_name || "")
           .split(",")
           .map((c) => c.trim())
-          .find((c) => c && c.toLowerCase() !== "none");
-        if (categoria) categoriasSet.add(categoria);
+          .filter((c) => c && c.toLowerCase() !== "none");
+        categorias.forEach((cat) => categoriasSet.add(cat));
       });
 
       const selectorCategorias = document.getElementById("selectorCategoria");
@@ -141,6 +141,17 @@ export function inicializarVistaPerfiles() {
         opt.textContent = cat;
         selectorCategorias.appendChild(opt);
       });
+
+      // Inicializar select2 en el selector de categorías si está disponible
+      if (window.jQuery && $.fn.select2) {
+        $('#selectorCategoria').select2({
+          width: 'resolve',
+          placeholder: 'Filtrar por categoría',
+          allowClear: true,
+          closeOnSelect: false,
+          tags: false
+        });
+      }
 
       const contenedorControles = document.querySelector(".controls-nube");
 
@@ -170,20 +181,24 @@ export function inicializarVistaPerfiles() {
 
       // === Evento click para reiniciar filtros ===
       botonReset.addEventListener("click", () => {
-        selectorCategorias.selectedIndex = -1;
+        // Deseleccionar todas las opciones del selectorCategorias
+        Array.from(selectorCategorias.options).forEach(option => option.selected = false);
         selectorPrivacidad.value = "";
         selectorVerificado.value = "";
         selectorTipoCuenta.value = "";
+        document.getElementById("selectorSentimiento").value = "";
 
         const slider = document.getElementById("frecuenciaSlider");
         const valorSlider = document.getElementById("frecuenciaValor");
         slider.value = 2;
         valorSlider.textContent = "2";
 
-        // Usar window.ultimoPerfilesAnalizados si existe y tiene elementos, si no, usar perfilesSemillaGlobal
-        const perfilesUsar = window.ultimoPerfilesAnalizados?.length
-          ? window.ultimoPerfilesAnalizados
-          : perfilesSemillaGlobal;
+        // Usar window.perfilesCargadosGlobal si existe y tiene elementos, si no, window.ultimoPerfilesAnalizados, si no, perfilesSemillaGlobal
+        const perfilesUsar = window.perfilesCargadosGlobal?.length
+          ? window.perfilesCargadosGlobal
+          : (window.ultimoPerfilesAnalizados?.length
+            ? window.ultimoPerfilesAnalizados
+            : perfilesSemillaGlobal);
 
         const textoBiografias = perfilesUsar
           .map((p) => p.biography || "")
@@ -208,247 +223,225 @@ export function inicializarVistaPerfiles() {
         });
       });
 
+      // Versión completamente nueva de aplicarFiltrosNube para actualizar las wordclouds según los perfiles filtrados
       const aplicarFiltrosNube = () => {
-        const categoriasSeleccionadas = Array.from(
-          selectorCategorias.selectedOptions
-        ).map((opt) => opt.value);
-        const privacidadSeleccionada =
-          document.getElementById("selectorPrivacidad").value;
-        const verificadoSeleccionado =
-          document.getElementById("selectorVerificado").value;
+        const selectorCategorias = document.getElementById("selectorCategoria");
+        const selectorPrivacidad = document.getElementById("selectorPrivacidad");
+        const selectorVerificado = document.getElementById("selectorVerificado");
+        const selectorTipoCuenta = document.getElementById("selectorTipoCuenta");
+        const selectorSentimiento = document.getElementById("selectorSentimiento");
 
-        const perfilesUsar = document
-          .getElementById("resumenPerfil")
-          .querySelector(".indicadores-perfiles")
-          ? window.ultimoPerfilesAnalizados || []
-          : perfilesSemillaGlobal;
+        const categoriasSeleccionadas = Array.from(selectorCategorias.selectedOptions).map((opt) => opt.value);
+        const privacidadSeleccionada = selectorPrivacidad.value;
+        const verificadoSeleccionado = selectorVerificado.value;
+        const tipoCuentaSeleccionada = selectorTipoCuenta.value;
+        const sentimientoSeleccionado = selectorSentimiento.value;
+
+        const perfilesUsar = window.perfilesCargadosGlobal?.length
+          ? window.perfilesCargadosGlobal
+          : (window.ultimoPerfilesAnalizados?.length
+            ? window.ultimoPerfilesAnalizados
+            : perfilesSemillaGlobal);
 
         let perfilesFiltrados = perfilesUsar;
 
+        // Filtrado por categorías
         if (categoriasSeleccionadas.length > 0) {
-          perfilesFiltrados = perfilesFiltrados.filter((p) =>
-            categoriasSeleccionadas.some((cat) =>
-              (p.business_category_name || "")
-                .toLowerCase()
-                .includes(cat.toLowerCase())
-            )
-          );
+          perfilesFiltrados = perfilesFiltrados.filter((p) => {
+            const categoriasPerfil = (p.business_category_name || "")
+              .split(",")
+              .map((c) => c.trim().toLowerCase())
+              .filter(c => c !== "");
+            return categoriasSeleccionadas.some(cat => categoriasPerfil.includes(cat.toLowerCase()));
+          });
         }
 
+        // Filtrado por privacidad
         if (privacidadSeleccionada !== "") {
           const isPrivado = privacidadSeleccionada === "true";
-          perfilesFiltrados = perfilesFiltrados.filter(
-            (p) => p.private === isPrivado
-          );
+          perfilesFiltrados = perfilesFiltrados.filter((p) => p.private === isPrivado);
         }
 
+        // Filtrado por verificación
         if (verificadoSeleccionado !== "") {
           const isVerificado = verificadoSeleccionado === "true";
-          perfilesFiltrados = perfilesFiltrados.filter(
-            (p) => Boolean(p.verified) === isVerificado
-          );
+          perfilesFiltrados = perfilesFiltrados.filter((p) => Boolean(p.verified) === isVerificado);
         }
 
-        const textoFiltrado = perfilesFiltrados
+        // Filtrado por tipo de cuenta (negocio/personal)
+        if (tipoCuentaSeleccionada !== "") {
+          const isBusiness = tipoCuentaSeleccionada === "true";
+          perfilesFiltrados = perfilesFiltrados.filter((p) => Boolean(p.is_business) === isBusiness);
+        }
+
+        // Filtrado por sentimiento
+        if (sentimientoSeleccionado !== "") {
+          perfilesFiltrados = perfilesFiltrados.filter((p) => (p.sentiment || "").toUpperCase() === sentimientoSeleccionado);
+        }
+
+        // === ACTUALIZACIÓN WORDCLOUDS: Usar solo los perfiles filtrados ===
+        // Actualizar WordClouds basado en perfiles filtrados
+        const textoBiografias = perfilesFiltrados
           .map((p) => p.biography || "")
           .join(" ");
 
+        const textoNombres = perfilesFiltrados
+          .map((p) => p.fullname || p.full_name || "")
+          .filter(nombre => nombre.trim().length > 0)
+          .join(" ");
+
+        // Regenerar WordCloud de biografías
         procesarYActualizarWordCloudBiografias({
-          texto: textoFiltrado,
-          sliderId: "frecuenciaSlider",
-          valorSliderId: "frecuenciaValor",
+          texto: textoBiografias,
+          sliderId: "sliderBiografias",
+          valorSliderId: "valorBiografias",
           contenedorId: "contenedorWordCloud",
         });
 
-        const textoNombres = perfilesFiltrados
-          .map((p) => p.fullname || p.full_name || "")
-          .filter((nombre) => nombre.trim().length > 0)
-          .join(" ");
-
+        // Regenerar WordCloud de nombres
         procesarYActualizarWordCloudBiografias({
           texto: textoNombres,
-          sliderId: "frecuenciaSlider",
-          valorSliderId: "frecuenciaValor",
+          sliderId: "sliderNombres",
+          valorSliderId: "valorNombres",
           contenedorId: "contenedorWordCloudNombres",
+        });
+
+        // === FIN actualización wordclouds ===
+
+        // === ACTUALIZACIÓN DE EMOJIS ===
+        const frecuenciaEmojis = {};
+
+        perfilesFiltrados.forEach(p => {
+          let emojis = {};
+          console.log("🔍 Procesando emojis para:", p.emoji_mas_comun);
+          try {
+            if (typeof p.emoji_mas_comun === 'string') {
+              emojis = JSON.parse(p.emoji_mas_comun);
+            } else if (typeof p.emoji_mas_comun === 'object' && p.emoji_mas_comun !== null) {
+              emojis = p.emoji_mas_comun;
+            }
+          } catch (_) {}
+
+          Object.entries(emojis).forEach(([emoji, count]) => {
+            frecuenciaEmojis[emoji] = (frecuenciaEmojis[emoji] || 0) + count;
+          });
+        });
+
+        console.log("📊 Datos emojis filtrados:", frecuenciaEmojis);
+
+        const topEmojis = Object.entries(frecuenciaEmojis)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 15);
+        
+        // Si no hay emojis, poner uno neutro
+        const datosEmojis = topEmojis.length > 0 ? topEmojis : [['🙂', 0]];
+        
+        if (datosEmojis.length === 0) {
+          datosEmojis.push(['No emojis', 1]);
+        }
+
+        // Añadir log antes de crear el gráfico de barras de emojis
+        console.log("📊 Datos para gráfico de emojis:", datosEmojis);
+
+        crearGraficoBarras({
+          contenedorId: 'grafico-emojis',
+          titulo: 'Emojis más usados',
+          categorias: datosEmojis.map(e => e[0]),
+          datos: datosEmojis.map(e => e[1]),
+          color: '#FF9800'
+        });
+
+        // === ACTUALIZAR TARJETAS CUANTITATIVAS ===
+        const totalPerfiles = perfilesFiltrados.length;
+        const privados = perfilesFiltrados.filter(p => p.private).length;
+        const verificados = perfilesFiltrados.filter(p => p.is_verified).length;
+        const negocios = perfilesFiltrados.filter(p => p.is_business).length;
+
+        const sentimientoPositivo = perfilesFiltrados.filter(p => (p.sentiment || "").toUpperCase() === "POSITIVO").length;
+        const sentimientoNeutro = perfilesFiltrados.filter(p => (p.sentiment || "").toUpperCase() === "NEUTRO").length;
+        const sentimientoNegativo = perfilesFiltrados.filter(p => (p.sentiment || "").toUpperCase() === "NEGATIVO").length;
+
+        if (document.getElementById("tarjetaTotalPerfiles"))
+          document.getElementById("tarjetaTotalPerfiles").innerHTML = `
+            <strong>Total de perfiles:</strong> ${totalPerfiles.toLocaleString()}
+          `;
+
+        if (document.getElementById("tarjetaPrivacidad"))
+          document.getElementById("tarjetaPrivacidad").innerHTML = `
+            <strong>Privacidad:</strong><br>
+            Privados: ${privados}<br>
+            Públicos: ${totalPerfiles - privados}
+          `;
+
+        if (document.getElementById("tarjetaVerificacion"))
+          document.getElementById("tarjetaVerificacion").innerHTML = `
+            <strong>Verificación:</strong><br>
+            Verificados: ${verificados}<br>
+            No verificados: ${totalPerfiles - verificados}
+          `;
+
+        if (document.getElementById("tarjetaTipoCuenta"))
+          document.getElementById("tarjetaTipoCuenta").innerHTML = `
+            <strong>Tipo de cuenta:</strong><br>
+            Negocio: ${negocios}<br>
+            Personal: ${totalPerfiles - negocios}
+          `;
+
+        if (document.getElementById("tarjetaSentimiento"))
+          document.getElementById("tarjetaSentimiento").innerHTML = `
+            <strong>Sentimiento:</strong><br>
+            Positivo: ${sentimientoPositivo}<br>
+            Neutro: ${sentimientoNeutro}<br>
+            Negativo: ${sentimientoNegativo}
+          `;
+
+        // (Bloque de actualización dinámica de emojis eliminado para evitar duplicidad)
+
+        // Luego actualizar el scatter plot con los perfiles filtrados
+        crearGraficoScatter({
+          contenedorId: "scatterFollowersPosts",
+          titulo: "Seguidores vs. Publicaciones",
+          datos: perfilesFiltrados
         });
       };
 
       selectorCategorias.addEventListener("change", aplicarFiltrosNube);
+      // Añadir eventos select2:select y select2:unselect si select2 está disponible
+      if (window.jQuery && $.fn.select2) {
+        $('#selectorCategoria').on('select2:select select2:unselect', aplicarFiltrosNube);
+      }
       selectorPrivacidad.addEventListener("change", aplicarFiltrosNube);
       selectorVerificado.addEventListener("change", aplicarFiltrosNube);
+      document.getElementById("selectorTipoCuenta").addEventListener("change", aplicarFiltrosNube);
+      document.getElementById("selectorSentimiento").addEventListener("change", aplicarFiltrosNube);
 
       // Generar nube inicial con todas las biografías
-      const biografiasTextoGeneral = perfiles
-        .map((p) => p.biography || "")
-        .join(" ");
+      const perfilesScatter = window.perfilesCargadosGlobal || [];
+
+      const textoBiografias = perfilesScatter.map((p) => p.biography || "").join(" ");
+      const textoNombres = perfilesScatter.map((p) => p.fullname || p.full_name || "").join(" ");
+      
       procesarYActualizarWordCloudBiografias({
-        texto: biografiasTextoGeneral,
-        sliderId: "frecuenciaSlider",
-        valorSliderId: "frecuenciaValor",
-        contenedorId: "contenedorWordCloud",
+        texto: textoBiografias,
+        sliderId: "sliderBiografias",
+        valorSliderId: "valorBiografias",
+        contenedorId: "contenedorWordCloud"
+      });
+      
+      procesarYActualizarWordCloudBiografias({
+        texto: textoNombres,
+        sliderId: "sliderNombres",
+        valorSliderId: "valorNombres",
+        contenedorId: "contenedorWordCloudNombres"
       });
 
-      // Generar nube inicial con todos los nombres completos
-      const nombresTextoGeneral = perfiles
-        .map((p) => p.full_name || "")
-        .join(" ");
-      procesarYActualizarWordCloudBiografias({
-        texto: nombresTextoGeneral,
-        sliderId: "frecuenciaSlider",
-        valorSliderId: "frecuenciaValor",
-        contenedorId: "contenedorWordCloudNombres",
+      // Ejecutar el análisis automáticamente después de poblar los perfiles y select2
+      generarAnalisisInicial().then(() => {
+        aplicarFiltrosNube();
       });
     })
     .catch((err) => {
       console.error("❌ Error al cargar perfiles semilla:", err);
-    });
-
-  document
-    .getElementById("generarAnalisisBtn")
-    .addEventListener("click", () => {
-      const seleccionados = Array.from(selector.selectedOptions).map(
-        (opt) => opt.value
-      );
-      console.log("🎯 Fuente ID seleccionados:", seleccionados);
-      let data;
-
-      fetch("/api/ranchera/perfiles-por-fuente", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fuentes: seleccionados }),
-      })
-        .then((res) => res.json())
-        .then((perfiles) => {
-          window.ultimoPerfilesAnalizados = perfiles;
-          return perfiles;
-        })
-        .then((json) => {
-          const semillasSeleccionadas = Array.from(
-            selector.selectedOptions
-          ).map((opt) => {
-            const fuenteId = opt.value;
-            return (
-              perfilesSemillaGlobal.find((p) => p.fuente_id == fuenteId) || {}
-            );
-          });
-          data = { top3: semillasSeleccionadas };
-          return json;
-        })
-        .then((perfiles) => {
-          // Extraer y poblar el selector de categorías desde perfiles
-          const categoriasSet = new Set();
-          perfiles.forEach((p) => {
-            const categorias = (p.business_category_name || "")
-              .split(",")
-              .map((c) => c.trim())
-              .filter((c) => c && c.toLowerCase() !== "none");
-            categorias.forEach((cat) => categoriasSet.add(cat));
-          });
-
-          const selectorCategorias =
-            document.getElementById("selectorCategoria");
-          selectorCategorias.innerHTML =
-            "<option value=''>-- Seleccione categoría --</option>";
-          [...categoriasSet].sort().forEach((cat) => {
-            const opt = document.createElement("option");
-            opt.value = cat;
-            opt.textContent = cat;
-            selectorCategorias.appendChild(opt);
-          });
-
-          const biografiasTexto = perfiles
-            .map((p) => p.biography || "")
-            .join(" ");
-          procesarYActualizarWordCloudBiografias({
-            texto: biografiasTexto,
-            sliderId: "frecuenciaSlider",
-            valorSliderId: "frecuenciaValor",
-            contenedorId: "contenedorWordCloud",
-          });
-
-          const nombresTexto = perfiles.map((p) => p.fullname || "").join(" ");
-          procesarYActualizarWordCloudBiografias({
-            texto: nombresTexto,
-            sliderId: "frecuenciaSlider",
-            valorSliderId: "frecuenciaValor",
-            contenedorId: "contenedorWordCloudNombres",
-          });
-
-          const contenedorRed = document.getElementById("contenedorRed");
-          contenedorRed.innerHTML = "";
-          console.log("🔍 Datos enviados a la red:", {
-            semillas: data.top3,
-            perfiles,
-          });
-          generarRedPerfiles(
-            { semillas: data.top3, perfiles },
-            "contenedorRed"
-          );
-
-          crearGraficoScatter({
-            contenedorId: "scatterFollowersPosts",
-            titulo: "Seguidores vs. Publicaciones",
-            datos: perfiles,
-          });
-          // Llamar a los gráficos de sentimiento tras el análisis
-          cargarGraficosSentimiento();
-
-          const tarjetasHTML = Array.from(selector.selectedOptions)
-            .map((option) => {
-              const username = option.getAttribute("data-username");
-              const fuenteId = option.value;
-              const perfilSemilla = data.top3.find(
-                (p) => p.fuente_id == fuenteId
-              );
-              // console.log("Perfil semilla:", perfilSemilla);
-              return `
-              <a href="https://instagram.com/${username}" target="_blank" style="text-decoration: none; color: inherit;">
-                <div class="tarjeta-indicador">
-                  <img src="/api/ranchera/proxy-img?url=${encodeURIComponent(
-                    perfilSemilla.profile_pic_url ||
-                      perfilSemilla.profile_pic_url_hd ||
-                      ""
-                  )}" alt="${username}" style="width: 48px; height: 48px; border-radius: 50%;">
-                  <div>
-                    <strong>${
-                      perfilSemilla.full_name || "Sin nombre completo"
-                    }</strong>
-                    <span>@${username} ${
-                perfilSemilla.verified
-                  ? '<i class="fa fa-check-circle" style="color:#1da1f2;" title="Verificado"></i>'
-                  : ""
-              }</span><br>
-                    <span>${perfiles
-                      .filter((p) => p.fuente_id == fuenteId)
-                      .length.toLocaleString(
-                        "es-CO"
-                      )} perfiles analizados</span>
-                  </div>
-                </div>
-              </a>
-            `;
-            })
-            .join("");
-
-          const resumenContenedor = document.getElementById("resumenPerfil");
-          let contenedorTarjetas = resumenContenedor.querySelector(
-            ".indicadores-perfiles"
-          );
-
-          if (!contenedorTarjetas) {
-            const titulo = document.createElement("h3");
-            titulo.textContent = "Perfiles disponibles por semilla";
-            contenedorTarjetas = document.createElement("div");
-            contenedorTarjetas.className = "indicadores-perfiles";
-            resumenContenedor.appendChild(titulo);
-            resumenContenedor.appendChild(contenedorTarjetas);
-          }
-
-          contenedorTarjetas.innerHTML = tarjetasHTML;
-        })
-        .catch((err) => {
-          console.error("❌ Error cargando biografías por fuente_id:", err);
-        });
     });
 
     let reglasSegmentacionUsuario = {
@@ -598,11 +591,14 @@ async function cargarGraficosSentimiento() {
       datos: Object.entries(conteoSentimiento).map(([name, value]) => ({ name, value }))
     });
 
+    // Si no hay emojis encontrados, crear uno genérico para evitar que el gráfico quede vacío
+    const datosEmojis = topEmojis.length > 0 ? topEmojis : [['🙂', 0]];
+
     crearGraficoBarras({
       contenedorId: 'grafico-emojis',
       titulo: 'Emojis más usados',
-      categorias: topEmojis.map(e => e[0]),
-      datos: topEmojis.map(e => e[1]),
+      categorias: datosEmojis.map(e => e[0]),
+      datos: datosEmojis.map(e => e[1]),
       color: '#FF9800'
     });
 
@@ -614,8 +610,8 @@ async function cargarGraficosSentimiento() {
 
     ['POSITIVO', 'NEGATIVO', 'NEUTRO'].forEach(sent => {
       const cloud = Object.entries(palabras[sent] || {}).map(([text, weight]) => ({ text, weight: parseInt(weight) }));
-      console.log(`🔠 Nube ${sent}:`, cloud);
-      console.log(`🚀 Llamando crearWordCloud para ${sent} con ${cloud.length} palabras`);
+      // console.log(`🔠 Nube ${sent}:`, cloud);
+      // console.log(`🚀 Llamando crearWordCloud para ${sent} con ${cloud.length} palabras`);
       const sliderId = `slider${sent.charAt(0) + sent.slice(1).toLowerCase()}`;
       const valorId = `valor${sent.charAt(0) + sent.slice(1).toLowerCase()}`;
       
@@ -672,7 +668,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
       body: JSON.stringify({ fuentes: fuentesSeleccionadas, reglas })
     });
     data = await res.json();
-    console.log("📊 Segmentación de audiencia:", data);
+   // console.log("📊 Segmentación de audiencia:", data);
 
     data.forEach(p => {
       const tarjeta = document.querySelector(`[data-username="${p.username}"]`)?.closest(".tarjeta-indicador");
@@ -942,4 +938,175 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
     });
   });
 }
+// === Lógica de análisis de perfiles, ejecutada automáticamente ===
+function generarAnalisisInicial() {
+  const selector = document.getElementById("selectorPerfil");
+  // Obtener todos los fuente_id seleccionados, o si no hay selección, todos los fuente_id de perfilesSemillaGlobal
+  let seleccionados = Array.from(selector.selectedOptions).map((opt) => opt.value);
+  if (seleccionados.length === 0) {
+    // Si no hay selección, usar todos los fuente_id de las semillas
+    seleccionados = (window.perfilesSemillaGlobal || perfilesSemillaGlobal || []).map(p => p.fuente_id);
+  }
+  // Si sigue vacío, no continuar
+  if (!seleccionados || seleccionados.length === 0) {
+    console.warn("⚠️ No hay perfiles seleccionados para analizar.");
+    return;
+  }
+  fetch("/api/ranchera/perfiles-por-fuente", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fuentes: seleccionados }),
+  })
+    .then((res) => res.json())
+    .then((perfiles) => {
+      window.ultimoPerfilesAnalizados = perfiles;
+      window.perfilesCargadosGlobal = perfiles; // Guardar para filtros posteriores
+      return perfiles;
+    })
+    .then((perfiles) => {
+      // Extraer y poblar el selector de categorías desde perfiles
+      const categoriasSet = new Set();
+      perfiles.forEach((p) => {
+        const categorias = (p.business_category_name || "")
+          .split(",")
+          .map((c) => c.trim())
+          .filter((c) => c && c.toLowerCase() !== "none");
+        categorias.forEach((cat) => categoriasSet.add(cat));
+      });
 
+      const selectorCategorias =
+        document.getElementById("selectorCategoria");
+      selectorCategorias.innerHTML =
+        "<option value=''>-- Seleccione categoría --</option>";
+      [...categoriasSet].sort().forEach((cat) => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat;
+        selectorCategorias.appendChild(opt);
+      });
+
+      const biografiasTexto = perfiles
+        .map((p) => p.biography || "")
+        .join(" ");
+      procesarYActualizarWordCloudBiografias({
+        texto: biografiasTexto,
+        sliderId: "frecuenciaSlider",
+        valorSliderId: "frecuenciaValor",
+        contenedorId: "contenedorWordCloud",
+      });
+
+      const nombresTexto = perfiles.map((p) => p.fullname || "").join(" ");
+      procesarYActualizarWordCloudBiografias({
+        texto: nombresTexto,
+        sliderId: "frecuenciaSlider",
+        valorSliderId: "frecuenciaValor",
+        contenedorId: "contenedorWordCloudNombres",
+      });
+
+      // Obtener las semillas seleccionadas para el resumen
+      const semillasSeleccionadas = seleccionados.map((fuenteId) =>
+        (window.perfilesSemillaGlobal || perfilesSemillaGlobal || []).find((p) => p.fuente_id == fuenteId) || {}
+      );
+      const data = { top3: semillasSeleccionadas };
+
+      const contenedorRed = document.getElementById("contenedorRed");
+      contenedorRed.innerHTML = "";
+    //  console.log("🔍 Datos enviados a la red:", {
+     //   semillas: data.top3,
+     //   perfiles,
+     // });
+      generarRedPerfiles(
+        { semillas: data.top3, perfiles },
+        "contenedorRed"
+      );
+
+      crearGraficoScatter({
+        contenedorId: "scatterFollowersPosts",
+        titulo: "Seguidores vs. Publicaciones",
+        datos: perfiles,
+      });
+
+      // 🔥 Forzar primer despliegue de Emojis aunque esté vacío
+crearGraficoBarras({
+  contenedorId: 'grafico-emojis',
+  titulo: 'Emojis más usados',
+  categorias: ['🙂'],
+  datos: [0],
+  color: '#FF9800'
+});
+
+      // 🚀 Crear WordClouds de inmediato con los datos del scatter
+const textoBiografias = perfiles.map((p) => p.biography || "").join(" ");
+const textoNombres = perfiles.map((p) => p.fullname || p.full_name || "").join(" ");
+
+// 🚀 Crear tarjetas cuantitativas de inmediato con los datos del scatter
+const totalPerfiles = perfiles.length;
+const privados = perfiles.filter(p => p.private).length;
+const verificados = perfiles.filter(p => p.is_verified).length;
+const negocios = perfiles.filter(p => p.is_business).length;
+
+const sentimientoPositivo = perfiles.filter(p => (p.sentiment || "").toUpperCase() === "POSITIVO").length;
+const sentimientoNeutro = perfiles.filter(p => (p.sentiment || "").toUpperCase() === "NEUTRO").length;
+const sentimientoNegativo = perfiles.filter(p => (p.sentiment || "").toUpperCase() === "NEGATIVO").length;
+
+if (document.getElementById("tarjetaTotalPerfiles"))
+  document.getElementById("tarjetaTotalPerfiles").innerHTML = `
+    <strong>Total de perfiles:</strong> ${totalPerfiles.toLocaleString()}
+  `;
+
+if (document.getElementById("tarjetaPrivacidad"))
+  document.getElementById("tarjetaPrivacidad").innerHTML = `
+    <strong>Privacidad:</strong><br>
+    Privados: ${privados}<br>
+    Públicos: ${totalPerfiles - privados}
+  `;
+
+if (document.getElementById("tarjetaVerificacion"))
+  document.getElementById("tarjetaVerificacion").innerHTML = `
+    <strong>Verificación:</strong><br>
+    Verificados: ${verificados}<br>
+    No verificados: ${totalPerfiles - verificados}
+  `;
+
+if (document.getElementById("tarjetaTipoCuenta"))
+  document.getElementById("tarjetaTipoCuenta").innerHTML = `
+    <strong>Tipo de cuenta:</strong><br>
+    Negocio: ${negocios}<br>
+    Personal: ${totalPerfiles - negocios}
+  `;
+
+if (document.getElementById("tarjetaSentimiento"))
+  document.getElementById("tarjetaSentimiento").innerHTML = `
+    <strong>Sentimiento:</strong><br>
+    Positivo: ${sentimientoPositivo}<br>
+    Neutro: ${sentimientoNeutro}<br>
+    Negativo: ${sentimientoNegativo}
+  `;
+
+procesarYActualizarWordCloudBiografias({
+  texto: textoBiografias,
+  sliderId: "sliderBiografias",
+  valorSliderId: "valorBiografias",
+  contenedorId: "contenedorWordCloud",
+});
+
+procesarYActualizarWordCloudBiografias({
+  texto: textoNombres,
+  sliderId: "sliderNombres",
+  valorSliderId: "valorNombres",
+  contenedorId: "contenedorWordCloudNombres",
+});
+      // Llamar a los gráficos de sentimiento tras el análisis
+      cargarGraficosSentimiento();
+
+      // Llamar también a aplicarFiltrosNube() para inicializar todos los gráficos, incluido el de Emojis
+      if (typeof aplicarFiltrosNube === "function") {
+        aplicarFiltrosNube();
+      }
+
+
+    })
+    .catch((err) => {
+      console.error("❌ Error cargando biografías por fuente_id:", err);
+    });
+}

@@ -8,12 +8,13 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
-  </head>
+   
+    </head>
   <body>
     <main class="contenedor-principal">
-      <h1>Análisis de Perfiles Semilla</h1>
-      <section class="indicadores-perfiles" id="indicadoresPerfiles">
-        <!-- Tarjetas con indicadores de perfiles -->
+      <h1>Análisis de cuentas </h1>
+      <!-- <section class="indicadores-perfiles" id="indicadoresPerfiles">
+   
         <div class="tarjeta-indicador">
           <i class="fa fa-users"></i>
           <div>
@@ -46,29 +47,68 @@
             >
           </div>
         </div>
-      </section>
+      </section> -->
 
-      <section class="filtros-perfiles">
-        <label for="selectorPerfil">Seleccionar perfiles semilla:</label>
-        <select id="selectorPerfil" multiple size="8"></select>
-        <button id="generarAnalisisBtn">Generar análisis</button>
-      </section>
+      <section class="analisis-nube-perfiles">
 
-      <section class="resumen-perfil" id="resumenPerfil">
-        <!-- Aquí se insertará el resumen del perfil seleccionado -->
-      </section>
-
-      <section class="grafico-scatter">
-        <h2>Distribución de seguidores vs. publicaciones</h2>
+        <h2>Nube de palabras de biografías</h2>
         <p>
-          Este gráfico de dispersión permite analizar la relación entre la cantidad de seguidores y el número de publicaciones de cada perfil semilla.
-          Es útil para identificar perfiles con gran impacto, así como cuentas inactivas o nuevas.
+          Esta sección permite visualizar las palabras más representativas extraídas de las biografías y nombres de los perfiles semilla.
+          Puedes filtrar por categoría, privacidad, tipo de cuenta y ajustar el umbral mínimo de frecuencia para enfocarte en términos relevantes.
+          También puedes descargar cada nube como imagen para documentación o análisis externo.
         </p>
-        <div
-          id="scatterFollowersPosts"
-          style="height: 500px; width: 100%; margin-bottom: 2rem"
-        ></div>
+
+        <div class="controls-nube">
+
+          <div class="fila-selectores">
+            <select id="selectorPerfil" multiple></select>
+            <select id="selectorCategoria" multiple></select>
+          </div>
+
+           <select id="selectorSentimiento">
+            <option value="">-- Filtrar por sentimiento --</option>
+            <option value="POSITIVO">Positivo</option>
+            <option value="NEUTRO">Neutro</option>
+            <option value="NEGATIVO">Negativo</option>
+          </select>
+        </div>
+
+        <!-- Scatter plot integrado directamente aquí -->
+        <div id="scatterFollowersPosts" style="height: 500px; width: 100%; margin-bottom: 2rem;"></div>
+
+        <div class="contenedor-wordclouds-doble">
+          <div class="wordcloud-container">
+            <h3>Nube de palabras - Biografías</h3>
+            <label for="sliderBiografias">Frecuencia mínima: <span id="valorBiografias">2</span></label>
+            <input type="range" id="sliderBiografias" min="1" max="10" value="2" />
+            <div id="contenedorWordCloud" class="grafico-nube"></div>
+            <button onclick="descargarWordCloud('contenedorWordCloud')">Descargar Biografías</button>
+          </div>
+          <div class="wordcloud-container">
+            <h3>Nube de palabras - Nombres</h3>
+            <label for="sliderNombres">Frecuencia mínima: <span id="valorNombres">2</span></label>
+            <input type="range" id="sliderNombres" min="1" max="10" value="2" />
+            <div id="contenedorWordCloudNombres" class="grafico-nube"></div>
+            <button onclick="descargarWordCloud('contenedorWordCloudNombres')">Descargar Nombres</button>
+          </div>
+        </div>
+      <div class="grafico-wrapper">
+        <h3>Emojis más usados</h3>
+        <div id="grafico-emojis" class="grafico" style="height: 400px; width: 100%;"></div>
+      </div>
+        <section class="resumen-quantitativo-perfiles">
+          <div class="fila-resumen-quantitativo">
+            <div class="tarjeta-quantitativa" id="tarjetaTotalPerfiles"></div>
+            <div class="tarjeta-quantitativa" id="tarjetaPrivacidad"></div>
+            <div class="tarjeta-quantitativa" id="tarjetaVerificacion"></div>
+            <div class="tarjeta-quantitativa" id="tarjetaTipoCuenta"></div>
+            <div class="tarjeta-quantitativa" id="tarjetaSentimiento"></div>
+          </div>
+        </section>
       </section>
+      <!-- <section class="resumen-perfil" id="resumenPerfil">
+
+      </section> -->
       <section class="red-conexiones-perfiles">
         <h2>Red de Conexiones</h2>
         <p>
@@ -79,58 +119,8 @@
       </section>
 
 
-      <section class="nube-palabras-biografias">
-        <h2>Nube de palabras de biografías</h2>
-        <p>
-          Esta sección permite visualizar las palabras más representativas extraídas de las biografías y nombres de los perfiles semilla.
-          Puedes filtrar por categoría, privacidad, tipo de cuenta y ajustar el umbral mínimo de frecuencia para enfocarte en términos relevantes.
-          También puedes descargar cada nube como imagen para documentación o análisis externo.
-        </p>
-        <!--
-          Controles para filtrar la nube de palabras por categoría de perfil.
-          El selector permite elegir una o varias categorías y actualizar la wordcloud.
-        -->
-        <div class="controls-nube">
-          <label for="selectorCategoria">Filtrar por categoría:</label>
-          <select id="selectorCategoria" multiple>
-            <option value="">-- Seleccione categoría --</option>
-          </select>
-        </div>
-        <!--
-          Control deslizante para ajustar la frecuencia mínima de aparición de palabras en la wordcloud de biografías.
-          Permite mostrar solo palabras que superen cierto umbral de repetición.
-        -->
-        <div class="controls-nube">
-          <label for="frecuenciaSlider"
-            >Frecuencia mínima: <span id="frecuenciaValor">1</span></label
-          >
-          <input
-            type="range"
-            id="frecuenciaSlider"
-            min="1"
-            max="10"
-            value="2"
-          />
-        </div>
-        <!--
-          Botón para descargar la imagen PNG de la wordcloud de biografías.
-          Al hacer clic, descarga la visualización actual.
-        -->
-        <button onclick="descargarWordCloud('contenedorWordCloud')">Descargar PNG</button>
-        <!--
-          Contenedor donde se renderiza la wordcloud de palabras extraídas de las biografías de los perfiles.
-        -->
-        <div id="contenedorWordCloud" class="grafico-nube"></div>
-        <!--
-          Contenedor donde se renderiza la wordcloud de nombres completos de los perfiles.
-        -->
-        <div id="contenedorWordCloudNombres" class="grafico-nube"></div>
-        <!--
-          Botón para descargar la imagen PNG de la wordcloud de nombres.
-        -->
-        <button onclick="descargarWordCloud('contenedorWordCloudNombres')">Descargar PNG</button>
-      </section>
-      <section class="graficos-sentimiento nube-palabras-biografias">
+
+      <section class="graficos-sentimiento nube-palabras-biografias" style="display: none;">
         <h2>Análisis de sentimiento en perfiles</h2>
         <p>
           Este módulo realiza un análisis de sentimiento sobre los perfiles seleccionados. Incluye:
@@ -146,12 +136,6 @@
           Proporciona una visión general del análisis de sentimiento.
         -->
         <div id="grafico-pie-sentimiento" style="height: 400px;"></div>
-
-        <!--
-          Gráfico de barras que presenta los emojis más frecuentes detectados en los perfiles analizados.
-          Permite identificar tendencias de comunicación visual/emocional.
-        -->
-        <div id="grafico-emojis" style="height: 400px;"></div>
 
         <!--
           Sliders de frecuencia mínima para filtrar palabras en las wordclouds por sentimiento.
@@ -195,48 +179,8 @@
         <div id="contenedorWordCloudNegativo" class="grafico-nube"></div>
       </section>
 
-      <section class="grafico-segmentacion">
-        <h2>Distribución por segmento de audiencia</h2>
-        <p>Este gráfico muestra la cantidad de perfiles clasificados automáticamente por categoría temática.</p>
-        <div id="grafico-segmentacion-audiencia" style="height: 400px;"></div>
-        <div id="grafico-sentimiento-por-categoria" style="height: 400px; margin-top: 2rem;"></div>
-        <h3>Red de usuarios segmentados</h3>
-        <p>Esta red muestra a cada perfil conectado con su categoría detectada. El tamaño del nodo representa la cantidad de seguidores, y el color representa el sentimiento detectado.</p>
-        <div id="contenedorRedSegmentacion" style="height: 600px; margin-top: 1rem; border: 1px solid #ccc; border-radius: 8px;"></div>
-
-        <!-- NUEVA SECCIÓN: Nube de palabras por segmento y sentimiento -->
-        <section class="nube-palabras-por-segmento">
-          <h2>Nube de palabras por segmento</h2>
-          <p>Estas nubes muestran las palabras más frecuentes según el sentimiento y la categoría segmentada automáticamente. Se generan a partir de los perfiles clasificados en la red de segmentación.</p>
-
-          <div class="sliders-sentimiento">
-            <div>
-              <label for="sliderSegmentoPositivo">Frecuencia mínima (Positivo): <span id="valorSegmentoPositivo">1</span></label>
-              <input type="range" id="sliderSegmentoPositivo" min="1" max="10" value="1" />
-              <button onclick="descargarWordCloud('contenedorWordCloudSegmentoPositivo')">Descargar PNG</button>
-            </div>
-            <div>
-              <label for="sliderSegmentoNeutro">Frecuencia mínima (Neutro): <span id="valorSegmentoNeutro">1</span></label>
-              <input type="range" id="sliderSegmentoNeutro" min="1" max="10" value="1" />
-              <button onclick="descargarWordCloud('contenedorWordCloudSegmentoNeutro')">Descargar PNG</button>
-            </div>
-            <div>
-              <label for="sliderSegmentoNegativo">Frecuencia mínima (Negativo): <span id="valorSegmentoNegativo">1</span></label>
-              <input type="range" id="sliderSegmentoNegativo" min="1" max="10" value="1" />
-              <button onclick="descargarWordCloud('contenedorWordCloudSegmentoNegativo')">Descargar PNG</button>
-            </div>
-          </div>
-
-          <div id="contenedorWordCloudSegmentoPositivo" class="grafico-nube"></div>
-          <div id="contenedorWordCloudSegmentoNeutro" class="grafico-nube"></div>
-          <div id="contenedorWordCloudSegmentoNegativo" class="grafico-nube"></div>
-        </section>
-
-        <!-- Contenedor para mostrar el top 5 de perfiles por categoría -->
-<div id="topPerfilesPorSegmento"></div>
-      </section>
     </main>
 
-    <script type="module" src="/js/ranchera/perfiles.js"></script>
+    <script src="/js/ranchera/perfiles.js"></script>
   </body>
 </html>

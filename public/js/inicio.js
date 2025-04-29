@@ -6,23 +6,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function parseJwt(token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`;
-    }).join(''));
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return `%${("00" + c.charCodeAt(0).toString(16)).slice(-2)}`;
+        })
+        .join("")
+    );
 
     return JSON.parse(jsonPayload);
   }
 
   const payload = parseJwt(token);
   const { usuario, rol, organizacion } = payload;
-  const empresa = organizacion?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  const empresa = organizacion
+    ?.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
   // console.log("DEBUG - Token payload:", payload);
   // console.log("DEBUG - Usuario:", usuario);
   // console.log("DEBUG - Rol:", rol);
   // console.log("DEBUG - Organización:", organizacion);
-
 
   // Mostrar usuario en el header
   const infoUsuario = document.getElementById("infoUsuario");
@@ -34,73 +41,97 @@ document.addEventListener("DOMContentLoaded", () => {
   const opcionesPorEmpresaYRol = {
     "Geotrends SAS": {
       admin: [
-        { texto: "Ranchera", submenu: [
-          { texto: "Dashboard", page: "/html/ranchera/index.html" },
-          { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-          { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
-          { texto: "Insights", page: "/html/ranchera/insights.html" }
-        ]},
+        {
+          texto: "Ranchera",
+          submenu: [
+            { texto: "Cuentas", page: "/html/ranchera/index.html" },
+            { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
+            { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Demografía", page: "/html/ranchera/demografia.html" },
+            { texto: "Insights", page: "/html/ranchera/insights.html" },
+          ],
+        },
         { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
         { texto: "Configurar", page: "/html/secciones/configuracion.html" },
         { texto: "Usuarios", page: "/html/secciones/usuarios.html" },
-        { texto: "Ver reportes", page: "/html/secciones/reportes.html" }
-       
+        { texto: "Ver reportes", page: "/html/secciones/reportes.html" },
       ],
       gestor: [
-        { texto: "Ranchera", submenu: [
-          { texto: "Dashboard", page: "/html/ranchera/index.html" },
-          { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-          { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
-          { texto: "Insights", page: "/html/ranchera/insights.html" }
-        ]},
+        {
+          texto: "Ranchera",
+          submenu: [
+            { texto: "Cuentas", page: "/html/ranchera/index.html" },
+            { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
+            { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Demografía", page: "/html/ranchera/demografia.html" },
+            { texto: "Insights", page: "/html/ranchera/insights.html" },
+          ],
+        },
         { texto: "Configurar", page: "/html/secciones/configuracion.html" },
         { texto: "Ver datos", page: "/html/secciones/datos.html" },
         { texto: "Ver reportes", page: "/html/secciones/reportes.html" },
-        { texto: "Mi perfil", page: "/html/secciones/perfil.html" }
+        { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
       ],
       usuario: [
         { texto: "Ver datos", page: "/html/secciones/datos.html" },
-        { texto: "Mi perfil", page: "/html/secciones/perfil.html" }
-      ]
+        { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
+      ],
     },
-    "Zenu": {
+    Zenu: {
       admin: [
-        { texto: "Panel Acústico", page: "/html/empresa/acusticapp/panel.html" },
+        {
+          texto: "Panel Acústico",
+          page: "/html/empresa/acusticapp/panel.html",
+        },
         { texto: "Reportes", page: "/html/empresa/acusticapp/reportes.html" },
         { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-        { texto: "Ranchera", submenu: [
-          { texto: "Dashboard", page: "/html/ranchera/index.html" },
-          { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-          { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
-          { texto: "Insights", page: "/html/ranchera/insights.html" }
-        ]}
+        {
+          texto: "Ranchera",
+          submenu: [
+            { texto: "Dashboard", page: "/html/ranchera/index.html" },
+            { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
+            { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Demografía", page: "/html/ranchera/demografia.html" },
+            { texto: "Insights", page: "/html/ranchera/insights.html" },
+          ],
+        },
       ],
       gestor: [
         { texto: "Ver datos", page: "/html/secciones/datos.html" },
         { texto: "Ver reportes", page: "/html/secciones/reportes.html" },
         { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-        { texto: "Ranchera", submenu: [
-          { texto: "Dashboard", page: "/html/ranchera/index.html" },
-          { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-          { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
-          { texto: "Insights", page: "/html/ranchera/insights.html" }
-        ]}
+        {
+          texto: "Ranchera",
+          submenu: [
+            { texto: "Cuentas", page: "/html/ranchera/index.html" },
+            { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
+            { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Demografía", page: "/html/ranchera/demografia.html" },
+            { texto: "Insights", page: "/html/ranchera/insights.html" },
+          ],
+        },
       ],
     },
-   
   };
 
   // Sidebar
   const sidebar = document.getElementById("sidebar");
   let opcionesSidebar = [];
 
-  if (empresa && opcionesPorEmpresaYRol[empresa] && opcionesPorEmpresaYRol[empresa][rol]) {
-    console.log("DEBUG - Opciones encontradas para empresa y rol:", opcionesPorEmpresaYRol[empresa]?.[rol]);
+  if (
+    empresa &&
+    opcionesPorEmpresaYRol[empresa] &&
+    opcionesPorEmpresaYRol[empresa][rol]
+  ) {
+    console.log(
+      "DEBUG - Opciones encontradas para empresa y rol:",
+      opcionesPorEmpresaYRol[empresa]?.[rol]
+    );
     opcionesSidebar = opcionesPorEmpresaYRol[empresa][rol];
   } else {
     opcionesSidebar = [
       { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-      { texto: "Cerrar sesión", page: "/html/logout.html" }
+      { texto: "Cerrar sesión", page: "/html/logout.html" },
     ];
   }
 
@@ -111,11 +142,15 @@ document.addEventListener("DOMContentLoaded", () => {
     crearEnlaceMenu("Inicio", "/html/secciones/inicio_bienvenida.html")
   );
 
-  opcionesSidebar.forEach(item => {
+  opcionesSidebar.forEach((item) => {
     if (item.submenu) {
-      contenedorOpcionesSidebar.appendChild(crearSubmenu(item.texto, item.submenu));
+      contenedorOpcionesSidebar.appendChild(
+        crearSubmenu(item.texto, item.submenu)
+      );
     } else {
-      contenedorOpcionesSidebar.appendChild(crearEnlaceMenu(item.texto, item.page));
+      contenedorOpcionesSidebar.appendChild(
+        crearEnlaceMenu(item.texto, item.page)
+      );
     }
   });
 
@@ -123,8 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Cargar la página de bienvenida como contenido inicial
   fetch("/html/secciones/inicio_bienvenida.html")
-    .then(res => res.text())
-    .then(html => {
+    .then((res) => res.text())
+    .then((html) => {
       const container = document.getElementById("contenidoDinamico");
       container.innerHTML = html;
     })
@@ -187,25 +222,30 @@ document.addEventListener("DOMContentLoaded", () => {
           if (url.includes("ranchera")) {
             // Cargar el script asociado según el archivo HTML
             if (url.includes("index.html")) {
-              import('/js/ranchera/main.js').then(mod => {
+              import("/js/ranchera/main.js").then((mod) => {
                 mod.inicializarDashboardRanchera();
               });
             } else if (url.includes("comentarios.html")) {
               cargarScriptDinamico("/js/ranchera/comentarios.js");
             } else if (url.includes("perfiles.html")) {
-              import('/js/ranchera/perfiles.js').then(mod => {
-                if (mod.inicializarVistaPerfiles) {
-                  mod.inicializarVistaPerfiles();
-                }
-              }).catch(err => {
-                console.error("❌ Error al cargar módulo de perfiles:", err);
-              });
+              import("/js/ranchera/perfiles.js")
+                .then((mod) => {
+                  if (mod.inicializarVistaPerfiles) {
+                    mod.inicializarVistaPerfiles();
+                  }
+                })
+                .catch((err) => {
+                  console.error("❌ Error al cargar módulo de perfiles:", err);
+                });
             } else if (url.includes("publicaciones.html")) {
               cargarScriptDinamico("/js/ranchera/publicaciones.js");
             } else if (url.includes("segmentos.html")) {
               cargarScriptDinamico("/js/ranchera/segmentos.js");
             } else if (url.includes("insights.html")) {
               cargarScriptDinamico("/js/ranchera/insights.js");
+            } else if (url.includes("demografia.html")) {
+             // Verificar si el script ya está cargado antes de intentar cargarlo
+              cargarScriptDinamico("/js/ranchera/demografia.js");
             }
           }
 
@@ -229,13 +269,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   if (window.tippy) {
-    tippy('[data-tippy-content]', {
-      placement: 'right',
-      animation: 'shift-away',
-      theme: 'light-border',
-      delay: [0, 100],        // aparece inmediato, desaparece rápido
-      duration: [50, 50],   // animación rápida
-      arrow: true             // opcional: muestra una flechita
+    tippy("[data-tippy-content]", {
+      placement: "right",
+      animation: "shift-away",
+      theme: "light-border",
+      delay: [0, 100], // aparece inmediato, desaparece rápido
+      duration: [50, 50], // animación rápida
+      arrow: true, // opcional: muestra una flechita
     });
   }
 });
@@ -291,7 +331,9 @@ function crearSubmenu(titulo, submenuItems) {
     e.preventDefault();
     wrapper.classList.toggle("open");
     const submenu = wrapper.querySelector(".submenu");
-    submenu.style.display = wrapper.classList.contains("open") ? "flex" : "none";
+    submenu.style.display = wrapper.classList.contains("open")
+      ? "flex"
+      : "none";
   });
 
   const submenu = document.createElement("div");
@@ -315,14 +357,15 @@ function obtenerIcono(texto) {
     Inicio: "fas fa-home",
     "Mi perfil": "fas fa-user",
     Configurar: "fas fa-cogs",
-    "Usuarios": "fas fa-users-cog",
+    Usuarios: "fas fa-users-cog",
     "Ver datos": "fas fa-chart-line",
     "Ver reportes": "fas fa-file-alt",
-    "Ranchera": "fas fa-hat-cowboy",
-    "Dashboard": "fas fa-chart-pie",
-    "Perfiles": "fas fa-id-badge",
-    "Comentarios": "fas fa-comments",
-    "Insights": "fas fa-lightbulb"
+    Ranchera: "fas fa-hat-cowboy",
+    Cuentas: "fab fa-instagram",
+    Perfiles: "fas fa-id-badge",
+    Comentarios: "fas fa-comments",
+    Insights: "fas fa-lightbulb",
+    Demografía: "fas fa-users",
   };
   return iconos[texto] || "fas fa-circle";
 }
@@ -349,24 +392,24 @@ function cargarPerfil() {
     });
 }
 
-function cargarScriptDinamico(src) {
+function cargarScriptDinamico(url) {
   const script = document.createElement("script");
-  script.src = src;
-  script.defer = true;
+  script.src = url;
+  script.type = "module"; // 🚀 Esto es lo que faltaba
   document.body.appendChild(script);
 }
 
 function cargarUsuariosDinamicamente() {
-  fetch('/html/secciones/usuarios.html')
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById('contenidoDinamico');
+  fetch("/html/secciones/usuarios.html")
+    .then((res) => res.text())
+    .then((html) => {
+      const container = document.getElementById("contenidoDinamico");
       container.innerHTML = html;
 
       // Cargar jQuery si no existe
       if (!window.jQuery) {
-        const jqueryScript = document.createElement('script');
-        jqueryScript.src = 'https://code.jquery.com/jquery-3.7.0.min.js';
+        const jqueryScript = document.createElement("script");
+        jqueryScript.src = "https://code.jquery.com/jquery-3.7.0.min.js";
         jqueryScript.onload = () => {
           cargarDataTablesYScriptUsuarios();
         };
@@ -378,15 +421,17 @@ function cargarUsuariosDinamicamente() {
 }
 
 function cargarDataTablesYScriptUsuarios() {
-  const dtScript1 = document.createElement('script');
-  dtScript1.src = 'https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js';
+  const dtScript1 = document.createElement("script");
+  dtScript1.src =
+    "https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js";
 
-  const dtScript2 = document.createElement('script');
-  dtScript2.src = 'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js';
+  const dtScript2 = document.createElement("script");
+  dtScript2.src =
+    "https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js";
 
   dtScript2.onload = () => {
-    const usuariosScript = document.createElement('script');
-    usuariosScript.src = '/js/usuarios.js';
+    const usuariosScript = document.createElement("script");
+    usuariosScript.src = "/js/usuarios.js";
     document.body.appendChild(usuariosScript);
   };
 
