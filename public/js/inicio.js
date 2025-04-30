@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
           submenu: [
             { texto: "Cuentas", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-            { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
             { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
             { texto: "Demografía", page: "/html/ranchera/demografia.html" },
             { texto: "Insights", page: "/html/ranchera/insights.html" },
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
           submenu: [
             { texto: "Cuentas", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-            { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
             { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
             { texto: "Demografía", page: "/html/ranchera/demografia.html" },
             { texto: "Insights", page: "/html/ranchera/insights.html" },
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
           submenu: [
             { texto: "Dashboard", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-            { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
             { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
             { texto: "Demografía", page: "/html/ranchera/demografia.html" },
             { texto: "Insights", page: "/html/ranchera/insights.html" },
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
           submenu: [
             { texto: "Cuentas", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-            { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
             { texto: "Demografía", page: "/html/ranchera/demografia.html" },
             { texto: "Insights", page: "/html/ranchera/insights.html" },
           ],
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
           container.innerHTML = html;
 
           // Detectar si es una vista de la sección Ranchera
-          if (url.includes("ranchera")) {
+          if (url.includes("/ranchera/")) {
             // Cargar el script asociado según el archivo HTML
             if (url.includes("index.html")) {
               import("/js/ranchera/main.js").then((mod) => {
@@ -257,6 +257,16 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (url.includes("demografia.html")) {
              // Verificar si el script ya está cargado antes de intentar cargarlo
               cargarScriptDinamico("/js/ranchera/demografia.js");
+            } else if (url.includes("imagenes.html")) {
+              import("/js/ranchera/imagenes.js")
+                .then((mod) => {
+                  if (mod.inicializarVistaImagenes) {
+                    mod.inicializarVistaImagenes();
+                  }
+                })
+                .catch((err) => {
+                  console.error("❌ Error al cargar módulo de imágenes:", err);
+                });
             }
           }
 
@@ -378,6 +388,7 @@ function obtenerIcono(texto) {
     Insights: "fas fa-lightbulb",
     Demografía: "fas fa-users",
     Imágenes: "fas fa-image",
+    Publicaciones: "fas fa-newspaper"
   };
   return iconos[texto] || "fas fa-circle";
 }

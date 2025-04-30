@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Imágenes - Ranchera</title>
+  <link rel="stylesheet" href="/css/ranchera/imagenes.css">
+</head>
+<body>
+  <section class="imagenes">
+    <h1>Explorador de Imágenes</h1>
+    <div class="bloque-contenedor">
+      <p id="estadoConexion">📷 Cargando conexión...</p>
+    </div>
+  </section>
+
+  <section class="carrusel">
+    <h2>Galería de usuario</h2>
+    <label for="selectorUsuario">Selecciona un usuario:</label>
+    <select id="selectorUsuario">
+      <option value="">-- Selecciona un usuario --</option>
+    </select>
+    <div id="contenedorCarrusel" class="bloque-contenedor"></div>
+  </section>
+  <script type="module" src="/js/ranchera/imagenes.js"></script>
+</body>
+</html>

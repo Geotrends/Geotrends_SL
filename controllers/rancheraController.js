@@ -628,3 +628,14 @@ exports.obtenerComentariosParaScatter = async (req, res) => {
     res.status(500).json({ error: "Error interno al obtener comentarios" });
   }
 };
+exports.obtenerEtiquetasImagenes = async (req, res) => {
+  try {
+    const resultado = await pool.query(
+      "SELECT * FROM zenu_social_listening.etiquetas_imagenes_instagram ORDER BY id ASC"
+    );
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("❌ Error al obtener etiquetas de imágenes:", error);
+    res.status(500).json({ error: "Error al obtener etiquetas" });
+  }
+};
