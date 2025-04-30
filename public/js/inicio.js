@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
             { texto: "Cuentas", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
             { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
             { texto: "Demografía", page: "/html/ranchera/demografia.html" },
             { texto: "Insights", page: "/html/ranchera/insights.html" },
           ],
@@ -63,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             { texto: "Cuentas", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
             { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
             { texto: "Demografía", page: "/html/ranchera/demografia.html" },
             { texto: "Insights", page: "/html/ranchera/insights.html" },
           ],
@@ -91,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
             { texto: "Dashboard", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
             { texto: "Comentarios", page: "/html/ranchera/comentarios.html" },
+            { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
             { texto: "Demografía", page: "/html/ranchera/demografia.html" },
             { texto: "Insights", page: "/html/ranchera/insights.html" },
           ],
@@ -226,7 +229,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 mod.inicializarDashboardRanchera();
               });
             } else if (url.includes("comentarios.html")) {
-              cargarScriptDinamico("/js/ranchera/comentarios.js");
+              import("/js/ranchera/comentarios.js")
+                .then((mod) => {
+                  if (mod.inicializarVistaComentarios) {
+                    mod.inicializarVistaComentarios();
+                  }
+                })
+                .catch((err) => {
+                  console.error("❌ Error al cargar módulo de comentarios:", err);
+                });
             } else if (url.includes("perfiles.html")) {
               import("/js/ranchera/perfiles.js")
                 .then((mod) => {
@@ -366,6 +377,7 @@ function obtenerIcono(texto) {
     Comentarios: "fas fa-comments",
     Insights: "fas fa-lightbulb",
     Demografía: "fas fa-users",
+    Imágenes: "fas fa-image",
   };
   return iconos[texto] || "fas fa-circle";
 }

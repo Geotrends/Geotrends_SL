@@ -17,7 +17,7 @@ const stopwords = [
   "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's",
   "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves",
   // Spanish stopwords
-  "un", "una", "unas", "unos", "uno", "sobre", "todo", "también", "tras", "otro", "algún", "alguno", "alguna", "algunos", "algunas","de","en",
+  "un","este", "una", "unas", "unos", "uno", "sobre", "todo", "también", "tras", "otro", "algún", "alguno", "alguna", "algunos", "algunas","de","en",
   "ser", "es", "soy", "eres", "somos", "sois", "estoy", "esta", "estamos", "estais", "estan", "como", "en", "para", "atras", "porque",
   "por qué", "estado", "estaba", "ante", "antes", "siendo", "ambos", "pero", "por", "poder", "puede", "puedo", "podemos", "podeis",
   "pueden", "fui", "fue", "fuimos", "fueron", "hacer", "hago", "hace", "hacemos", "haceis", "hacen", "cada", "fin", "incluso", "primero",
@@ -70,10 +70,10 @@ export function crearWordCloud({ contenedorId, palabras }) {
       textStyle: {
         color: function (params) {
           const value = params.value;
-          if (value > 12) return '#D32F2F';      // rojo oscuro
-          if (value > 10) return '#F57C00';      // naranja
-          if (value > 8) return '#FBC02D';       // amarillo
-          if (value > 6) return '#388E3C';       // verde
+          if (value > 12) return '#024959';      // rojo oscuro
+          if (value > 10) return '#026773';      // naranja
+          if (value > 8) return '#3CA6A6';       // amarillo
+          if (value > 6) return '#F2E3D5';       // verde
           return '#1976D2';                      // azul
         },
         fontWeight: 'bold',

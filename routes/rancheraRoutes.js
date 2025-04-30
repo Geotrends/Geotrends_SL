@@ -17,4 +17,7 @@ router.post('/perfiles-por-fuente', rancheraController.obtenerPerfilesPorFuente)
 router.post('/analisis-sentimiento', rancheraController.obtenerAnalisisSentimientoPerfiles);
 router.post('/segmentacion-audiencia', rancheraController.segmentarAudienciaPerfiles);
 //router.get('/perfil/:id/seguidores', rancheraController.obtenerSeguidoresPorFuente);
+
+// Scatterplot de comentarios
+router.get('/comentarios-scatter', rancheraController.obtenerComentariosParaScatter);
 module.exports = router;

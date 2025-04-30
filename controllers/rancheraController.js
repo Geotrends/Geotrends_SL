@@ -564,3 +564,67 @@ exports.obtenerAnalisisSentimientoPerfiles = async (req, res) => {
       .json({ error: "Error al obtener análisis de sentimiento de perfiles" });
   }
 };
+
+
+// Devuelve publicaciones con análisis para scatterplot de comentarios
+exports.obtenerComentariosParaScatter = async (req, res) => {
+  try {
+    const { username, tipo, sentimiento, fechaDesde, fechaHasta, likesMinimos } = req.query;
+
+    let condiciones = [];
+    let valores = [];
+    let idx = 1;
+
+    if (username) {
+      condiciones.push(`p.owner_username ILIKE $${idx++}`);
+      valores.push(`%${username}%`);
+    }
+
+    if (tipo) {
+      condiciones.push(`p.type = $${idx++}`);
+      valores.push(tipo);
+    }
+
+    if (sentimiento) {
+      condiciones.push(`a.sentiment = $${idx++}`);
+      valores.push(sentimiento);
+    }
+
+    if (fechaDesde) {
+      condiciones.push(`p.timestamp >= $${idx++}`);
+      valores.push(fechaDesde);
+    }
+
+    if (fechaHasta) {
+      condiciones.push(`p.timestamp <= $${idx++}`);
+      valores.push(fechaHasta);
+    }
+
+    if (likesMinimos) {
+      condiciones.push(`p.likes_count >= $${idx++}`);
+      valores.push(parseInt(likesMinimos));
+    }
+
+    const where = condiciones.length ? `WHERE ${condiciones.join(" AND ")}` : "";
+
+    const query = `
+      SELECT 
+        p.*, 
+        a.*
+      FROM 
+        zenu_social_listening.instagram_posts p
+      JOIN 
+        zenu_social_listening.analisis_instagram_posts a
+        ON p.id = a.post_id
+      ${where}
+      ORDER BY 
+        p.timestamp DESC;
+    `;
+
+    const result = await pool.query(query, valores);
+    res.json(result.rows);
+  } catch (error) {
+    console.error("❌ Error al obtener datos del scatterplot de comentarios:", error);
+    res.status(500).json({ error: "Error interno al obtener comentarios" });
+  }
+};

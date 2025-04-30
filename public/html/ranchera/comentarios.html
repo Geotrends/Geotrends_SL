@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comentarios - Ranchera</title>
+  <link rel="stylesheet" href="/css/ranchera/comentarios.css" />
+</head>
+<body>
+  <section class="comentarios">
+    <h1>Comentarios de perfiles</h1>
+    <div class="bloque-contenedor">
+      <h2>Filtro de publicaciones</h2>
+      <div class="filtros">
+        <label for="filtroKeyword">Palabra clave:</label>
+        <input type="text" id="filtroKeyword" placeholder="Ej: playa" />
+
+        <label for="filtroTipo">Tipo:</label>
+        <select id="filtroTipo">
+          <option value="">Todos</option>
+          <option value="imagen">Imagen</option>
+          <option value="video">Video</option>
+          <option value="carrusel">Carrusel</option>
+        </select>
+
+        <label for="filtroSentimiento">Sentimiento:</label>
+        <select id="filtroSentimiento">
+          <option value="">Todos</option>
+          <option value="POSITIVO">Positivo</option>
+          <option value="NEUTRO">Neutro</option>
+          <option value="NEGATIVO">Negativo</option>
+        </select>
+
+        <label for="filtroFechaDesde">Desde:</label>
+        <input type="date" id="filtroFechaDesde" />
+
+        <label for="filtroFechaHasta">Hasta:</label>
+        <input type="date" id="filtroFechaHasta" />
+
+        <label for="filtroLikesMinimos">Mín. likes:</label>
+        <input type="number" id="filtroLikesMinimos" min="0" placeholder="Ej: 10" />
+
+        <button id="btnAplicarFiltros">Aplicar filtros</button>
+      </div>
+    </div>
+
+    <div class="bloque-contenedor">
+      <div id="graficoScatterComentarios" style="height: 500px; margin-top: 2rem;"></div>
+      <h2 style="margin-top: 2rem;">Distribución por usuario</h2>
+      <div id="graficoScatterUsuarios" style="height: 500px; margin-top: 1rem;"></div>
+    </div>
+
+    <div class="bloque-contenedor">
+      <h2 style="margin-top: 2rem;">Nube de palabras de hashtags</h2>
+      <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
+        <label for="sliderFrecuenciaHashtags">Frecuencia mínima:</label>
+        <input type="range" id="sliderFrecuenciaHashtags" min="1" max="50" value="2" />
+        <span id="valorSliderHashtags">2</span>
+      </div>
+      <div id="nubeHashtags" style="height: 400px; margin-top: 1rem;"></div>
+    </div>
+
+    <div class="bloque-contenedor">
+      <h2 style="margin-top: 2rem;">Nube de palabras de captions</h2>
+      <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
+        <label for="sliderFrecuenciaCaption">Frecuencia mínima:</label>
+        <input type="range" id="sliderFrecuenciaCaption" min="1" max="50" value="2" />
+        <span id="valorSliderCaption">2</span>
+      </div>
+      <div id="nubeCaption" style="height: 400px; margin-top: 1rem;"></div>
+    </div>
+
+    <div class="bloque-contenedor">
+      <h2 style="margin-top: 2rem;">Nube de palabras de keywords</h2>
+      <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
+        <label for="sliderFrecuenciaKeywords">Frecuencia mínima:</label>
+        <input type="range" id="sliderFrecuenciaKeywords" min="1" max="50" value="2" />
+        <span id="valorSliderKeywords">2</span>
+      </div>
+      <div id="nubeKeywords" style="height: 400px; margin-top: 1rem;"></div>
+    </div>
+
+    <div class="bloque-contenedor">
+      <h2 style="margin-top: 2rem;">Emojis más usados</h2>
+      <div id="graficoTopEmojis" style="height: 400px; margin-top: 1rem;"></div>
+    </div>
+  </section>
+  <script type="module" src="/js/ranchera/comentarios.js"></script>
+</body>
+</html>
