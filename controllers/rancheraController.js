@@ -16,7 +16,18 @@ exports.segmentarAudienciaPerfiles = async (req, res) => {
 
     const params = fuentes.map((_, idx) => `$${idx + 1}`).join(",");
     const query = `
-      SELECT p.username, p.biography, p.business_category_name, a.keywords
+      SELECT 
+        p.username,
+        p.biography,
+        p.business_category_name,
+        p.follower_count AS followers,
+        p.following_count AS follows_count,
+        p.media_count AS posts_count,
+        a.keywords,
+        a.total_emojis,
+        a.unique_emojis,
+        a.emoji_density,
+        a.most_common
       FROM zenu_social_listening.perfiles_instagram p
       LEFT JOIN zenu_social_listening.analisis_perfiles_instagram a 
       ON p.username = a.username
@@ -43,6 +54,15 @@ exports.segmentarAudienciaPerfiles = async (req, res) => {
       return {
         username: p.username,
         categoria_detectada,
+        followers: p.followers ?? 0,
+        followers_count: p.followers ?? 0,
+        following_count: p.follows_count ?? 0,
+        media_count: p.posts_count ?? 0,
+        keywords: p.keywords,
+        most_common: p.most_common,
+        emoji_density: p.emoji_density,
+        total_emojis: p.total_emojis,
+        unique_emojis: p.unique_emojis
       };
     });
 

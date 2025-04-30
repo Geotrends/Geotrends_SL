@@ -34,7 +34,7 @@ export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, co
     data: categorias,
     axisLabel: {
       rotate: 45,
-      fontSize: 10,
+      fontSize: 16,
       lineHeight: 12,
       interval: 0,
       overflow: 'truncate', // también puedes usar 'break' si quieres salto de línea
@@ -59,6 +59,77 @@ export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, co
       containLabel: true
     }
   };
+
+  chart.setOption(opciones);
+  window.addEventListener('resize', () => chart.resize());
+}
+
+export function crearGraficoBarrasHorizontal({ contenedorId, titulo, categorias, datos, color = '#1976d2', nombreEjeX = 'Cantidad', nombreEjeY = 'Categoría', colores = {} }) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor) return;
+
+  if (contenedor.offsetWidth === 0 || contenedor.offsetHeight === 0) {
+    setTimeout(() => crearGraficoBarrasHorizontal({ contenedorId, titulo, categorias, datos, color, nombreEjeX, nombreEjeY }), 300);
+    return;
+  }
+
+  const chart = echarts.init(contenedor);
+  let series = [];
+
+  if (Array.isArray(datos) && typeof datos[0] === 'object' && datos[0].data) {
+    // Modo apilado (stacked)
+    const defaultPalette = ['#66c2a5', '#fc8d62', '#8da0cb'];
+    series = datos.map((serie, index) => ({
+      name: serie.name,
+      type: 'bar',
+      stack: 'total',
+      data: serie.data,
+      itemStyle: { color: colores?.[serie.name] || defaultPalette[index % defaultPalette.length] },
+      label: { show: false }
+    }));
+  } else {
+    // Modo simple
+    series = [{
+      type: 'bar',
+      data: datos,
+      itemStyle: { color },
+      label: { show: false }
+    }];
+  }
+
+  const opciones = {
+    title: { text: titulo, left: 'center' },
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    legend: series.length > 1 ? { bottom: 0 } : undefined,
+    xAxis: {
+      type: 'value',
+      name: nombreEjeX,
+      nameLocation: 'middle',
+      nameGap: 50
+    },
+    yAxis: {
+      type: 'category',
+      data: categorias,
+      name: nombreEjeY,
+      nameLocation: 'middle',
+      nameGap: 70
+    },
+    series: series,
+    grid: {
+      containLabel: true,
+      top: 40,
+      bottom: series.length > 1 ? 60 : 40,
+      left: 100,
+      right: 30,
+      height: series.length > 1 ? null : 'auto'
+    }
+  };
+
+  // Ajustar altura dinámica antes de setOption
+  const heightPerItem = 40;
+  const totalHeight = categorias.length * heightPerItem + 100;
+  contenedor.style.height = `${totalHeight}px`;
+  chart.resize();
 
   chart.setOption(opciones);
   window.addEventListener('resize', () => chart.resize());
@@ -154,7 +225,7 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
   const colores = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
 
   const series = Object.entries(seriesPorFuente).map(([fuente, puntos], i) => ({
-    name: `@${nombresSemillas[fuente] || 'semilla_' + fuente}`,
+    name: `${nombresSemillas[fuente] || '' + fuente}`,
     type: 'scatter',
     data: puntos,
     itemStyle: {
@@ -203,7 +274,7 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
       borderWidth: 0,
       textStyle: {
         color: '#333',
-        fontSize: 12,
+        fontSize: 16,
       }
     },
     legend: {

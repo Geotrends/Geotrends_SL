@@ -1,4 +1,4 @@
-import { crearGraficoBarras } from "./utils/charts.js";
+import { crearGraficoBarrasHorizontal, crearGraficoScatter, crearGraficoBarras } from "./utils/charts.js";
 import { crearWordCloud } from "./utils/wordClouds.js";
 import { generarRedSegmentacionSentimiento } from "./utils/redes.js";
 (function() {
@@ -91,26 +91,58 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
     return;
   }
 
+  // === Scatter plot de perfiles segmentados ===
+  console.log("🧾 Perfiles crudos recibidos:", data.slice(0, 10));
+  const datosScatter = data
+    .filter(p => p.categoria_detectada && p.categoria_detectada !== "Sin categoría")
+    .map(p => ({
+      username: p.username,
+      fuente_id: p.categoria_detectada,
+      followers: p.followers ?? p.followers_count ?? 0,
+      follows_count: p.following_count ?? 0,
+      posts_count: p.media_count ?? 0
+    }));
+
+// Eliminar gráfico anterior si existe
+const contenedorScatter = document.getElementById('grafico-scatter-demografia');
+if (contenedorScatter) {
+  echarts.dispose(contenedorScatter);
+}
+
+console.log("📊 Datos enviados al gráfico scatter:", datosScatter);
+
+crearGraficoScatter({
+  contenedorId: 'grafico-scatter-demografia',
+  titulo: 'Distribución de Perfiles Segmentados',
+  datos: datosScatter
+});
+
   // === Conteo por categoría (filtrar "Sin categoría")
   const conteoPorCategoria = {};
   data.forEach(p => {
     if (p.categoria_detectada === "Sin categoría") {
-      console.warn("⚠️ Perfil ignorado sin categoría:", p.username);
+      //  console.warn("⚠️ Perfil ignorado sin categoría:", p.username);
       return;
     }
     conteoPorCategoria[p.categoria_detectada] = (conteoPorCategoria[p.categoria_detectada] || 0) + 1;
   });
 
-  const categorias = Object.keys(conteoPorCategoria);
-  const valores = categorias.map(c => conteoPorCategoria[c]);
+  // Ordenar categorías por cantidad ascendente
+  const categoriasOrdenadas = Object.entries(conteoPorCategoria)
+    .sort(([, a], [, b]) => a - b); // orden ascendente
 
-  crearGraficoBarras({
-    contenedorId: 'grafico-segmentacion-audiencia',
-    titulo: 'Perfiles por categoría',
+  const categorias = categoriasOrdenadas.map(([c]) => c);
+  const valores = categoriasOrdenadas.map(([, v]) => v);
+  // === Gráfico de cantidad de perfiles por categoría ===
+  crearGraficoBarrasHorizontal({
+    contenedorId: 'grafico-cantidad-por-categoria',
+    titulo: 'Cantidad de perfiles por categoría',
     categorias,
-    datos: valores
+    datos: valores,
+    color: '#5caac8',
+    nombreEjeX: '',
+    nombreEjeY: ''
   });
-
   // === Gráfico de sentimiento por categoría ===
   let analisis = [];
   try {
@@ -137,31 +169,42 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
     }
     sentimientosPorCategoria[categoria][sentimiento]++;
   });
-  const categoriasStack = Object.keys(sentimientosPorCategoria);
-  const datosStack = {
+  let categoriasStack = Object.keys(sentimientosPorCategoria);
+  // Ordenar categoriasStack y datosStack según suma total ascendente
+  const categoriasOrdenadasStack = categoriasStack
+    .map(cat => ({
+      cat,
+      total:
+        (sentimientosPorCategoria[cat]?.POSITIVO || 0) +
+        (sentimientosPorCategoria[cat]?.NEUTRO || 0) +
+        (sentimientosPorCategoria[cat]?.NEGATIVO || 0)
+    }))
+    .sort((a, b) => a.total - b.total) // orden ascendente
+    .map(o => o.cat);
+
+  categoriasStack = categoriasOrdenadasStack;
+  const datosStackOrdenado = {
     POSITIVO: categoriasStack.map(cat => sentimientosPorCategoria[cat]?.POSITIVO || 0),
     NEUTRO: categoriasStack.map(cat => sentimientosPorCategoria[cat]?.NEUTRO || 0),
     NEGATIVO: categoriasStack.map(cat => sentimientosPorCategoria[cat]?.NEGATIVO || 0),
   };
-  const contenedorStack = document.getElementById('grafico-sentimiento-por-categoria');
-  if (contenedorStack) {
-    const chart = echarts.init(contenedorStack);
-    chart.setOption({
-      title: { text: 'Sentimiento por categoría detectada', left: 'center' },
-      tooltip: { trigger: 'axis' },
-      legend: { bottom: 0, data: ['POSITIVO', 'NEUTRO', 'NEGATIVO'] },
-      xAxis: { type: 'category', data: categoriasStack },
-      yAxis: { type: 'value' },
-      series: ['POSITIVO', 'NEUTRO', 'NEGATIVO'].map((clave) => ({
-        name: clave,
-        type: 'bar',
-        stack: 'total',
-        emphasis: { focus: 'series' },
-        data: datosStack[clave]
-      }))
-    });
-    window.addEventListener('resize', () => chart.resize());
-  }
+  // Crear el gráfico de sentimiento por categoría
+  crearGraficoBarrasHorizontal({
+    contenedorId: 'grafico-sentimiento-por-categoria',
+    titulo: 'Sentimiento por categoría detectada',
+    categorias: categoriasStack,
+    datos: ['POSITIVO', 'NEUTRO', 'NEGATIVO'].map((sent) => ({
+      name: sent,
+      data: datosStackOrdenado[sent]
+    })),
+    nombreEjeX: '',
+    nombreEjeY: '',
+    colores: {
+      POSITIVO: '#267365',
+      NEUTRO: '#F2CB05',
+      NEGATIVO: '#F23030'
+    }
+  });
 
   // === Red de segmentación por sentimiento ===
   // Filtrar perfiles sin categoría antes de red
@@ -172,11 +215,19 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
   }, 'contenedorRedSegmentacion');
 
   // === WordCloud por sentimiento y categoría ===
+  // Función auxiliar para limpiar palabras clave
+  const procesarPalabra = (palabra) =>
+    palabra
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[.,:;!?¡¿()"'`´[\]{}<>]/g, '');
+
   const palabrasSegmentadas = {};
   analisis.forEach(p => {
     const categoria = data.find(d => d.username === p.username)?.categoria_detectada || 'Sin categoría';
     if (categoria === "Sin categoría") {
-      console.warn("⚠️ Perfil ignorado sin categoría:", p.username);
+    //  console.warn("⚠️ Perfil ignorado sin categoría:", p.username);
       return;
     }
     const sent = p.sentiment || 'NEUTRO';
@@ -190,7 +241,8 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
         keys = p.keywords;
       }
       keys.forEach(k => {
-        palabrasSegmentadas[categoria][sent][k] = (palabrasSegmentadas[categoria][sent][k] || 0) + 1;
+        const clean = procesarPalabra(k);
+        palabrasSegmentadas[categoria][sent][clean] = (palabrasSegmentadas[categoria][sent][clean] || 0) + 1;
       });
     } catch (e) {
       console.warn("⚠️ No se pudieron procesar keywords para:", p.username);
@@ -206,10 +258,11 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
     const seccionNubesSegmentadas = document.querySelector(".nube-palabras-por-segmento");
     seccionNubesSegmentadas.insertBefore(selectCategoriaSegmentada, seccionNubesSegmentadas.querySelector(".sliders-sentimiento"));
   }
-  selectCategoriaSegmentada.innerHTML = Object.keys(palabrasSegmentadas)
-    .filter(cat => cat !== "Sin categoría")
-    .map(cat => `<option value="${cat}">${cat}</option>`)
-    .join("");
+  const categoriasDisponibles = Object.keys(palabrasSegmentadas).filter(cat => cat !== "Sin categoría");
+  selectCategoriaSegmentada.innerHTML = `
+      <option value="TODOS">Todos</option>
+      ${categoriasDisponibles.map(cat => `<option value="${cat}">${cat}</option>`).join("")}
+    `;
 
   const sentimMap = {
     POSITIVO: 'contenedorWordCloudSegmentoPositivo',
@@ -223,7 +276,18 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
     const contenedor = sentimMap[sent];
     const slider = document.getElementById(`sliderSegmento${sent.charAt(0) + sent.slice(1).toLowerCase()}`);
     const min = parseInt(slider?.value || 1);
-    const palabrasCrudas = palabrasSegmentadas[categoriaSeleccionada]?.[sent] || {};
+    let palabrasCrudas = {};
+    if (categoriaSeleccionada === "TODOS") {
+      Object.entries(palabrasSegmentadas).forEach(([categoria, sentObj]) => {
+        if (sentObj[sent]) {
+          Object.entries(sentObj[sent]).forEach(([palabra, conteo]) => {
+            palabrasCrudas[palabra] = (palabrasCrudas[palabra] || 0) + conteo;
+          });
+        }
+      });
+    } else {
+      palabrasCrudas = palabrasSegmentadas[categoriaSeleccionada]?.[sent] || {};
+    }
     const filtradas = Object.entries(palabrasCrudas)
       .filter(([, count]) => count >= min)
       .map(([text, weight]) => ({ text, weight }));
@@ -259,8 +323,10 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
     document.body.appendChild(contenedorTopPerfiles);
   }
 
-  contenedorTopPerfiles.innerHTML = `
-    <div class="">
+  let selectorCriterio = document.getElementById("selectorCriterioTop");
+  if (!selectorCriterio) {
+    const selectWrapper = document.createElement("div");
+    selectWrapper.innerHTML = `
       <select id="selectorCriterioTop">
         <option value="followers_count">Más seguidores</option>
         <option value="emoji_density">Mayor densidad de emojis</option>
@@ -268,26 +334,31 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
         <option value="negative">Mayor puntuación negativa</option>
         <option value="cantidad_keywords">Más palabras clave</option>
       </select>
-    </div>
-    <h2>Top 5 por categoría</h2>
-    <div class="fila-tarjetas-top" id="contenedorTarjetasSegmento"></div>
-  `;
-  const selectorCriterio = document.getElementById("selectorCriterioTop");
+    `;
+    contenedorTopPerfiles.appendChild(selectWrapper);
+    selectorCriterio = selectWrapper.querySelector("select");
+  }
+
   let contenedorTarjetas = document.getElementById("contenedorTarjetasSegmento");
+  if (!contenedorTarjetas) {
+    contenedorTarjetas = document.createElement("div");
+    contenedorTarjetas.className = "fila-tarjetas-top";
+    contenedorTarjetas.id = "contenedorTarjetasSegmento";
+    contenedorTopPerfiles.appendChild(contenedorTarjetas);
+  } else {
+    contenedorTarjetas.innerHTML = "";
+  }
   // Agrupar perfiles por categoría detectada, evitando "Sin categoría"
-  const perfilesPorCategoria = {};
+  // Declarar perfilesPorCategoria globalmente para que sea accesible en otros bloques
+  window.perfilesPorCategoria = {};
   analisis.forEach(p => {
     const cat = data.find(d => d.username === p.username)?.categoria_detectada;
-    if (!cat) return;
-    if (cat === "Sin categoría") {
-      console.warn("⚠️ Perfil ignorado sin categoría:", p.username);
-      return;
-    }
-    if (!perfilesPorCategoria[cat]) perfilesPorCategoria[cat] = [];
-    perfilesPorCategoria[cat].push(p);
+    if (!cat || cat === "Sin categoría") return;
+    if (!window.perfilesPorCategoria[cat]) window.perfilesPorCategoria[cat] = [];
+    window.perfilesPorCategoria[cat].push(p);
   });
   // Calcular cantidad_keywords y followers_count
-  Object.values(perfilesPorCategoria).forEach(perfiles => {
+  Object.values(window.perfilesPorCategoria).forEach(perfiles => {
     perfiles.forEach(p => {
       if (typeof p.keywords === 'string') {
         try {
@@ -308,7 +379,7 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
   let criterio = selectorCriterio.value;
   // Limpiar tarjetas
   contenedorTarjetas.innerHTML = "";
-  Object.entries(perfilesPorCategoria).forEach(([categoria, perfiles]) => {
+  Object.entries(window.perfilesPorCategoria).forEach(([categoria, perfiles]) => {
     const top5 = perfiles
       .sort((a, b) => (b[criterio] || 0) - (a[criterio] || 0))
       .slice(0, 5);
@@ -337,7 +408,7 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
   selectorCriterio.addEventListener("change", () => {
     contenedorTarjetas.innerHTML = "";
     criterio = selectorCriterio.value;
-    Object.entries(perfilesPorCategoria).forEach(([categoria, perfiles]) => {
+    Object.entries(window.perfilesPorCategoria).forEach(([categoria, perfiles]) => {
       const top5 = perfiles
         .sort((a, b) => (b[criterio] || 0) - (a[criterio] || 0))
         .slice(0, 5);
@@ -363,6 +434,62 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
       contenedorTarjetas.appendChild(bloque);
     });
   });
+
+  // === EMOJIS POR CATEGORÍA (integrado con selectorCategoriaSegmentada) ===
+  // Utiliza selectCategoriaSegmentada para filtrar el gráfico de emojis.
+  function actualizarGraficoEmojisPorCategoria() {
+    // Usar window.perfilesPorCategoria y selectCategoriaSegmentada
+    const perfilesPorCategoria = window.perfilesPorCategoria || {};
+    const selectCategoriaSegmentada = document.getElementById("selectorCategoriaSegmentada");
+    if (!selectCategoriaSegmentada) return;
+    const categoriaSeleccionada = selectCategoriaSegmentada.value;
+    let perfilesFiltrados = [];
+    Object.entries(perfilesPorCategoria).forEach(([cat, perfiles]) => {
+      if (categoriaSeleccionada === "TODOS" || cat === categoriaSeleccionada) {
+        perfilesFiltrados = perfilesFiltrados.concat(perfiles);
+      }
+    });
+    const conteoEmojis = {};
+    perfilesFiltrados.forEach(p => {
+      let mostCommon = p.most_common || p.emoji_mas_comun;
+      if (typeof mostCommon === "string") {
+        try {
+          mostCommon = JSON.parse(mostCommon);
+        } catch (e) {
+          console.warn("❌ Error parsing most_common en perfil:", p.username);
+          return;
+        }
+      }
+      if (typeof mostCommon === "object" && mostCommon !== null) {
+        Object.entries(mostCommon).forEach(([emoji, count]) => {
+          conteoEmojis[emoji] = (conteoEmojis[emoji] || 0) + count;
+        });
+      }
+    });
+    // Ordenar y tomar top 20
+    const emojisOrdenados = Object.entries(conteoEmojis)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20);
+    const categorias = emojisOrdenados.map(e => e[0]);
+    const valores = emojisOrdenados.map(e => e[1]);
+    // Crear el gráfico de barras (horizontal)
+    crearGraficoBarras({
+      contenedorId: 'grafico-emojis-por-categoria',
+      titulo: 'Emojis más utilizados por categoría',
+      categorias,
+      datos: valores,
+      color: '#5caac8',
+      nombreEjeX: '',
+      nombreEjeY: ''
+    });
+  }
+  // Añadir listener al selector de categoría segmentada
+  let selectCategoriaSegmentadaEmojis = document.getElementById("selectorCategoriaSegmentada");
+  if (selectCategoriaSegmentadaEmojis) {
+    selectCategoriaSegmentadaEmojis.addEventListener("change", actualizarGraficoEmojisPorCategoria);
+    // Inicializar
+    actualizarGraficoEmojisPorCategoria();
+  }
 }
 
 function renderizarEditorReglas() {
@@ -435,3 +562,5 @@ function renderizarEditorReglas() {
       renderizarEditorReglas();
     }
   });
+
+  // (Bloque de código de selectorEmojiCategoria eliminado porque ahora el gráfico de emojis se integra con selectorCategoriaSegmentada)

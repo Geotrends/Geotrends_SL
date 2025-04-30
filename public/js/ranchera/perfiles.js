@@ -348,7 +348,13 @@ export function inicializarVistaPerfiles() {
           titulo: 'Emojis más usados',
           categorias: datosEmojis.map(e => e[0]),
           datos: datosEmojis.map(e => e[1]),
-          color: '#FF9800'
+          color: '#3693b6',
+          opcionesEjeX: {
+            axisLabel: {
+              fontSize: 12,
+              rotate: 45,
+              margin: 10
+            }}
         });
 
         // === ACTUALIZAR TARJETAS CUANTITATIVAS ===
@@ -400,7 +406,7 @@ export function inicializarVistaPerfiles() {
         // Luego actualizar el scatter plot con los perfiles filtrados
         crearGraficoScatter({
           contenedorId: "scatterFollowersPosts",
-          titulo: "Seguidores vs. Publicaciones",
+          titulo: "Seguidores",
           datos: perfilesFiltrados
         });
       };
@@ -599,7 +605,13 @@ async function cargarGraficosSentimiento() {
       titulo: 'Emojis más usados',
       categorias: datosEmojis.map(e => e[0]),
       datos: datosEmojis.map(e => e[1]),
-      color: '#FF9800'
+      color: '#3693b6',
+      opcionesEjeX: {
+        axisLabel: {
+          fontSize: 12,
+          rotate: 45,
+          margin: 10
+        }}
     });
 
     const mapeoContenedores = {
@@ -1022,7 +1034,7 @@ function generarAnalisisInicial() {
 
       crearGraficoScatter({
         contenedorId: "scatterFollowersPosts",
-        titulo: "Seguidores vs. Publicaciones",
+        titulo: "Seguidores",
         datos: perfiles,
       });
 
@@ -1032,7 +1044,13 @@ crearGraficoBarras({
   titulo: 'Emojis más usados',
   categorias: ['🙂'],
   datos: [0],
-  color: '#FF9800'
+  color: '#3693b6',
+  opcionesEjeX: {
+    axisLabel: {
+      fontSize: 30,
+      rotate: 0,
+      margin: 10
+    }}
 });
 
       // 🚀 Crear WordClouds de inmediato con los datos del scatter
