@@ -1,0 +1,83 @@
+{
+    "areaacx_DG9lsUHuy0-.webp": {
+        "imagen": "areaacx_DG9lsUHuy0-.webp",
+        "etiquetas": [
+            "eyebrow",
+            "lips",
+            "shoulder",
+            "hairstyle",
+            "beauty",
+            "neck",
+            "jaw",
+            "eyelash",
+            "facial expression",
+            "black hair"
+        ],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "areaacx_DHq7RhJONKT.webp": {
+        "imagen": "areaacx_DHq7RhJONKT.webp",
+        "etiquetas": [
+            "food",
+            "ingredient",
+            "ice cream",
+            "frozen dessert",
+            "dessert",
+            "gelato",
+            "dairy product",
+            "cone",
+            "soy ice cream",
+            "sorbetes"
+        ],
+        "Animales": 0,
+        "Comida": 1,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "areaacx_DHq7WOGOW57.webp": {
+        "imagen": "areaacx_DHq7WOGOW57.webp",
+        "etiquetas": [
+            "hair",
+            "eyebrow",
+            "lips",
+            "hairstyle",
+            "beauty",
+            "eyelash",
+            "jaw",
+            "facial expression",
+            "smile",
+            "brown hair"
+        ],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 1,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}
