@@ -1,0 +1,45 @@
+{
+    "._diazcmilo_DGBuBa-PK3k.webp": {
+        "imagen": "._diazcmilo_DGBuBa-PK3k.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "diazcmilo_DGBuBa-PK3k.webp": {
+        "imagen": "diazcmilo_DGBuBa-PK3k.webp",
+        "etiquetas": [
+            "people",
+            "hair",
+            "head",
+            "happiness",
+            "face",
+            "arm",
+            "hand",
+            "t-shirt",
+            "shirt",
+            "human body"
+        ],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 1,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

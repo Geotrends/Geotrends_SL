@@ -639,3 +639,18 @@ exports.obtenerEtiquetasImagenes = async (req, res) => {
     res.status(500).json({ error: "Error al obtener etiquetas" });
   }
 };
+
+exports.obtenerImagenesConInfoCompleta = async (req, res) => {
+  try {
+    const query = `
+      SELECT *
+      FROM zenu_social_listening.imagenes_con_info_completa
+      ORDER BY id_etiqueta ASC
+    `;
+    const resultado = await pool.query(query);
+    res.json(resultado.rows);
+  } catch (error) {
+    console.error("❌ Error al obtener imágenes con info completa:", error);
+    res.status(500).json({ error: "Error al obtener imágenes con info completa" });
+  }
+};

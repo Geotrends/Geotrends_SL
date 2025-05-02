@@ -20,4 +20,7 @@ router.post('/segmentacion-audiencia', rancheraController.segmentarAudienciaPerf
 router.get("/imagenes-etiquetas", rancheraController.obtenerEtiquetasImagenes);
 // Scatterplot de comentarios
 router.get('/comentarios-scatter', rancheraController.obtenerComentariosParaScatter);
+router.get('/imagenes-con-info', rancheraController.obtenerImagenesConInfoCompleta);
+
+// Exporta el enrutador sin consola de depuración
 module.exports = router;

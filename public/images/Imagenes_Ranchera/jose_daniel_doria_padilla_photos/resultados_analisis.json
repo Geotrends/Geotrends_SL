@@ -1,0 +1,45 @@
+{
+    "._jose_daniel_doria_padilla_DFgc0J9y5Q_.webp": {
+        "imagen": "._jose_daniel_doria_padilla_DFgc0J9y5Q_.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "jose_daniel_doria_padilla_DFgc0J9y5Q_.webp": {
+        "imagen": "jose_daniel_doria_padilla_DFgc0J9y5Q_.webp",
+        "etiquetas": [
+            "smile",
+            "happiness",
+            "logo",
+            "cake decorating",
+            "cake decorating supply",
+            "birthday",
+            "cake",
+            "party supply",
+            "anniversary",
+            "dessert"
+        ],
+        "Animales": 0,
+        "Comida": 1,
+        "Turismo": 0,
+        "Sonrisa": 1,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

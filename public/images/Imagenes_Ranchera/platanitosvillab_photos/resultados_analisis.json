@@ -1,0 +1,39 @@
+{
+    "._platanitosvillab_DH4HDpqR2uH.webp": {
+        "imagen": "._platanitosvillab_DH4HDpqR2uH.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "platanitosvillab_DH4HDpqR2uH.webp": {
+        "imagen": "platanitosvillab_DH4HDpqR2uH.webp",
+        "etiquetas": [
+            "smile",
+            "food",
+            "happiness",
+            "comfort food"
+        ],
+        "Animales": 0,
+        "Comida": 1,
+        "Turismo": 0,
+        "Sonrisa": 1,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

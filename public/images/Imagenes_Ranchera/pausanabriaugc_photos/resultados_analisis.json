@@ -1,0 +1,45 @@
+{
+    "._pausanabriaugc_DHBsC8zgFiq.webp": {
+        "imagen": "._pausanabriaugc_DHBsC8zgFiq.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "pausanabriaugc_DHBsC8zgFiq.webp": {
+        "imagen": "pausanabriaugc_DHBsC8zgFiq.webp",
+        "etiquetas": [
+            "finger food",
+            "food",
+            "bun",
+            "fast food",
+            "meat",
+            "bread",
+            "buffalo burger",
+            "sandwich",
+            "junk food",
+            "cheeseburger"
+        ],
+        "Animales": 0,
+        "Comida": 1,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

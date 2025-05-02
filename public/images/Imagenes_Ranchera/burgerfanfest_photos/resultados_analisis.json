@@ -1,0 +1,45 @@
+{
+    "._burgerfanfest_DAHYiOByEpT.webp": {
+        "imagen": "._burgerfanfest_DAHYiOByEpT.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "burgerfanfest_DAHYiOByEpT.webp": {
+        "imagen": "burgerfanfest_DAHYiOByEpT.webp",
+        "etiquetas": [
+            "fast food",
+            "food",
+            "advertising",
+            "buffalo burger",
+            "cheeseburger",
+            "bun",
+            "meat",
+            "comfort food",
+            "junk food",
+            "finger food"
+        ],
+        "Animales": 0,
+        "Comida": 1,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "._denilcepalomino_Cn0rYhzpnW7.webp": {
+        "imagen": "._denilcepalomino_Cn0rYhzpnW7.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "denilcepalomino_Cn0rYhzpnW7.webp": {
+        "imagen": "denilcepalomino_Cn0rYhzpnW7.webp",
+        "etiquetas": [
+            "tableware",
+            "furniture",
+            "drinkware",
+            "serveware",
+            "restaurant",
+            "chair",
+            "plate",
+            "dishware",
+            "cup",
+            "saucer"
+        ],
+        "Animales": 0,
+        "Comida": 1,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

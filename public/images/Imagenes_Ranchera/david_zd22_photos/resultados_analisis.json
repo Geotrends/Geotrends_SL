@@ -1,0 +1,45 @@
+{
+    "._david_zd22_DDyKVD4OiKQ.webp": {
+        "imagen": "._david_zd22_DDyKVD4OiKQ.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "david_zd22_DDyKVD4OiKQ.webp": {
+        "imagen": "david_zd22_DDyKVD4OiKQ.webp",
+        "etiquetas": [
+            "eyebrow",
+            "forehead",
+            "smile",
+            "jaw",
+            "happiness",
+            "facial expression",
+            "black hair",
+            "tooth",
+            "selfie",
+            "pleased"
+        ],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 1,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

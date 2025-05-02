@@ -1,0 +1,45 @@
+{
+    "._natynat_______DBHsBlnytY-Bm87U76nNkjWwtpsN4NiGkGUDQw0.webp": {
+        "imagen": "._natynat_______DBHsBlnytY-Bm87U76nNkjWwtpsN4NiGkGUDQw0.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "natynat_______DBHsBlnytY-Bm87U76nNkjWwtpsN4NiGkGUDQw0.webp": {
+        "imagen": "natynat_______DBHsBlnytY-Bm87U76nNkjWwtpsN4NiGkGUDQw0.webp",
+        "etiquetas": [
+            "tableware",
+            "serveware",
+            "drinkware",
+            "food",
+            "dishware",
+            "table",
+            "cup",
+            "furniture",
+            "plate",
+            "saucer"
+        ],
+        "Animales": 0,
+        "Comida": 1,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

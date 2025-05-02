@@ -16,7 +16,6 @@ export function inicializarVistaImagenes() {
     return res.json();
   })
   .then((data) => {
-    console.log("🔎 Datos recibidos para grafo:", data);
 
     const etiquetasUnicas = [
       "animales", "comida", "turismo", "sonrisa", "grupo_personas",
@@ -636,53 +635,110 @@ export function inicializarVistaImagenes() {
   console.error("❌ Error al consultar etiquetas:", err);
 });
 
-const contenedorCarrusel = document.getElementById("contenedorCarrusel");
-const selector = document.getElementById("selectorUsuario");
+// Carrusel por usuario (versión original)
+fetch("/api/ranchera/imagenes-etiquetas")
+  .then((res) => res.json())
+  .then((data) => {
+    const contenedorCarrusel = document.getElementById("contenedorCarrusel");
+    const selector = document.getElementById("selectorUsuario");
+    if (!contenedorCarrusel || !selector) return;
 
-const usuariosUnicos = [...new Set(data.map(d => d.path.split("_")[0]))];
-usuariosUnicos.forEach(usuario => {
-  const option = document.createElement("option");
-  option.value = usuario;
-  option.textContent = usuario;
-  selector.appendChild(option);
-});
-if (usuariosUnicos.length > 0) {
-    selector.value = usuariosUnicos[0];
-    selector.dispatchEvent(new Event("change"));
-  }
+    // Obtener usuarios únicos
+    const usuariosUnicos = [...new Set(data.map(d => d.path.split("_")[0]))];
+    usuariosUnicos.forEach(usuario => {
+      const option = document.createElement("option");
+      option.value = usuario;
+      option.textContent = usuario;
+      selector.appendChild(option);
+    });
 
-selector.addEventListener("change", () => {
-  const usuarioSeleccionado = selector.value;
-  contenedorCarrusel.innerHTML = "";
-  if (!usuarioSeleccionado) return;
+    selector.addEventListener("change", () => {
+      const usuarioSeleccionado = selector.value;
+      contenedorCarrusel.innerHTML = "";
+      // Limpia la nube de etiquetas del usuario seleccionado
+      const divNubeUsuario = document.getElementById("nubeEtiquetasUsuario");
+      if (divNubeUsuario) divNubeUsuario.innerHTML = "";
+      const resumen = document.getElementById("resumenEtiquetasUsuario");
+      if (resumen) resumen.innerHTML = "";
 
-  const imagenes = data.filter(d => d.path.startsWith(`${usuarioSeleccionado}_`));
-  if (imagenes.length === 0) {
-    contenedorCarrusel.innerHTML = "<p>No hay imágenes para este usuario.</p>";
-    return;
-  }
+      if (!usuarioSeleccionado) return;
 
-  const carrusel = document.createElement("div");
-  carrusel.className = "carrusel-usuario";
+      const imagenes = data.filter(d => d.path.startsWith(`${usuarioSeleccionado}_`));
+      if (imagenes.length === 0) {
+        contenedorCarrusel.innerHTML = "<p>No hay imágenes para este usuario.</p>";
+        return;
+      }
 
-  imagenes.forEach((imgData) => {
-    const wrapper = document.createElement("div");
-    wrapper.className = "slide-imagen";
+      const carrusel = document.createElement("div");
+      carrusel.className = "carrusel-usuario";
 
-    const img = document.createElement("img");
-    img.src = `/images/Imagenes_Ranchera/${imgData.path}`;
-    img.alt = imgData.imagen || usuarioSeleccionado;
+      imagenes.forEach((imgData) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "slide-imagen";
 
-    const pie = document.createElement("p");
-    pie.className = "pie-imagen";
-    pie.textContent = Array.isArray(imgData.etiquetas)
-      ? imgData.etiquetas.join(", ")
-      : "Sin etiquetas";
+        const img = document.createElement("img");
+        // Nueva lógica para evitar duplicación de carpeta si el path ya tiene subcarpeta
+        let srcFinal = "";
+        if (imgData.path.includes("/")) {
+          srcFinal = `/images/Imagenes_Ranchera/${imgData.path}`;
+        } else {
+          const usuarioCarpeta = imgData.path.split("_")[0];
+          srcFinal = `/images/Imagenes_Ranchera/${usuarioCarpeta}_photos/${imgData.path}`;
+        }
+        img.src = srcFinal;
+        img.alt = imgData.imagen || usuarioSeleccionado;
+        // Validar error de carga de imagen: si hay error, eliminar el wrapper
+        img.onerror = () => {
+          wrapper.remove();
+        };
 
-    wrapper.appendChild(img);
-    wrapper.appendChild(pie);
-    carrusel.appendChild(wrapper);
+        const pie = document.createElement("p");
+        pie.className = "pie-imagen";
+        pie.textContent = Array.isArray(imgData.etiquetas)
+          ? imgData.etiquetas.join(", ")
+          : "Sin etiquetas";
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(pie);
+        carrusel.appendChild(wrapper);
+      });
+
+      contenedorCarrusel.appendChild(carrusel);
+
+      // === NUBE DE PALABRAS DEL USUARIO SELECCIONADO ===
+      if (divNubeUsuario) {
+        // Recolectar etiquetas del usuario seleccionado
+        const etiquetasUsuario = {};
+        imagenes.forEach(img => {
+          if (Array.isArray(img.etiquetas)) {
+            img.etiquetas.forEach(et => {
+              const palabras = et.split(/[,\s]+/);
+              palabras.forEach(palabraCruda => {
+                const palabra = palabraCruda.replace(/["{}]/g, "").trim().toLowerCase();
+                if (palabra) {
+                  etiquetasUsuario[palabra] = (etiquetasUsuario[palabra] || 0) + 1;
+                }
+              });
+            });
+          }
+        });
+        // Lista ordenada de palabras
+        const lista = Object.entries(etiquetasUsuario)
+          .map(([text, weight]) => ({ text, weight }))
+          .sort((a, b) => b.weight - a.weight)
+          .slice(0, 120);
+        import('/js/ranchera/utils/wordClouds.js').then(({ crearWordCloud }) => {
+          crearWordCloud({
+            contenedorId: "nubeEtiquetasUsuario",
+            palabras: lista
+          });
+          // Añadir resumen textual de etiquetas principales
+          const top3 = lista.slice(0, 3).map(p => p.text);
+          const resumen = document.getElementById("resumenEtiquetasUsuario");
+          if (resumen) {
+            resumen.innerHTML = `🔍 Este usuario se asocia principalmente con las etiquetas: <strong>${top3.join(", ")}</strong>.`;
+          }
+        });
+      }
+    });
   });
-
-  contenedorCarrusel.appendChild(carrusel);
-});

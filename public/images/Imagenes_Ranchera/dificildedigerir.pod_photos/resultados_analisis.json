@@ -1,0 +1,45 @@
+{
+    "._dificildedigerir.pod_DB2ep-YNm9-.webp": {
+        "imagen": "._dificildedigerir.pod_DB2ep-YNm9-.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "dificildedigerir.pod_DB2ep-YNm9-.webp": {
+        "imagen": "dificildedigerir.pod_DB2ep-YNm9-.webp",
+        "etiquetas": [
+            "food",
+            "comfort food",
+            "finger food",
+            "sandwich",
+            "food craving",
+            "bun",
+            "junk food",
+            "fast food",
+            "breakfast",
+            "recipe"
+        ],
+        "Animales": 0,
+        "Comida": 1,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}

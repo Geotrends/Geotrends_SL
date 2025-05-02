@@ -1,0 +1,45 @@
+{
+    "._jeronazzar_DFMNOrrNkmW.webp": {
+        "imagen": "._jeronazzar_DFMNOrrNkmW.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "jeronazzar_DFMNOrrNkmW.webp": {
+        "imagen": "jeronazzar_DFMNOrrNkmW.webp",
+        "etiquetas": [
+            "recreation",
+            "sports venue",
+            "child",
+            "school",
+            "campus",
+            "play",
+            "basketball court",
+            "academic institution",
+            "training",
+            "student"
+        ],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 1,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 1,
+        "Moda": 0
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "._discdoglauraortega_DEtOJYuPq-s.webp": {
+        "imagen": "._discdoglauraortega_DEtOJYuPq-s.webp",
+        "etiquetas": [],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 0,
+        "Grupo de Personas": 0,
+        "Perro": 0,
+        "Gato": 0,
+        "Niños": 0,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    },
+    "discdoglauraortega_DEtOJYuPq-s.webp": {
+        "imagen": "discdoglauraortega_DEtOJYuPq-s.webp",
+        "etiquetas": [
+            "people",
+            "dog",
+            "smile",
+            "face",
+            "happiness",
+            "t-shirt",
+            "shorts",
+            "fun",
+            "child",
+            "family"
+        ],
+        "Animales": 0,
+        "Comida": 0,
+        "Turismo": 0,
+        "Sonrisa": 1,
+        "Grupo de Personas": 1,
+        "Perro": 1,
+        "Gato": 0,
+        "Niños": 1,
+        "Adultos": 0,
+        "Jóvenes": 0,
+        "Deportes": 0,
+        "Moda": 0
+    }
+}
