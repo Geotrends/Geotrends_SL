@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Informe de Comentarios</title>
+  <style>
+body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      margin: 40px;
+      color: #222;
+    }
+    h1 {
+      text-align: center;
+      color: #024959;
+    }
+    h2, h3 {
+      color: #024959;
+    }
+    img.grafico-informe {
+      width: 50%;
+      max-width: 100%;
+      height: auto;
+      max-height: 450px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 1rem auto;
+      border: 1px solid #cccccc4f;
+      border-radius: 10px;
+      padding: 0.6rem;
+    }
+    p.grafico-descripcion {
+      font-size: 0.65rem;
+      color: #333;
+      margin-top: -0.3rem;
+      margin-bottom: 0.5rem;
+      font-style: italic;
+      text-align: center;
+      background-color: #f8f8f8;
+      padding: 0.8rem 1rem;
+  
+      border-radius: 6px;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tablaResumen {
+      margin-top: 2rem;
+    }
+    .tablaResumen h3 {
+      margin-top: 1.5rem;
+      color: #024959;
+      font-size: 1.1rem;
+      text-align: left;
+    }
+    .tablaResumen .subtitulo {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #024959;
+      margin-top: 1rem;
+    }
+    .tablaResumen ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      padding-left: 1.2rem;
+      font-size: 0.95rem;
+      break-inside: avoid;
+    }
+    .tablaResumen ul li {
+      margin-bottom: 0.2rem;
+    }
+    .tablaResumen li {
+      padding: 6px 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.95rem;
+    }
+    .tablaResumen strong {
+      color: #024959;
+    }
+    .tablaResumen li strong {
+      display: inline-block;
+      width: 160px;
+      color: #024959;
+    }
+    .tablaResumen table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      break-inside: avoid;
+    }
+    .tablaResumen th {
+      background-color: #f3f3f3;
+      color: #024959;
+      font-weight: bold;
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+    }
+    .tablaResumen td {
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    .tablaResumen tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .tablaResumen ul li {
+      display: inline-block;
+      margin-right: 1.5rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Informe de Comentarios</h1>
+
+  <p>
+    Este informe analiza los comentarios recolectados a partir de publicaciones seleccionadas en redes sociales. A través de distintos gráficos, nubes de palabras y métricas clave, se identifican patrones de comportamiento, expresión emocional, temáticas frecuentes y usuarios destacados dentro de la conversación digital.
+  </p>
+
+  <h2>Filtros Aplicados</h2>
+  <p>
+    Esta sección describe los filtros que se aplicaron para seleccionar los datos de comentarios analizados. Incluye criterios como el período de tiempo, palabras clave, autores o hashtags relevantes.
+  </p>
+  <div class="tablaResumen">
+    {{resumenFiltrosHTML}}
+  </div>
+
+  <p>
+    A continuación, se presenta un análisis de la actividad de las publicaciones en función de su momento de publicación. Esto permite identificar los horarios de mayor interacción y el sentimiento asociado.
+  </p>
+  <h2>Publicaciones por Fecha y Hora</h2>
+  <img class="grafico-informe" src="{{graficoScatterComentarios}}" alt="Gráfico scatter comentarios" style="width: 100%;"/>
+  <p class="grafico-descripcion">
+    Este gráfico muestra las publicaciones según la fecha y hora, codificadas por sentimiento y tamaño según número de likes.
+  </p>
+
+  <p>
+    Este apartado explora cómo los diferentes usuarios participan en la conversación digital. Se analizan patrones de comportamiento, popularidad y expresión emocional por usuario.
+  </p>
+  <h2>Distribución por Usuario</h2>
+  <img class="grafico-informe" src="{{graficoScatterUsuarios}}" alt="Gráfico scatter usuarios" style="width: 100%;"/>
+  <p class="grafico-descripcion">
+    Relación entre likes y comentarios por usuario. El tamaño del punto representa actividad total, el color indica sentimiento predominante.
+  </p>
+
+  <p>
+    Los emojis son una forma de comunicación emocional. Esta sección muestra los más utilizados, permitiendo entender el tono general de los comentarios.
+  </p>
+  <h2>Emojis más Usados</h2>
+  <img class="grafico-informe" src="{{graficoTopEmojis}}" alt="Gráfico de emojis" style="width: 100%;"/>
+  <p class="grafico-descripcion">
+    El gráfico de barras representa los emojis más utilizados en los comentarios, permitiendo observar tendencias emocionales o temáticas.
+  </p>
+
+  <p>
+    Las siguientes visualizaciones muestran nubes de palabras generadas a partir de hashtags y captions empleados por los usuarios. Estas nubes destacan los temas recurrentes y el lenguaje común.
+  </p>
+  <h2>Nube de Hashtags</h2>
+  <img class="grafico-informe" src="{{nubeHashtags}}" alt="Nube de hashtags" style="width: 100%;"/>
+  <p class="grafico-descripcion">
+    Palabras más utilizadas como hashtags en los comentarios. Reflejan temáticas o campañas recurrentes.
+  </p>
+
+  <h2>Nube de Captions</h2>
+  <img class="grafico-informe" src="{{nubeCaption}}" alt="Nube de captions" style="width: 100%;"/>
+  <p class="grafico-descripcion">
+    Palabras clave extraídas de captions o textos descriptivos en los comentarios. Visibilizan términos emocionales o enfocados en producto.
+  </p>
+
+  <h2>Nube de Keywords</h2>
+  <img class="grafico-informe" src="{{nubeKeywords}}" alt="Nube de keywords" style="width: 100%;"/>
+  <p class="grafico-descripcion">
+    Nube generada a partir de palabras clave clasificadas automáticamente según patrones de escritura y frecuencia.
+  </p>
+
+
+</body>
+</html>

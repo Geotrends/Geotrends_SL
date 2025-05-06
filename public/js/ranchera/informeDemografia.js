@@ -9,6 +9,8 @@ export function inicializarGeneradorPDF() {
   btnPDF.disabled = false;
 
   btnPDF.addEventListener("click", () => {
+    document.getElementById("spinnerInforme").style.display = "flex";
+
     console.log("🟢 Click detectado en 'Generar informe PDF'");
 
     // Esperar un pequeño tiempo para asegurar render de gráficos
@@ -90,6 +92,7 @@ export function inicializarGeneradorPDF() {
           body: JSON.stringify({ tipo: "demografia", data })
         })
           .then(async (res) => {
+            document.getElementById("spinnerInforme").style.display = "none";
             if (!res.ok) {
               const error = await res.json();
               throw new Error(error?.error || "Error generando informe");
@@ -100,6 +103,7 @@ export function inicializarGeneradorPDF() {
             console.log("✅ Informe abierto en nueva pestaña.");
           })
           .catch((error) => {
+            document.getElementById("spinnerInforme").style.display = "none";
             console.error("❌ Error generando o descargando el informe:", error);
             alert("Error generando el informe. Revisa la consola para más detalles.");
           });

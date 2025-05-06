@@ -74,6 +74,8 @@ export function configurarBotonInformePerfiles() {
     }
     generandoInforme = true;
 
+    document.getElementById("spinnerInforme").style.display = "flex";
+
     const fuentesSeleccionadas = window.perfilesSemillaGlobal?.map(p => p.fuente_id) || [];
     const perfiles = window.perfilesCargadosGlobal || [];
 
@@ -156,6 +158,7 @@ export function configurarBotonInformePerfiles() {
       console.error("❌ Error al generar o visualizar el informe:", error);
       alert("Error generando el informe. Revisa la consola para más detalles.");
     } finally {
+      document.getElementById("spinnerInforme").style.display = "none";
       generandoInforme = false;
     }
   });

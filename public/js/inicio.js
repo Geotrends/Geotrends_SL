@@ -235,6 +235,13 @@ document.addEventListener("DOMContentLoaded", () => {
                   if (mod.inicializarVistaComentarios) {
                     mod.inicializarVistaComentarios();
                   }
+                  import("/js/ranchera/informeCometarios.js").then((modComentarios) => {
+                    if (modComentarios.configurarBotonInformeComentarios) {
+                      modComentarios.configurarBotonInformeComentarios();
+                    }
+                  }).catch((err) => {
+                    console.error("❌ Error al cargar informeCometarios.js como módulo:", err);
+                  });
                 })
                 .catch((err) => {
                   console.error("❌ Error al cargar módulo de comentarios:", err);

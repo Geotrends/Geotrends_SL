@@ -41,6 +41,7 @@
         <input type="number" id="filtroLikesMinimos" min="0" placeholder="Ej: 10" />
 
         <button id="btnAplicarFiltros">Aplicar filtros</button>
+        <button id="btnDescargarInformeComentarios">Descargar informe PDF</button>
       </div>
     </div>
 
@@ -103,6 +104,12 @@
       </div>
     </div>
   </section>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script type="module" src="/js/ranchera/comentarios.js"></script>
+  <script type="module" src="/js/ranchera/informeCometarios.js"></script>
+
+  <div id="spinnerInforme" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255,255,255,0.8); z-index: 9999; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; color: #024959;">
+    Generando informe, por favor espera...
+  </div>
 </body>
 </html>

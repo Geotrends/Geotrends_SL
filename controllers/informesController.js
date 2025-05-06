@@ -164,6 +164,35 @@ const footerImagePath = path.join(__dirname, "../public/images/menu-footer-image
         data[key] = "<p style='font-style:italic; color:gray;'>No hay datos disponibles</p>";
       }
     });
+  } else if (tipo === "comentarios") {
+    const camposCriticos = [
+      "graficoScatterComentarios",
+      "graficoScatterUsuarios",
+      "graficoTopEmojis",
+      "nubeHashtags",
+      "nubeCaption",
+      "nubeKeywords",
+      "tablaResumen"
+    ];
+  
+    const camposInvalidos = camposCriticos.filter((k) => {
+      const v = data[k];
+      return (
+        !v ||
+        typeof v !== "string" ||
+        (!v.startsWith("data:image/png;base64,") && k !== "tablaResumen") ||
+        v.length < 100
+      );
+    });
+  
+    camposInvalidos.forEach((key) => {
+      console.warn(`⚠️ Campo ${key} inválido, se usará imagen transparente`);
+      if (key !== "tablaResumen") {
+        data[key] = imagenTransparente;
+      } else {
+        data[key] = "<p style='font-style:italic; color:gray;'>No hay datos disponibles</p>";
+      }
+    });
   }
 
   // Guardar imágenes base64 como archivos para verificación manual
