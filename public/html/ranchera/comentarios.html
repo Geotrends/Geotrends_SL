@@ -46,8 +46,14 @@
 
     <div class="bloque-contenedor">
       <div id="graficoScatterComentarios" style="height: 500px; margin-top: 2rem;"></div>
+      <div class="grafico-descripcion">
+        Este gráfico muestra las publicaciones según la fecha y hora en que fueron realizadas, con codificación de color por sentimiento y tamaño según número de likes.
+      </div>
       <h2 style="margin-top: 2rem;">Distribución por usuario</h2>
       <div id="graficoScatterUsuarios" style="height: 500px; margin-top: 1rem;"></div>
+      <div class="grafico-descripcion">
+        Relación entre likes y comentarios por usuario. El tamaño del punto representa la actividad total del perfil y el color indica el sentimiento predominante.
+      </div>
     </div>
 
     <div class="bloque-contenedor">
@@ -58,6 +64,9 @@
         <span id="valorSliderHashtags">2</span>
       </div>
       <div id="nubeHashtags" style="height: 400px; margin-top: 1rem;"></div>
+      <div class="grafico-descripcion">
+        Nube de palabras generada a partir de los hashtags más usados en las publicaciones, útil para identificar temas o tendencias frecuentes.
+      </div>
     </div>
 
     <div class="bloque-contenedor">
@@ -68,6 +77,9 @@
         <span id="valorSliderCaption">2</span>
       </div>
       <div id="nubeCaption" style="height: 400px; margin-top: 1rem;"></div>
+      <div class="grafico-descripcion">
+        Palabras más recurrentes en los captions de las publicaciones, lo que permite identificar el tono y los temas del contenido textual.
+      </div>
     </div>
 
     <div class="bloque-contenedor">
@@ -78,11 +90,17 @@
         <span id="valorSliderKeywords">2</span>
       </div>
       <div id="nubeKeywords" style="height: 400px; margin-top: 1rem;"></div>
+      <div class="grafico-descripcion">
+        Términos clave extraídos mediante procesamiento de lenguaje natural de las publicaciones. Útiles para análisis temático.
+      </div>
     </div>
 
     <div class="bloque-contenedor">
       <h2 style="margin-top: 2rem;">Emojis más usados</h2>
       <div id="graficoTopEmojis" style="height: 400px; margin-top: 1rem;"></div>
+      <div class="grafico-descripcion">
+        Gráfico de barras con los emojis más utilizados en las publicaciones analizadas, lo cual refleja expresiones emocionales predominantes.
+      </div>
     </div>
   </section>
   <script type="module" src="/js/ranchera/comentarios.js"></script>

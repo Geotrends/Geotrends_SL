@@ -47,3 +47,13 @@ contenedor-filtros-scatter {
   margin-top: 0;
   color: #024959;
 }
+
+.grafico-descripcion {
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 0.5rem;
+  background: #f6f6f6;
+  padding: 0.75rem;
+  border-left: 4px solid #ccc;
+  border-radius: 4px;
+}

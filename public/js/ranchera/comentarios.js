@@ -393,6 +393,17 @@ export async function inicializarVistaComentarios() {
         }]
       });
     }
+    // Oculta temporalmente todos los bloques mientras carga
+document.querySelectorAll('.bloque-contenedor').forEach(div => {
+  div.classList.remove('visible');
+});
+
+// Luego, después de que todo se ha cargado, los muestra suavemente
+setTimeout(() => {
+  document.querySelectorAll('.bloque-contenedor').forEach(div => {
+    div.classList.add('visible');
+  });
+}, 100);
   }
 
   // Añadir eventos para actualizar datos y gráficos al cambiar filtros o sliders

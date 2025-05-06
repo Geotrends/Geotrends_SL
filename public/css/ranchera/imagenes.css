@@ -47,10 +47,19 @@ h1 {
 .descripcion-nube {
   font-size: 0.95rem;
   color: #555;
-  margin-bottom: 1rem;
+  margin-bottom:0rem;
   line-height: 1.4;
   background: #f0f9fa;
   padding: 0.75rem 1rem;
-  border-left: 4px solid #267365;
+  border-left: 0px solid #267365;
   border-radius: 6px;
+}
+.descripcion-grafico {
+  font-size: 0.9rem;
+  color: #444;
+  margin-top: 0.5rem;
+  background: #f6f6f6;
+  padding: 0.75rem;
+  border-left: 4px solid #ccc;
+  border-radius: 4px;
 }

@@ -9,7 +9,8 @@ const PORT = process.env.PORT || 5050;
 
 // Middlewares
 app.use(cors()); // Puedes configurar orígenes si es necesario
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cookieParser());
 
 // ✅ Servir archivos estáticos desde /public
@@ -28,6 +29,8 @@ app.use('/api/usuarios', usuariosRoutes);
 
 const rancheraRoutes = require('./routes/rancheraRoutes');
 app.use('/api/ranchera', rancheraRoutes);
+
+app.use("/api", require("./routes/informesRoutes"));
 
 const os = require('os');
 

@@ -1,0 +1,8 @@
+{
+  "watch": ["server.js", "controllers", "routes"],
+  "ignore": [
+    "templates/informes/base64_debug.json",
+    "templates/informes/debug_render.html",
+    "tmp/"
+  ]
+}

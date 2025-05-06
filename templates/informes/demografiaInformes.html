@@ -1,0 +1,145 @@
+<section>
+  <style>
+    img.grafico-informe {
+      width:50%;
+      max-width:100%;
+      height: auto;
+      max-height: 450px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 1rem auto;
+      border: 1px solid #cccccc4f;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+  </style>
+    <h1>Informe de Segmentación Demográfica</h1>
+
+    <p>
+      Este informe tiene como objetivo presentar una visión clara y estratégica de los distintos segmentos demográficos detectados dentro de la audiencia analizada.
+      A partir de la información pública disponible en los perfiles sociales, se clasifican los usuarios según patrones de comportamiento, intereses, biografía, uso de emojis y análisis de sentimiento.
+    </p>
+    <p>
+      La segmentación obtenida permite identificar grupos clave dentro del público objetivo, facilitando la toma de decisiones para campañas de comunicación, diseño de productos y estrategias de posicionamiento.
+      Este análisis es especialmente útil para evaluar la efectividad de una campaña en redes sociales y comprender el alcance e impacto en diferentes comunidades.
+    </p>
+    <p><strong>Fecha de generación:</strong> <span><!-- FECHA DINÁMICA OPCIONAL --></span></p>
+  
+    <h2>Resumen Ejecutivo</h2>
+    <p>
+      Este informe presenta un análisis de los perfiles identificados en la campaña, clasificados por segmentos demográficos definidos según patrones de seguidores, biografía, emojis y sentimiento.
+    </p>
+  
+    <h3>Distribución General</h3>
+    {{#if graficoDistribucionGeneral}}
+      <img class="grafico-informe" src="{{graficoDistribucionGeneral}}" alt="Distribución general" style="width:100%;" />
+    {{/if}}
+<br>
+<br>
+<br>
+<br>
+<br>
+    <div style="display: flex; justify-content: center; text-align: center; gap: 0.2rem;">
+      <div style="flex: 1;"><h3>Segmentación por Categoría</h3></div>
+      <div style="flex: 1;"><h3>Análisis de Sentimiento por Categoría</h3></div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 0.2rem; justify-content: center;">
+      <div style="flex: 1 1 45%;">
+        {{#if graficoSegmentacion}}
+          <img class="grafico-informe" src="{{graficoSegmentacion}}" alt="Distribución por categoría" style="width: 100%;" />
+        {{/if}}
+      </div>
+
+      <div style="flex: 1 1 45%;">
+        {{#if graficoSentimiento}}
+          <img class="grafico-informe" src="{{graficoSentimiento}}" alt="Sentimiento por categoría" style="width: 100%;" />
+        {{/if}}
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; text-align: center; gap: 0.2rem;">
+      <div style="flex: 1;"><h3>Nube de Palabras Segmento Positivo</h3></div>
+      <div style="flex: 1;"><h3>Nube de Palabras Segmento Neutro</h3></div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 0.2rem; justify-content: center;">
+      <div style="flex: 1 1 45%;">
+        {{#if nubePalabrasSegmentoPositivo}}
+          <img class="grafico-informe" src="{{nubePalabrasSegmentoPositivo}}" alt="Nube de palabras positivo" style="width: 100%;" />
+        {{/if}}
+      </div>
+
+      <div style="flex: 1 1 45%;">
+        {{#if nubePalabrasSegmentoNeutro}}
+          <img class="grafico-informe" src="{{nubePalabrasSegmentoNeutro}}" alt="Nube de palabras neutro" style="width: 100%;" />
+        {{/if}}
+      </div>
+    </div>
+
+    <h3 style="text-align: center;">Nube de Palabras Segmento Negativo</h3>
+    {{#if nubePalabrasSegmentoNegativo}}
+      <img class="grafico-informe" src="{{nubePalabrasSegmentoNegativo}}" alt="Nube de palabras negativo" style="height: 200px;" />
+    {{/if}}
+
+    <br><br>
+
+    <h3>Emojis más Utilizados por Categoría</h3>
+    {{#if graficoEmojis}}
+      <img class="grafico-informe" src="{{graficoEmojis}}" alt="Emojis por categoría" style="width: 100%;" />
+    {{/if}}
+
+    <!-- <h3>Red de Perfiles Segmentados</h3
+    {{#if redUsuarios}}
+      <img class="grafico-informe" src="{{redUsuarios}}" alt="Red de perfiles" />
+    {{/if}} -->
+  
+  <h3 style="text-align: center;">Top Perfiles por Segmento</h3>
+  <div style="display: flex; flex-direction: column; gap: 2rem;">
+    <style>
+      .bloque-categoria {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+        width: 100%;
+      }
+      .bloque-categoria h4 {
+        margin-bottom: 0.5rem;
+        color: #024959;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: center;
+      }
+      .fila-tarjetas-top {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+      }
+      .tarjeta-indicador {
+        flex: 1 1 300px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 2px 2px 8px #00000022;
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .tarjeta-indicador strong {
+        color: #024959;
+      }
+      .tarjeta-indicador div {
+        margin-top: 0.5rem;
+      }
+    </style>
+    {{tablaTopPerfiles}}
+  </div>
+  </section>

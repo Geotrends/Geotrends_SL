@@ -321,3 +321,14 @@
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
+
+
+/* === Descripción centrada y coherente para gráficos === */
+.grafico-descripcion {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}

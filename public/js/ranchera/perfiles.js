@@ -1,7 +1,20 @@
+// === Bloque utilitario para descripciones de gráficos ===
+function agregarDescripcionGrafico(id, texto) {
+  const grafico = document.getElementById(id);
+  if (grafico && !grafico.nextElementSibling?.classList?.contains("grafico-descripcion")) {
+    const desc = document.createElement("div");
+    desc.className = "grafico-descripcion";
+    desc.textContent = texto;
+    grafico.parentNode.insertBefore(desc, grafico.nextSibling);
+  }
+}
 import { procesarYActualizarWordCloudBiografias, crearWordCloud } from "./utils/wordClouds.js";
 import { generarRedPerfiles } from "./utils/redes.js";
 import { crearGraficoScatter, crearGraficoPie, crearGraficoBarras } from "./utils/charts.js";
 import { generarRedSegmentacionSentimiento } from "./utils/redes.js";
+import { configurarBotonInformePerfiles } from "./informePerfiles.js";
+
+configurarBotonInformePerfiles();
 
 
 let perfilesSemillaGlobal = []; // Declarar al inicio del archivo para usar globalmente
@@ -356,6 +369,7 @@ export function inicializarVistaPerfiles() {
               margin: 10
             }}
         });
+        agregarDescripcionGrafico('grafico-emojis', 'Este gráfico muestra los emojis más utilizados por los perfiles seleccionados, lo cual puede reflejar estilos emocionales o patrones de comunicación frecuentes.');
 
         // === ACTUALIZAR TARJETAS CUANTITATIVAS ===
         const totalPerfiles = perfilesFiltrados.length;
@@ -409,6 +423,7 @@ export function inicializarVistaPerfiles() {
           titulo: "Seguidores",
           datos: perfilesFiltrados
         });
+        agregarDescripcionGrafico('scatterFollowersPosts', 'Gráfico de dispersión que relaciona la cantidad de seguidores con el número de publicaciones de cada perfil analizado.');
       };
 
       selectorCategorias.addEventListener("change", aplicarFiltrosNube);
@@ -596,6 +611,7 @@ async function cargarGraficosSentimiento() {
       titulo: 'Distribución de sentimiento',
       datos: Object.entries(conteoSentimiento).map(([name, value]) => ({ name, value }))
     });
+    agregarDescripcionGrafico('grafico-pie-sentimiento', 'Distribución del sentimiento predominante detectado en los comentarios asociados a los perfiles seleccionados.');
 
     // Si no hay emojis encontrados, crear uno genérico para evitar que el gráfico quede vacío
     const datosEmojis = topEmojis.length > 0 ? topEmojis : [['🙂', 0]];
@@ -613,6 +629,7 @@ async function cargarGraficosSentimiento() {
           margin: 10
         }}
     });
+    agregarDescripcionGrafico('grafico-emojis', 'Este gráfico muestra los emojis más utilizados por los perfiles seleccionados, lo cual puede reflejar estilos emocionales o patrones de comunicación frecuentes.');
 
     const mapeoContenedores = {
       POSITIVO: "contenedorWordCloudPositivo",
@@ -635,6 +652,12 @@ async function cargarGraficosSentimiento() {
           contenedorId: mapeoContenedores[sent],
           palabras: filtradas
         });
+        // Descripción para nubes de palabras por sentimiento
+        let txt = '';
+        if (sent === 'POSITIVO') txt = 'Nube de palabras positivas extraídas de los comentarios. Las palabras más grandes son las más frecuentes en el sentimiento positivo.';
+        if (sent === 'NEUTRO') txt = 'Nube de palabras neutras extraídas de los comentarios. Las palabras más grandes son las más frecuentes en el sentimiento neutro.';
+        if (sent === 'NEGATIVO') txt = 'Nube de palabras negativas extraídas de los comentarios. Las palabras más grandes son las más frecuentes en el sentimiento negativo.';
+        agregarDescripcionGrafico(mapeoContenedores[sent], txt);
       };
       
       document.getElementById(sliderId).removeEventListener('input', actualizar);
@@ -710,6 +733,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
     categorias,
     datos: valores
   });
+  agregarDescripcionGrafico('grafico-segmentacion-audiencia', 'Este gráfico muestra la cantidad de perfiles detectados en cada categoría según la segmentación de audiencia.');
 
   // === NUEVO BLOQUE: Gráfico de sentimiento por categoría ===
   const responseAnalisis = await fetch('/api/ranchera/analisis-sentimiento', {
@@ -755,6 +779,8 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
       }))
     });
     window.addEventListener('resize', () => chart.resize());
+    // Descripción para gráfico de sentimiento por categoría
+    agregarDescripcionGrafico('grafico-sentimiento-por-categoria', 'Sentimiento predominante por cada categoría detectada en la segmentación de audiencia.');
   }
 
   // === NUEVO BLOQUE: Red de segmentación por sentimiento con ECharts ===
@@ -818,6 +844,12 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
         .filter(([, count]) => count >= min)
         .map(([text, weight]) => ({ text, weight }));
       crearWordCloud({ contenedorId: contenedor, palabras: filtradas });
+      // Descripción para nubes de palabras por sentimiento y categoría
+      let txt = '';
+      if (sent === 'POSITIVO') txt = 'Nube de palabras positivas extraídas de los perfiles de esta categoría. Las palabras más grandes son las más frecuentes en el sentimiento positivo.';
+      if (sent === 'NEUTRO') txt = 'Nube de palabras neutras extraídas de los perfiles de esta categoría. Las palabras más grandes son las más frecuentes en el sentimiento neutro.';
+      if (sent === 'NEGATIVO') txt = 'Nube de palabras negativas extraídas de los perfiles de esta categoría. Las palabras más grandes son las más frecuentes en el sentimiento negativo.';
+      agregarDescripcionGrafico(contenedor, txt);
     });
   });
 
@@ -1037,6 +1069,7 @@ function generarAnalisisInicial() {
         titulo: "Seguidores",
         datos: perfiles,
       });
+      agregarDescripcionGrafico('scatterFollowersPosts', 'Gráfico de dispersión que relaciona la cantidad de seguidores con el número de publicaciones de cada perfil analizado.');
 
       // 🔥 Forzar primer despliegue de Emojis aunque esté vacío
 crearGraficoBarras({
@@ -1052,6 +1085,7 @@ crearGraficoBarras({
       margin: 10
     }}
 });
+agregarDescripcionGrafico('grafico-emojis', 'Este gráfico muestra los emojis más utilizados por los perfiles seleccionados, lo cual puede reflejar estilos emocionales o patrones de comunicación frecuentes.');
 
       // 🚀 Crear WordClouds de inmediato con los datos del scatter
 const textoBiografias = perfiles.map((p) => p.biography || "").join(" ");
@@ -1108,12 +1142,15 @@ procesarYActualizarWordCloudBiografias({
   contenedorId: "contenedorWordCloud",
 });
 
+agregarDescripcionGrafico('contenedorWordCloud', 'Nube de palabras extraídas de las biografías de los perfiles. Las palabras más grandes son las más frecuentes.');
+
 procesarYActualizarWordCloudBiografias({
   texto: textoNombres,
   sliderId: "sliderNombres",
   valorSliderId: "valorNombres",
   contenedorId: "contenedorWordCloudNombres",
 });
+agregarDescripcionGrafico('contenedorWordCloudNombres', 'Nube de palabras formada con los nombres de los perfiles. Las palabras más grandes son los nombres más frecuentes.');
       // Llamar a los gráficos de sentimiento tras el análisis
       cargarGraficosSentimiento();
 

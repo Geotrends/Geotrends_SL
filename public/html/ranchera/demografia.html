@@ -11,10 +11,14 @@
   </head>
   <body>
     <!-- controles-superiores section removed -->
+    <button id="btnDescargarPDF" class="btn-principal" disabled>📄 Descargar informe PDF</button>
 
     <!-- SCATTER INICIAL -->
     <section class="grafico-scatter-demografia">
       <h2>Distribución general de perfiles</h2>
+      <p>
+        Esta sección resume la distribución de todos los perfiles analizados antes de aplicar segmentaciones automáticas.
+      </p>
       <!-- Aquí podría ir el scatter inicial si existe, pero según el código, el scatter se muestra tras segmentar -->
       <!-- Se deja la sección para mantener la estructura solicitada -->
     </section>
@@ -23,18 +27,12 @@
     <section class="grafico-segmentacion">
       <h2>Distribución por segmento de audiencia</h2>
       <p>
-        Clasificación automática de perfiles basada en reglas temáticas
-        definidas.
+        Clasificación automática de perfiles basada en reglas temáticas definidas. El gráfico resultante muestra la relación entre seguidores, seguidos y publicaciones de cada perfil según su segmento.
       </p>
       <div id="editorReglasSegmentacion"></div>
       <button id="botonSegmentarAudiencia" class="btn-verde">
         Segmentar audiencia
       </button>
-
-      <p>
-        Relación de seguidores, seguidos y publicaciones de cada perfil según su
-        segmento.
-      </p>
       <div
         id="grafico-scatter-demografia"
         style="height: 500px; margin-bottom: 2rem"
@@ -47,7 +45,9 @@
       <div class="contenedor-graficos-amplio">
         <div class="fila-graficos-doble">
           <div class="bloque-grafico">
-            <p>Cantidad de perfiles detectados por categoría asignada.</p>
+            <p>
+              Cantidad de perfiles agrupados según la categoría temática detectada durante la segmentación.
+            </p>
             <div
               id="grafico-cantidad-por-categoria"
               class="grafico-barra-horizontal"
@@ -55,8 +55,7 @@
           </div>
           <div class="bloque-grafico">
             <p>
-              Relación de sentimiento positivo, neutro y negativo detectado en
-              los perfiles segmentados.
+              Análisis de sentimientos detectados en perfiles segmentados, agrupados por categoría temática.
             </p>
             <div
               id="grafico-sentimiento-por-categoria"
@@ -71,8 +70,7 @@
     <section class="nube-palabras-por-segmento">
       <h2>Nubes de palabras por sentimiento</h2>
       <p>
-        Palabras más representativas extraídas de biografías de usuarios,
-        diferenciadas por sentimiento.
+        Palabras más representativas extraídas de biografías de usuarios, diferenciadas por sentimiento y categoría. Cada nube representa términos frecuentes que caracterizan la identidad de los perfiles.
       </p>
 
       <div class="controles-nube-palabras">
@@ -143,13 +141,20 @@
           class="grafico-nube"
         ></div>
         <div id="contenedorWordCloudSegmentoNeutro" class="grafico-nube"></div>
-        <div
-          id="contenedorWordCloudSegmentoNegativo"
-          class="grafico-nube"
-        ></div>
+        {{#if nubePalabrasSegmentoNegativo}}
+          <div
+            id="contenedorWordCloudSegmentoNegativo"
+            class="grafico-nube"
+          >
+            <img src="data:image/png;base64,{{nubePalabrasSegmentoNegativo}}" alt="Nube de palabras negativo" style="width:100%; max-height:400px;" />
+          </div>
+        {{/if}}
       </div>
       <div class="grafico-emojis-nube">
         <h3>Emojis más utilizados por categoría</h3>
+        <p class="grafico-descripcion">
+          Visualización de los emojis más utilizados por los usuarios, agrupados por categoría temática. Refleja expresiones emocionales comunes dentro de cada grupo.
+        </p>
         <div id="grafico-emojis-por-categoria" class="grafico-barra-horizontal" style="height: 400px;"></div>
       </div>
     </section>
@@ -164,17 +169,23 @@
             detectado.
           </p>
         </div>
-        <div id="contenedorRedSegmentacion" class="grafico-red"></div>
+        {{#if redUsuarios}}
+          <div id="contenedorRedSegmentacion" class="grafico-red">
+            <img src="data:image/png;base64,{{redUsuarios}}" alt="Red de perfiles" style="width:100%; max-height:400px;" />
+          </div>
+        {{/if}}
       </div>
     </section>
 
     <!-- TOP PERFILES POR SEGMENTO -->
     <section id="topPerfilesPorSegmento" class="top-perfiles">
       <h2>Top 5 Perfiles por Categoría</h2>
+      <p>
+        Este bloque muestra los cinco perfiles más relevantes de cada categoría, ordenados según distintos criterios como seguidores, densidad de emojis o sentimiento positivo.
+      </p>
     </section>
 
     <style></style>
 
     <script src="/js/ranchera/demografia.js"></script>
-  </body>
-</html>
+    <script src="/js/ranchera/informeDemografia.js"></script>

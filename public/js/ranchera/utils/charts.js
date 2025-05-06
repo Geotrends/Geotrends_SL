@@ -11,6 +11,7 @@ export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, co
   }
 
   const chart = echarts.init(contenedor);
+  window[`grafico_${contenedorId}`] = chart;
   const maxPosts = Math.max(...datos.map(p => p.posts_count));
   const colores = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
   const opciones = {
@@ -74,6 +75,7 @@ export function crearGraficoBarrasHorizontal({ contenedorId, titulo, categorias,
   }
 
   const chart = echarts.init(contenedor);
+  window[`grafico_${contenedorId}`] = chart;
   let series = [];
 
   if (Array.isArray(datos) && typeof datos[0] === 'object' && datos[0].data) {
@@ -145,6 +147,7 @@ export function crearGraficoLineas({ contenedorId, titulo, categorias, series })
   }
 
   const chart = echarts.init(contenedor);
+  window[`grafico_${contenedorId}`] = chart;
 
   const opciones = {
     title: { text: titulo, left: 'center' },
@@ -188,6 +191,7 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
   }
 
   const chart = echarts.init(contenedor);
+  window[`grafico_${contenedorId}`] = chart;
   // NUEVO BLOQUE: calcular seguidores filtrando solo > 0, minSeg, maxSeg
   const seguidores = datos.map(p => p.followers ?? p.followers_count ?? 0).filter(v => v > 0);
   const minSeg = seguidores.length ? Math.min(...seguidores) : 1;
@@ -311,6 +315,7 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
 
   chart.setOption(opciones);
   window.addEventListener('resize', () => chart.resize());
+  return chart;
 }
 
 export function crearGraficoPie({ contenedorId, titulo, datos }) {
@@ -318,6 +323,7 @@ export function crearGraficoPie({ contenedorId, titulo, datos }) {
   if (!contenedor) return;
 
   const chart = echarts.init(contenedor);
+  window[`grafico_${contenedorId}`] = chart;
   const opciones = {
     title: { text: titulo, left: 'center' },
     tooltip: { trigger: 'item' },
@@ -346,6 +352,7 @@ export function crearWordCloud({ contenedorId, palabras }) {
   if (!contenedor || palabras.length === 0) return;
 
   const chart = echarts.init(contenedor);
+  window[`grafico_${contenedorId}`] = chart;
   const opciones = {
     tooltip: {},
     series: [{

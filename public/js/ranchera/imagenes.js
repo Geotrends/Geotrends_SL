@@ -2,9 +2,9 @@ import * as echarts from "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.es
 
 export function inicializarVistaImagenes() {
     console.log("JS activo");
-    const estado = document.getElementById("estadoConexion");
+   // const estado = document.getElementById("estadoConexion");
     if (estado) {
-      estado.textContent = "✅ Conexión JS establecida correctamente";
+     // estado.textContent = "✅ Conexión JS establecida correctamente";
     } else {
       console.warn("No se encontró el elemento con ID estadoConexion");
     }
@@ -44,11 +44,20 @@ export function inicializarVistaImagenes() {
       });
     });
 
+    // Crear contenedor visual para gráfico + descripción
     const contenedor = document.createElement("div");
-    contenedor.id = "graficoRelacionesEtiquetas";
-    contenedor.style.height = "600px";
     contenedor.className = "bloque-contenedor";
-    document.querySelector(".imagenes").appendChild(contenedor);
+    contenedor.style.padding = "1.5rem";
+    // Insertar en el contenedor oculto de imágenes
+    const imagenesContenido = document.querySelector(".imagenes-contenido");
+    const destinoGraficos = imagenesContenido || document.querySelector(".imagenes");
+    destinoGraficos.appendChild(contenedor);
+
+    // Div para el gráfico
+    const graficoRelaciones = document.createElement("div");
+    graficoRelaciones.id = "graficoRelacionesEtiquetas";
+    graficoRelaciones.style.height = "600px";
+    contenedor.appendChild(graficoRelaciones);
 
     const categorias = {
       edad: ["niños", "adultos", "jovenes"],
@@ -89,7 +98,7 @@ export function inicializarVistaImagenes() {
       };
     });
 
-    const chart = echarts.init(contenedor);
+    const chart = echarts.init(graficoRelaciones);
     chart.setOption({
       title: {
         text: "Relaciones entre etiquetas de imagen",
@@ -138,6 +147,12 @@ export function inicializarVistaImagenes() {
       }]
     });
 
+    // Descripción para graficoRelacionesEtiquetas
+    const desc1 = document.createElement("p");
+    desc1.className = "descripcion-grafico";
+    desc1.textContent = "Este gráfico muestra cómo se relacionan las etiquetas más frecuentes presentes en las imágenes, agrupadas por categorías temáticas.";
+    contenedor.appendChild(desc1);
+
     // === NUBE DE PALABRAS DE ETIQUETAS (con slider de frecuencia mínima) ===
     import('/js/ranchera/utils/wordClouds.js').then(({ crearWordCloud }) => {
       // Crear contenedor visual
@@ -162,7 +177,6 @@ export function inicializarVistaImagenes() {
       wrapper.appendChild(titulo);
       wrapper.appendChild(sliderLabel);
       wrapper.appendChild(divNube);
-      document.querySelector(".imagenes").appendChild(wrapper);
 
       const frecuenciaPalabrasEtiquetas = {};
       data.forEach(row => {
@@ -184,6 +198,8 @@ export function inicializarVistaImagenes() {
         .sort((a, b) => b.weight - a.weight)
         .slice(0, 300);
 
+      // El slider y valor deben buscarse después de insertarse en el DOM
+      destinoGraficos.appendChild(wrapper);
       const slider = document.getElementById("sliderEtiquetas");
       const valor = document.getElementById("valorSliderEtiquetas");
 
@@ -199,6 +215,12 @@ export function inicializarVistaImagenes() {
 
       slider.addEventListener("input", actualizarNube);
       actualizarNube();
+
+      // Descripción para nube de palabras
+      const desc2 = document.createElement("p");
+      desc2.className = "descripcion-grafico";
+      desc2.textContent = "Nube de palabras que representa la frecuencia de etiquetas utilizadas en todas las imágenes procesadas.";
+      wrapper.appendChild(desc2);
     }).then(() => {
       // === HEATMAP CUENTAS vs CATEGORÍAS ===
       const cuentas = Array.from(new Set(data.map(d => d.path.split("_")[0])));
@@ -228,13 +250,17 @@ export function inicializarVistaImagenes() {
         return [cuentaIndex[cuenta], categoriaIndex[categoria], value];
       });
 
+      // Crear contenedor visual para heatmap + descripción
       const contenedor4 = document.createElement("div");
-      contenedor4.id = "heatmapCuentasCategorias";
-      contenedor4.style.height = "700px";
       contenedor4.className = "bloque-contenedor";
-      document.querySelector(".imagenes").appendChild(contenedor4);
+      destinoGraficos.appendChild(contenedor4);
 
-      const chart4 = echarts.init(contenedor4);
+      const graficoHeatmap = document.createElement("div");
+      graficoHeatmap.id = "heatmapCuentasCategorias";
+      graficoHeatmap.style.height = "700px";
+      contenedor4.appendChild(graficoHeatmap);
+
+      const chart4 = echarts.init(graficoHeatmap);
       chart4.setOption({
         animation: false,
         tooltip: {
@@ -283,6 +309,12 @@ export function inicializarVistaImagenes() {
           }
         }]
       });
+
+      // Descripción para heatmapCuentasCategorias
+      const desc3 = document.createElement("p");
+      desc3.className = "descripcion-grafico";
+      desc3.textContent = "Este mapa de calor muestra la frecuencia con que cada cuenta publica imágenes relacionadas con diferentes categorías.";
+      contenedor4.appendChild(desc3);
 
       // === HEATMAP AGRUPADO estilo heatmap-large ===
       /*
@@ -449,11 +481,15 @@ export function inicializarVistaImagenes() {
         nombresNodos.has(e.source) &&
         nombresNodos.has(e.target)
       );
+      // Crear contenedor visual para grafo + descripción
       const contenedor2 = document.createElement("div");
-      contenedor2.id = "grafoUsuariosEtiquetas";
-      contenedor2.style.height = "700px";
       contenedor2.className = "bloque-contenedor";
-      document.querySelector(".imagenes").appendChild(contenedor2);
+      destinoGraficos.appendChild(contenedor2);
+
+      const divGrafo = document.createElement("div");
+      divGrafo.id = "grafoUsuariosEtiquetas";
+      divGrafo.style.height = "700px";
+      contenedor2.appendChild(divGrafo);
 
       // Normalize symbolSize of nodes
       const maxValor = Math.max(...nodos.map(n => n.value || 0));
@@ -464,7 +500,7 @@ export function inicializarVistaImagenes() {
         n.symbolSize = maxValor > 0 ? minSize2 + ((val / maxValor) * (maxSize2 - minSize2)) : minSize2;
       });
 
-      const chart2 = echarts.init(contenedor2);
+      const chart2 = echarts.init(divGrafo);
       console.log("🧩 Nodos:", nodos);
       console.log("🔗 Enlaces validados:", enlacesValidados);
       console.log("🧾 Nombres únicos de nodos:", [...nombresNodos]);
@@ -515,6 +551,12 @@ export function inicializarVistaImagenes() {
           }
         }]
       });
+
+      // Descripción para grafoUsuariosEtiquetas
+      const desc4 = document.createElement("p");
+      desc4.className = "descripcion-grafico";
+      desc4.textContent = "Red que muestra las conexiones entre usuarios y las etiquetas más frecuentes en sus publicaciones.";
+      contenedor2.appendChild(desc4);
 
       // === GRAFO USUARIO ↔ CATEGORÍAS FIJAS ===
       /*
@@ -654,91 +696,141 @@ fetch("/api/ranchera/imagenes-etiquetas")
 
     selector.addEventListener("change", () => {
       const usuarioSeleccionado = selector.value;
-      contenedorCarrusel.innerHTML = "";
-      // Limpia la nube de etiquetas del usuario seleccionado
+      // Limpia SOLO la galería y la nube de etiquetas/resumen del usuario seleccionado
+      const galeria = document.getElementById("galeriaUsuario");
+      if (galeria) galeria.innerHTML = "";
       const divNubeUsuario = document.getElementById("nubeEtiquetasUsuario");
       if (divNubeUsuario) divNubeUsuario.innerHTML = "";
       const resumen = document.getElementById("resumenEtiquetasUsuario");
       if (resumen) resumen.innerHTML = "";
 
-      if (!usuarioSeleccionado) return;
+      // Siempre asegurar visibilidad y existencia del bloque de nube/síntesis
+      const contenedorNube = document.getElementById("nubeEtiquetasUsuario");
+      if (contenedorNube) {
+        contenedorNube.style.display = "block";
+      }
+      const bloqueSintesis = document.getElementById("bloqueSintesisUsuario");
+      if (bloqueSintesis) {
+        bloqueSintesis.style.display = "block";
+      }
 
-      const imagenes = data.filter(d => d.path.startsWith(`${usuarioSeleccionado}_`));
-      if (imagenes.length === 0) {
-        contenedorCarrusel.innerHTML = "<p>No hay imágenes para este usuario.</p>";
+      // NO remover ni sobrescribir #bloqueSintesisUsuario ni #nubeEtiquetasUsuario
+      // (ya no hay ningún .remove() ni innerHTML global aquí)
+
+      // Mostrar transición de galería/nube
+      const bloqueGaleria = document.querySelector(".galeria-transicion");
+      if (bloqueGaleria) {
+        bloqueGaleria.style.opacity = "0";
+        setTimeout(() => {
+          bloqueGaleria.style.opacity = "1";
+        }, 100);
+      }
+
+      // No hacer return anticipado: si no hay usuario, solo limpiar, pero mantener nube visible
+      if (!usuarioSeleccionado) {
+        // La nube y resumen ya están limpios arriba, pero el contenedor sigue visible
         return;
       }
 
-      const carrusel = document.createElement("div");
-      carrusel.className = "carrusel-usuario";
+      const imagenes = data.filter(d => d.path.startsWith(`${usuarioSeleccionado}_`));
+      if (imagenes.length === 0) {
+        if (galeria) galeria.innerHTML = "<p>No hay imágenes para este usuario.</p>";
+        // Aún así, permitir que la nube de palabras se genere (estará vacía)
+      }
 
-      imagenes.forEach((imgData) => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "slide-imagen";
+      if (imagenes.length > 0) {
+        const carrusel = document.createElement("div");
+        carrusel.className = "carrusel-usuario";
+        imagenes.forEach((imgData) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "slide-imagen";
 
-        const img = document.createElement("img");
-        // Nueva lógica para evitar duplicación de carpeta si el path ya tiene subcarpeta
-        let srcFinal = "";
-        if (imgData.path.includes("/")) {
-          srcFinal = `/images/Imagenes_Ranchera/${imgData.path}`;
-        } else {
-          const usuarioCarpeta = imgData.path.split("_")[0];
-          srcFinal = `/images/Imagenes_Ranchera/${usuarioCarpeta}_photos/${imgData.path}`;
+          const img = document.createElement("img");
+          // Nueva lógica para evitar duplicación de carpeta si el path ya tiene subcarpeta
+          let srcFinal = "";
+          if (imgData.path.includes("/")) {
+            srcFinal = `/images/Imagenes_Ranchera/${imgData.path}`;
+          } else {
+            const usuarioCarpeta = imgData.path.split("_")[0];
+            srcFinal = `/images/Imagenes_Ranchera/${usuarioCarpeta}_photos/${imgData.path}`;
+          }
+          img.src = srcFinal;
+          img.alt = imgData.imagen || usuarioSeleccionado;
+          // Validar error de carga de imagen: si hay error, eliminar el wrapper
+          img.onerror = () => {
+            wrapper.remove();
+          };
+
+          const pie = document.createElement("p");
+          pie.className = "pie-imagen";
+          pie.textContent = Array.isArray(imgData.etiquetas)
+            ? imgData.etiquetas.join(", ")
+            : "Sin etiquetas";
+
+          wrapper.appendChild(img);
+          wrapper.appendChild(pie);
+          carrusel.appendChild(wrapper);
+        });
+        if (galeria) galeria.appendChild(carrusel);
+      }
+
+      // === NUBE DE PALABRAS DEL USUARIO SELECCIONADO (siempre ejecutada) ===
+      const etiquetasUsuario = {};
+      imagenes.forEach(img => {
+        if (Array.isArray(img.etiquetas)) {
+          img.etiquetas.forEach(et => {
+            const palabras = et.split(/[,\s]+/);
+            palabras.forEach(palabraCruda => {
+              const palabra = palabraCruda.replace(/["{}]/g, "").trim().toLowerCase();
+              if (palabra) {
+                etiquetasUsuario[palabra] = (etiquetasUsuario[palabra] || 0) + 1;
+              }
+            });
+          });
         }
-        img.src = srcFinal;
-        img.alt = imgData.imagen || usuarioSeleccionado;
-        // Validar error de carga de imagen: si hay error, eliminar el wrapper
-        img.onerror = () => {
-          wrapper.remove();
-        };
-
-        const pie = document.createElement("p");
-        pie.className = "pie-imagen";
-        pie.textContent = Array.isArray(imgData.etiquetas)
-          ? imgData.etiquetas.join(", ")
-          : "Sin etiquetas";
-
-        wrapper.appendChild(img);
-        wrapper.appendChild(pie);
-        carrusel.appendChild(wrapper);
       });
 
-      contenedorCarrusel.appendChild(carrusel);
+      const lista = Object.entries(etiquetasUsuario)
+        .map(([text, weight]) => ({ text, weight }))
+        .sort((a, b) => b.weight - a.weight)
+        .slice(0, 120);
 
-      // === NUBE DE PALABRAS DEL USUARIO SELECCIONADO ===
-      if (divNubeUsuario) {
-        // Recolectar etiquetas del usuario seleccionado
-        const etiquetasUsuario = {};
-        imagenes.forEach(img => {
-          if (Array.isArray(img.etiquetas)) {
-            img.etiquetas.forEach(et => {
-              const palabras = et.split(/[,\s]+/);
-              palabras.forEach(palabraCruda => {
-                const palabra = palabraCruda.replace(/["{}]/g, "").trim().toLowerCase();
-                if (palabra) {
-                  etiquetasUsuario[palabra] = (etiquetasUsuario[palabra] || 0) + 1;
-                }
-              });
+      import('/js/ranchera/utils/wordClouds.js').then(({ crearWordCloud }) => {
+        // Forzar visibilidad y existencia del contenedor de la nube ANTES de crear la nube
+        const contenedorNube = document.getElementById("nubeEtiquetasUsuario");
+        if (contenedorNube) {
+          contenedorNube.style.display = "block";
+        }
+        if (contenedorNube) {
+          const contenedor = document.getElementById("nubeEtiquetasUsuario");
+          if (contenedor) {
+            contenedor.innerHTML = "";
+            const chart = echarts.init(contenedor);
+            chart.clear();
+            chart.dispose(); // 🔄 fuerza recreación del gráfico
+            crearWordCloud({
+              contenedorId: "nubeEtiquetasUsuario",
+              palabras: lista
             });
           }
-        });
-        // Lista ordenada de palabras
-        const lista = Object.entries(etiquetasUsuario)
-          .map(([text, weight]) => ({ text, weight }))
-          .sort((a, b) => b.weight - a.weight)
-          .slice(0, 120);
-        import('/js/ranchera/utils/wordClouds.js').then(({ crearWordCloud }) => {
-          crearWordCloud({
-            contenedorId: "nubeEtiquetasUsuario",
-            palabras: lista
-          });
-          // Añadir resumen textual de etiquetas principales
+        }
+
+        const resumen = document.getElementById("resumenEtiquetasUsuario");
+        if (resumen) {
           const top3 = lista.slice(0, 3).map(p => p.text);
-          const resumen = document.getElementById("resumenEtiquetasUsuario");
-          if (resumen) {
+          if (top3.length > 0) {
             resumen.innerHTML = `🔍 Este usuario se asocia principalmente con las etiquetas: <strong>${top3.join(", ")}</strong>.`;
+          } else {
+            resumen.innerHTML = "";
           }
-        });
-      }
+        }
+      });
     });
-  });
+    });
+    // Mostrar suavemente el contenedor de gráficos una vez que todo está cargado
+    const contenido = document.querySelector(".imagenes-contenido");
+    if (contenido) {
+      setTimeout(() => {
+        contenido.style.opacity = "1";
+      }, 300);
+    }

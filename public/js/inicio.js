@@ -244,6 +244,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   if (mod.inicializarVistaPerfiles) {
                     mod.inicializarVistaPerfiles();
                   }
+                  // Importar módulo de informePerfiles.js después de cargar perfiles.js
+                  import("/js/ranchera/informePerfiles.js").then((mod) => {
+                    if (mod.configurarBotonInformePerfiles) {
+                      mod.configurarBotonInformePerfiles();
+                    }
+                  }).catch((err) => {
+                    console.error("❌ Error al cargar informePerfiles.js como módulo:", err);
+                  });
                 })
                 .catch((err) => {
                   console.error("❌ Error al cargar módulo de perfiles:", err);
@@ -255,8 +263,16 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (url.includes("insights.html")) {
               cargarScriptDinamico("/js/ranchera/insights.js");
             } else if (url.includes("demografia.html")) {
-             // Verificar si el script ya está cargado antes de intentar cargarlo
               cargarScriptDinamico("/js/ranchera/demografia.js");
+              import("/js/ranchera/informeDemografia.js")
+                .then(mod => {
+                  if (mod.inicializarGeneradorPDF) {
+                    mod.inicializarGeneradorPDF();
+                  }
+                })
+                .catch(err => {
+                  console.error("❌ Error al cargar informeDemografia.js como módulo:", err);
+                });
             } else if (url.includes("imagenes.html")) {
               import("/js/ranchera/imagenes.js")
                 .then((mod) => {

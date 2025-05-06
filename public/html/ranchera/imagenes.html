@@ -9,8 +9,8 @@
 <body>
   <section class="imagenes">
     <h1>Explorador de Imágenes</h1>
-    <div class="bloque-contenedor">
-      <p id="estadoConexion">📷 Cargando conexión...</p>
+    <div class="imagenes-contenido" style="opacity: 0; transition: opacity 0.6s ease;">
+      <!-- Aquí se insertan los gráficos dinámicamente -->
     </div>
   </section>
 
@@ -20,15 +20,17 @@
     <select id="selectorUsuario">
       <option value="">-- Selecciona un usuario --</option>
     </select>
-    <div id="contenedorCarrusel" class="bloque-contenedor"></div>
-    <!-- Bloque explicativo de la nube de etiquetas del usuario -->
-    <div class="bloque-contenedor">
-      <h3 class="titulo-nube">🧠 Síntesis visual del usuario seleccionado</h3>
-      <p class="descripcion-nube">
-        Esta nube representa las <strong>etiquetas temáticas</strong> extraídas de las imágenes publicadas por este usuario. Las palabras más grandes son aquellas que se repiten con mayor frecuencia y pueden revelar <strong>patrones de contenido, intereses o estilo visual predominante</strong>.
-      </p>
-      <div id="nubeEtiquetasUsuario" style="height: 400px; width: 100%; margin-bottom: 1rem;"></div>
-      <p id="resumenEtiquetasUsuario" class="descripcion-nube"></p>
+    <div id="contenedorCarrusel" class="bloque-contenedor">
+      <div class="galeria-transicion" style="opacity: 0; transition: opacity 0.6s ease;">
+        <div id="galeriaUsuario"></div>
+        <div id="bloqueSintesisUsuario">
+          <h3 class="titulo-nube">🧠 Síntesis visual del usuario seleccionado</h3>
+          <div id="nubeEtiquetasUsuario" style="height: 400px; width: 100%; margin-bottom: 1rem;"></div>
+          <p id="resumenEtiquetasUsuario" class="descripcion-nube">
+            Esta nube representa las <strong>etiquetas temáticas</strong> extraídas de las imágenes publicadas por este usuario. Las palabras más grandes son aquellas que se repiten con mayor frecuencia y pueden revelar <strong>patrones de contenido, intereses o estilo visual predominante</strong>.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
   <script type="module" src="/js/ranchera/imagenes.js"></script>

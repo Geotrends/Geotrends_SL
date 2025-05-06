@@ -111,7 +111,7 @@ if (contenedorScatter) {
 
 console.log("📊 Datos enviados al gráfico scatter:", datosScatter);
 
-crearGraficoScatter({
+window.scatterDemografiaChart = crearGraficoScatter({
   contenedorId: 'grafico-scatter-demografia',
   titulo: 'Distribución de Perfiles Segmentados',
   datos: datosScatter
@@ -490,6 +490,9 @@ crearGraficoScatter({
     // Inicializar
     actualizarGraficoEmojisPorCategoria();
   }
+
+  // Habilitar botón de descarga de PDF solo cuando los gráficos ya estén generados
+  document.getElementById("btnDescargarPDF")?.removeAttribute("disabled");
 }
 
 function renderizarEditorReglas() {

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Neumorfismo</title>
+  <style>
+    body {
+      background: #e0e5ec;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-container {
+      background: #e0e5ec;
+      border-radius: 30px;
+      box-shadow: 10px 10px 30px #babecc,
+                  -10px -10px 30px #ffffff;
+      padding: 50px 40px;
+      width: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 30px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .input-group {
+      width: 100%;
+      margin-bottom: 25px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 15px;
+      border: none;
+      background: #e0e5ec;
+      box-shadow: inset 5px 5px 10px #babecc,
+                  inset -5px -5px 10px #ffffff;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .neumorphic-btn {
+      background: #e0e5ec;
+      border: none;
+      border-radius: 15px;
+      padding: 15px;
+      width: 100%;
+      font-size: 16px;
+      box-shadow: 6px 6px 12px #babecc,
+                  -6px -6px 12px #ffffff;
+      cursor: pointer;
+      color: #555;
+      transition: 0.2s ease;
+    }
+
+    .neumorphic-btn:active {
+      box-shadow: inset 6px 6px 12px #babecc,
+                  inset -6px -6px 12px #ffffff;
+      color: #222;
+    }
+
+    .forgot {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .forgot:hover {
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Iniciar Sesión</h2>
+    <div class="input-group">
+      <input type="text" placeholder="Usuario">
+    </div>
+    <div class="input-group">
+      <input type="password" placeholder="Contraseña">
+    </div>
+    <button class="neumorphic-btn">Ingresar</button>
+    <a class="forgot" href="#">¿Olvidaste tu contraseña?</a>
+  </div>
+</body>
+</html>
