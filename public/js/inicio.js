@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           texto: "Ranchera",
           submenu: [
-            { texto: "Dashboard", page: "/html/ranchera/index.html" },
+            { texto: "Cuentas", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
             { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
             { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
@@ -109,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
             { texto: "Cuentas", page: "/html/ranchera/index.html" },
             { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
             { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
+            { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
             { texto: "Demografía", page: "/html/ranchera/demografia.html" },
             { texto: "Insights", page: "/html/ranchera/insights.html" },
           ],
