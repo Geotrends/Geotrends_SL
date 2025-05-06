@@ -1,38 +1,176 @@
-<section>
-    <h1>Análisis de Perfiles en Instagram</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Informe de Perfiles</title>
+  <style>
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      margin: 40px;
+      color: #222;
+    }
+    h1 {
+      text-align: center;
+      color: #024959;
+    }
+    h2, h3 {
+      color: #024959;
+    }
+    img.grafico-informe {
+      width: 50%;
+      max-width: 100%;
+      height: auto;
+      max-height: 450px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 1rem auto;
+      border: 1px solid #cccccc4f;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    p.grafico-descripcion {
+      font-size: 0.65rem;
+      color: #333;
+      margin-top: -0.3rem;
+      margin-bottom: 0.5rem;
+      font-style: italic;
+      text-align: center;
+      background-color: #f8f8f8;
+      padding: 0.8rem 1rem;
   
-    <h2>Distribución de Seguidores</h2>
-    <div>
-      <img src="{{graficoSeguidores}}" alt="Gráfico de seguidores" style="width: 100%;" />
-    </div>
+      border-radius: 6px;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tablaResumen {
+      margin-top: 2rem;
+    }
+    .tablaResumen h3 {
+      margin-top: 1.5rem;
+      color: #024959;
+      font-size: 1.1rem;
+      text-align: left;
+    }
+    .tablaResumen .subtitulo {
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #024959;
+      margin-top: 1rem;
+    }
+    .tablaResumen ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      padding-left: 1.2rem;
+      font-size: 0.95rem;
+      break-inside: avoid;
+    }
+    .tablaResumen ul li {
+      margin-bottom: 0.2rem;
+    }
+    .tablaResumen li {
+      padding: 6px 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.95rem;
+    }
+    .tablaResumen strong {
+      color: #024959;
+    }
+    .tablaResumen li strong {
+      display: inline-block;
+      width: 160px;
+      color: #024959;
+    }
+    .tablaResumen table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      break-inside: avoid;
+    }
+    .tablaResumen th {
+      background-color: #f3f3f3;
+      color: #024959;
+      font-weight: bold;
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+    }
+    .tablaResumen td {
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    .tablaResumen tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .tablaResumen ul li {
+      display: inline-block;
+      margin-right: 1.5rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Informe de Perfiles Analizados</h1>
+
+  <p>
+    Este informe presenta un análisis de los perfiles recolectados desde cuentas semilla específicas. A través de distintas visualizaciones se destacan patrones clave en biografías, nombres de usuario, sentimiento, emojis y segmentaciones automáticas.
+  </p>
+
+  <h2>Filtros Aplicados</h2>
+  <p>
+    A continuación se detallan los filtros utilizados para generar este informe. Estos criterios permitieron segmentar los perfiles incluidos en el análisis, en función de características como universidad, número de seguidores, categoría declarada y propiedades de la cuenta (negocio, privacidad y verificación).
+  </p>
+  <div class="tablaResumen">
+   {{resumenFiltrosHTML}}
+  </div>
+
+  <h2>Gráfico de Seguidores</h2>
+  <img class="grafico-informe" src="{{graficoSeguidores}}" alt="Gráfico de seguidores" style="width: 100%;"/>
+  <p class="grafico-descripcion">
+    Este gráfico de dispersión relaciona la cantidad de seguidores con el número de publicaciones de cada perfil. Permite identificar perfiles influyentes o inactivos con base en su nivel de actividad.
+  </p>
+
+
   
-    <h2>Nube de Palabras en Biografías</h2>
-    <div>
-      <img src="{{nubeBiografias}}" alt="Wordcloud biografías" style="width: 100%;" />
-    </div>
-  
-    <h2>Nube de Palabras en Nombres</h2>
-    <div>
-      <img src="{{nubeNombres}}" alt="Wordcloud nombres" style="width: 100%;" />
+  <div style="display: flex; justify-content: center; text-align: center; gap: 0.2rem;">
+    <div style="flex: 1;"><h2>Nube de Biografías</h2></div>
+    <div style="flex: 1;"><h2>Nube de Nombres</h2></div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 0.2rem; justify-content: center;">
+    <div style="flex: 1 1 45%;">
+      <img class="grafico-informe" src="{{nubeBiografias}}" alt="Nube de biografías" style="width: 100%;" />
+      <p class="grafico-descripcion">
+        Nube de palabras extraídas de las biografías. Las palabras más grandes representan términos más frecuentes, reflejando intereses o descripciones comunes.
+      </p>
     </div>
 
-    <h2>Emojis más Usados</h2>
-    <div>
-      <img src="{{graficoEmojis}}" alt="Emojis" style="width: 100%;" />
+    <div style="flex: 1 1 45%;">
+      <img class="grafico-informe" src="{{nubeNombres}}" alt="Nube de nombres" style="width: 100%;" />
+      <p class="grafico-descripcion">
+        Nube de palabras construida a partir de los nombres de usuario. Permite identificar patrones en la elección de nombres o apodos utilizados por los perfiles.
+      </p>
     </div>
-  
-    <h2>Distribución del Sentimiento</h2>
-    <div>
-      <img src="{{graficoSentimiento}}" alt="Sentimiento" style="width: 100%;" />
-    </div>
-  
-    <h2>Resumen de Perfiles Analizados</h2>
-    <div>
-      {{tablaResumen}}
-    </div>
-  
-    <h2>Segmentación de Perfiles por Categoría</h2>
-    <div>
-      <img src="{{graficoSegmentacionPerfiles}}" alt="Segmentación perfiles" style="width: 100%;" />
-    </div>
-  </section>
+  </div>
+
+  <h2>Gráfico de Emojis</h2>
+  <img class="grafico-informe" src="{{graficoEmojis}}" alt="Gráfico de emojis"style="width: 100%;" />
+  <p class="grafico-descripcion">
+    El gráfico de barras representa los emojis más utilizados por los perfiles. Estos pueden reflejar emociones, temáticas comunes o formas de interacción frecuentes.
+  </p>
+
+  <h2>Resumen Cuantitativo</h2>
+  <p>
+    Esta sección presenta un resumen cuantitativo de los perfiles seleccionados. Se incluyen estadísticas agrupadas que permiten identificar patrones relevantes según el número de seguidores, actividad y otras variables asociadas a la muestra filtrada.
+  </p>
+  <div class="tablaResumen" style="column-count: 2; column-gap: 2rem;">
+    {{tablaResumen}}
+  </div>
+
+</body>
+</html>

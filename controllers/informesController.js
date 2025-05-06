@@ -90,6 +90,19 @@ const footerImagePath = path.join(__dirname, "../public/images/menu-footer-image
 
       htmlContenido = htmlContenido.replaceAll(`{{${key}}}`, valor);
     });
+    // Añadido: reemplazo para resumenFiltrosHTML si existe
+    htmlContenido = htmlContenido.replaceAll(`{{resumenFiltrosHTML}}`, data.resumenFiltrosHTML || "");
+
+    if (data.filtrosSeleccionados) {
+      const filtros = data.filtrosSeleccionados;
+      htmlContenido = htmlContenido
+        .replaceAll('{{filtrosSeleccionados.seguidoresMin}}', filtros.seguidoresMin)
+        .replaceAll('{{filtrosSeleccionados.seguidoresMax}}', filtros.seguidoresMax)
+        .replaceAll('{{filtrosSeleccionados.categoria}}', filtros.categoria)
+        .replaceAll('{{filtrosSeleccionados.negocio}}', filtros.negocio || "Todas")
+        .replaceAll('{{filtrosSeleccionados.privada}}', filtros.privada || "Todas")
+        .replaceAll('{{filtrosSeleccionados.verificada}}', filtros.verificada || "Todas");
+    }
   }
 
   // Validar que los campos base64 esenciales no estén vacíos ni corruptos

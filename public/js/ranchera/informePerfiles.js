@@ -73,6 +73,32 @@ export function configurarBotonInformePerfiles() {
       return;
     }
 
+    function traducirBooleano(valor) {
+      if (valor === "true") return "Sí";
+      if (valor === "false") return "No";
+      return "Todas";
+    }
+
+    const filtrosSeleccionados = {
+      seguidoresMin: document.getElementById("inputSeguidoresMin")?.value || "0",
+      seguidoresMax: document.getElementById("inputSeguidoresMax")?.value || "Sin límite",
+      categoria: document.getElementById("selectorCategoria")?.value || "Todas",
+      negocio: traducirBooleano(document.getElementById("selectorTipoCuenta")?.value),
+      privada: traducirBooleano(document.getElementById("selectorPrivacidad")?.value),
+      verificada: traducirBooleano(document.getElementById("selectorVerificado")?.value),
+    };
+
+    // Bloque añadido: resumen HTML de filtros
+    const filtrosResumenHTML = `
+      <ul style="list-style:none; padding-left:0;">
+        <li><strong>Seguidores:</strong> ${filtrosSeleccionados.seguidoresMin} – ${filtrosSeleccionados.seguidoresMax}</li>
+        <li><strong>Categoría:</strong> ${filtrosSeleccionados.categoria}</li>
+        <li><strong>Cuenta de negocio:</strong> ${filtrosSeleccionados.negocio}</li>
+        <li><strong>Privacidad:</strong> ${filtrosSeleccionados.privada}</li>
+        <li><strong>Verificada:</strong> ${filtrosSeleccionados.verificada}</li>
+      </ul>
+    `;
+
     const data = {
       graficoSeguidores: await capturarImagen("scatterFollowersPosts"),
       graficoEmojis: await capturarImagen("grafico-emojis"),
@@ -80,7 +106,9 @@ export function configurarBotonInformePerfiles() {
       graficoSegmentacionPerfiles: await capturarImagen("grafico-segmentacion-perfiles"),
       nubeBiografias: await capturarImagen("contenedorWordCloud"),
       nubeNombres: await capturarImagen("contenedorWordCloudNombres"),
-      tablaResumen: document.querySelector(".resumen-quantitativo-perfiles")?.outerHTML || "<p><em>No hay datos</em></p>"
+      filtrosSeleccionados,
+      tablaResumen: document.querySelector(".resumen-quantitativo-perfiles")?.outerHTML || "<p><em>No hay datos</em></p>",
+      resumenFiltrosHTML: filtrosResumenHTML,
     };
 
     console.log("📦 Payload para informe:", data);

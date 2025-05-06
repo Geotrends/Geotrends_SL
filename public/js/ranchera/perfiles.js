@@ -12,9 +12,7 @@ import { procesarYActualizarWordCloudBiografias, crearWordCloud } from "./utils/
 import { generarRedPerfiles } from "./utils/redes.js";
 import { crearGraficoScatter, crearGraficoPie, crearGraficoBarras } from "./utils/charts.js";
 import { generarRedSegmentacionSentimiento } from "./utils/redes.js";
-import { configurarBotonInformePerfiles } from "./informePerfiles.js";
 
-configurarBotonInformePerfiles();
 
 
 let perfilesSemillaGlobal = []; // Declarar al inicio del archivo para usar globalmente
