@@ -1,3 +1,8 @@
+// Validación para asegurar que html2canvas esté definido
+if (typeof html2canvas === "undefined") {
+  console.error("❌ html2canvas no está definido. Asegúrate de importar la librería correctamente.");
+}
+
 // Función robusta para capturar imágenes de gráficos ECharts o HTML como base64 PNG
 export async function capturarImagen(id) {
   const elem = document.getElementById(id);
@@ -21,8 +26,13 @@ export async function capturarImagen(id) {
       console.warn(`⚠️ El gráfico ${id} no tiene datos visibles aún.`);
       return "";
     } else {
-      const canvas = await html2canvas(elem);
-      return canvas.toDataURL("image/png");
+      if (typeof html2canvas !== "undefined") {
+        const canvas = await html2canvas(elem);
+        return canvas.toDataURL("image/png");
+      } else {
+        console.warn("⚠️ html2canvas no está disponible para capturar el elemento:", id);
+        return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAusB9Yt6jVsAAAAASUVORK5CYII="; // imagen transparente 1x1
+      }
     }
   } catch (err) {
     console.error(`❌ Error al capturar imagen del ID: ${id}`, err);
@@ -99,13 +109,26 @@ export function configurarBotonInformePerfiles() {
       </ul>
     `;
 
+    await new Promise(r => setTimeout(r, 200));
+    const graficoSeguidores = await capturarImagen("scatterFollowersPosts");
+    await new Promise(r => setTimeout(r, 200));
+    const graficoEmojis = await capturarImagen("grafico-emojis");
+    await new Promise(r => setTimeout(r, 200));
+    const graficoSentimiento = await capturarImagen("grafico-sentimiento-perfiles");
+    await new Promise(r => setTimeout(r, 200));
+    const graficoSegmentacionPerfiles = await capturarImagen("grafico-segmentacion-perfiles");
+    await new Promise(r => setTimeout(r, 200));
+    const nubeBiografias = await capturarImagen("contenedorWordCloud");
+    await new Promise(r => setTimeout(r, 200));
+    const nubeNombres = await capturarImagen("contenedorWordCloudNombres");
+
     const data = {
-      graficoSeguidores: await capturarImagen("scatterFollowersPosts"),
-      graficoEmojis: await capturarImagen("grafico-emojis"),
-      graficoSentimiento: await capturarImagen("grafico-sentimiento-perfiles"),
-      graficoSegmentacionPerfiles: await capturarImagen("grafico-segmentacion-perfiles"),
-      nubeBiografias: await capturarImagen("contenedorWordCloud"),
-      nubeNombres: await capturarImagen("contenedorWordCloudNombres"),
+      graficoSeguidores,
+      graficoEmojis,
+      graficoSentimiento,
+      graficoSegmentacionPerfiles,
+      nubeBiografias,
+      nubeNombres,
       filtrosSeleccionados,
       tablaResumen: document.querySelector(".resumen-quantitativo-perfiles")?.outerHTML || "<p><em>No hay datos</em></p>",
       resumenFiltrosHTML: filtrosResumenHTML,

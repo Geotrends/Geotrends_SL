@@ -1,4 +1,8 @@
 export function inicializarGeneradorPDF() {
+  if (typeof html2canvas === "undefined") {
+    console.error("❌ html2canvas no está definido. Asegúrate de importar la librería correctamente.");
+  }
+
   const btnPDF = document.getElementById("btnDescargarPDF");
   if (!btnPDF) return;
 
@@ -8,7 +12,7 @@ export function inicializarGeneradorPDF() {
     console.log("🟢 Click detectado en 'Generar informe PDF'");
 
     // Esperar un pequeño tiempo para asegurar render de gráficos
-    setTimeout(() => {
+    setTimeout(async () => {
       const chartsIds = [
         "grafico-scatter-demografia",
         "grafico-cantidad-por-categoria",
@@ -42,6 +46,8 @@ export function inicializarGeneradorPDF() {
           return "";
         }
       };
+
+      await new Promise(r => setTimeout(r, 200));
 
       const data = {
         graficoDistribucionGeneral: getBase64FromChart("grafico-scatter-demografia"),
@@ -121,12 +127,12 @@ async function capturarImagen(id) {
       }
       return chart.getDataURL({ type: "png", pixelRatio: 2 });
     } else {
-      try {
+      if (typeof html2canvas !== "undefined") {
         const canvas = await html2canvas(elem);
         return canvas.toDataURL("image/png");
-      } catch (err) {
-        console.warn(`⚠️ No se pudo capturar imagen HTML para ${id}:`, err);
-        return "";
+      } else {
+        console.warn("⚠️ html2canvas no está disponible para capturar el elemento:", id);
+        return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAusB9Yt6jVsAAAAASUVORK5CYII="; // imagen transparente 1x1
       }
     }
   } catch (err) {
