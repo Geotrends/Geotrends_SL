@@ -1,0 +1,42 @@
+{
+  "ranchera": {
+    "index.html": "/js/ranchera/main.js",
+    "comentarios.html": [
+      "/js/ranchera/comentarios.js",
+      "/js/ranchera/informeCometarios.js"
+    ],
+    "perfiles.html": [
+      "/js/ranchera/perfiles.js",
+      "/js/ranchera/informePerfiles.js"
+    ],
+    "publicaciones.html": "/js/ranchera/publicaciones.js",
+    "segmentos.html": "/js/ranchera/segmentos.js",
+    "insights.html": "/js/ranchera/insights.js",
+    "demografia.html": [
+      "/js/ranchera/demografia.js",
+      "/js/ranchera/informeDemografia.js"
+    ],
+    "imagenes.html": "/js/ranchera/imagenes.js"
+  },
+  "GIoTrends": {
+    "monitoreo.html": "/js/GIoTrends/monitoreo.js",
+    "historicos.html": "/js/GIoTrends/historicos.js",
+    "analitica.html": "/js/GIoTrends/analitica.js",
+    "mapasDinamicos.html": "/js/GIoTrends/mapasDinamicos.js",
+    "prediccion.html": "/js/GIoTrends/prediccion.js",
+    "notificaciones.html": "/js/GIoTrends/notificaciones.js",
+    "configuracion.html": "/js/GIoTrends/configuracion.js",
+    "soporte.html": "/js/GIoTrends/soporte.js"
+  },
+  
+  "industria": {
+     
+  "visor360.html": "/js/industria/visor360.js",
+  "normativa.html": "/js/industria/normativa.js",
+  "holografia.html": "/js/industria/holografia.js",
+  "ingenieria.html": "/js/industria/ingenieria.js",
+  "estaciones.html": "/js/industria/estaciones.js",
+  "registros.html": "/js/industria/registros.js",
+  "mapas.html": "/js/industria/mapas.js"
+}
+}

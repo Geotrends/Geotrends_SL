@@ -1,0 +1,52 @@
+{
+  "admin": [
+    {
+      "texto": "Panel Acústico",
+      "page": "/html/empresa/acusticapp/panel.html"
+    },
+    {
+      "texto": "Reportes",
+      "page": "/html/empresa/acusticapp/reportes.html"
+    },
+    {
+      "texto": "Mi perfil",
+      "page": "/html/secciones/perfil.html"
+    },
+    {
+      "texto": "Ranchera",
+      "submenu": [
+        { "texto": "Cuentas", "page": "/html/ranchera/index.html" },
+        { "texto": "Perfiles", "page": "/html/ranchera/perfiles.html" },
+        { "texto": "Publicaciones", "page": "/html/ranchera/comentarios.html" },
+        { "texto": "Imágenes", "page": "/html/ranchera/imagenes.html" },
+        { "texto": "Demografía", "page": "/html/ranchera/demografia.html" },
+        { "texto": "Insights", "page": "/html/ranchera/insights.html" }
+      ]
+    }
+  ],
+  "gestor": [
+    {
+      "texto": "Ver datos",
+      "page": "/html/secciones/datos.html"
+    },
+    {
+      "texto": "Ver reportes",
+      "page": "/html/secciones/reportes.html"
+    },
+    {
+      "texto": "Mi perfil",
+      "page": "/html/secciones/perfil.html"
+    },
+    {
+      "texto": "Ranchera",
+      "submenu": [
+        { "texto": "Cuentas", "page": "/html/ranchera/index.html" },
+        { "texto": "Perfiles", "page": "/html/ranchera/perfiles.html" },
+        { "texto": "Publicaciones", "page": "/html/ranchera/comentarios.html" },
+        { "texto": "Imágenes", "page": "/html/ranchera/imagenes.html" },
+        { "texto": "Demografía", "page": "/html/ranchera/demografia.html" },
+        { "texto": "Insights", "page": "/html/ranchera/insights.html" }
+      ]
+    }
+  ]
+}

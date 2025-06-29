@@ -1,0 +1,17 @@
+
+
+<!-- BODY -->
+<div id="contenedorIngenieria" style="width:100%; height:80vh;">
+  <iframe src="/html/industria/visor360.html" width="100%" height="100%" style="border: none;"></iframe>
+</div>
+
+
+<script>
+  document.getElementById('cambiarImagenBtn').addEventListener('click', () => {
+    const iframe = document.querySelector('#contenedorIngenieria iframe');
+    iframe.contentWindow.postMessage({
+      type: 'cambiarPanorama',
+      url: '/images/Industria/sphere2.jpg'
+    }, '*');
+  });
+</script>

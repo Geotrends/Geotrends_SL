@@ -1,0 +1,409 @@
+<!--
+@file views/analitica.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <!-- Litepicker CSS (Carga primero) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css">
+
+  <link rel="stylesheet" href="/css/analitica.css" />
+  <link rel="stylesheet" href="/css/spinner.css" />
+
+  <!-- Litepicker CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
+  <!-- Litepicker JS -->
+  <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+  <div class="content">
+    <div class="header-description">
+      <h3>Analítica</h3>
+      <p>
+        Descubre patrones y correlaciones con herramientas avanzadas de
+        análisis. Evalúa el impacto del ruido en distintos sectores y toma
+        decisiones informadas con modelos predictivos y métricas
+        especializadas.
+      </p>
+      <div id="explicacion-general" style="margin-bottom: 30px; font-size: 0.9rem; line-height: 1.6;">
+        <p>
+          Los colores utilizados en los gráficos de esta sección representan diferentes categorías de nivel de ruido ambiental, basados en niveles de presión sonora ponderados A dB(A), que reflejan la percepción auditiva humana:
+        </p>
+        <ul style="list-style-type: none; padding-left: 0;">
+          <li><span style="color: #0074bd; font-weight: bold;">Ruido Bajo (0 - 55 dB)</span> → Condiciones tranquilas, generalmente aceptables para entornos residenciales.</li>
+          <li><span style="color: #82cc19; font-weight: bold;">Ruido Moderado (55 - 65 dB)</span> → Nivel común en áreas urbanas con tráfico ligero o actividad moderada.</li>
+          <li><span style="color: #ef7d00; font-weight: bold;">Ruido Alto (65 - 75 dB)</span> → Potencial molestia o riesgo, asociado a tráfico intenso o actividad comercial.</li>
+          <li><span style="color: red; font-weight: bold;">Ruido Excesivo (> 75 dB)</span> → Niveles elevados de ruido, con impacto potencial en la salud y el bienestar, típicos de zonas industriales o vías de alto flujo vehicular.</li>
+        </ul>
+
+
+        <p>
+          A continuación, podrás seleccionar el tipo de informe que deseas visualizar para explorar en detalle la dinámica acústica de tu área de interés.
+        </p>
+      </div>
+
+
+    </div>
+
+
+
+    <div class="row" id="row-hora">
+
+      <div class="column_heatmap">
+        <div id="spinner-overlay" class="spinner-overlay oculto">
+          <div class="spinner"></div>
+        </div>
+
+        <h3 style="text-align: center;">Distribución horaria de niveles de ruido</h3>
+
+
+            <p>
+              Este gráfico muestra la distribución de los niveles de ruido registrados por diferentes sensores en un día
+              seleccionado, organizados por hora. Permite identificar patrones de ruido a lo largo del día y evaluar el impacto acústico en
+              distintas áreas.
+            </p>
+
+        <!-- Filtros -->
+        <div id="filters-container">
+          <!-- Municipio -->
+          <div class="filter-item">
+            <label for="filter-municipio"><strong>Municipio:</strong></label>
+            <select id="filter-municipio">
+              <option value="">Todos los municipios</option>
+            </select>
+          </div>
+
+          <!-- Barrio -->
+          <div class="filter-item">
+            <label for="filter-barrio"><strong>Barrio:</strong></label>
+            <select id="filter-barrio">
+              <option value="">Todos los barrios</option>
+            </select>
+          </div>
+
+          <!-- Uso del suelo -->
+          <div class="filter-item">
+            <label for="filter-uso-suelo"><strong>Uso del suelo:</strong></label>
+            <select id="filter-uso-suelo">
+              <option value="">Todos los tipos</option>
+            </select>
+          </div>
+
+          <!-- Sensores -->
+          <div class="filter-item">
+            <label for="filter-sensores"><strong>Sensores:</strong></label>
+            <select id="filter-sensores" multiple>
+              <!-- Sensores dinámicos -->
+            </select>
+          </div>
+
+          <!-- Fecha -->
+          <div class="filter-item">
+            <label for="filter-fecha"><strong>Selecciona la Fecha:</strong></label>
+
+            <input type="text" id="filter-fecha" placeholder="Seleccione la fecha" />
+          </div>
+
+          <!-- Botón para cargar el heatmap -->
+          <div class="filter-item">
+            <button id="btn-cargar-heatmap">Consultar</button>
+
+          </div>
+        </div>
+
+
+        <div class="heatmap" id="heatmapLday"></div>
+
+
+        <div style="text-align: right; margin-top: 10px;">
+          <button id="btn-informe-hora" class="btn btn-outline-primary c-button">
+            Generar Informe Día (PDF)
+          </button>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <div class="row">
+      <!-- Nueva sección para el heatmap de la semana -->
+      <div class="column" style="position: relative;">
+        <div id="spinner-semana" class="spinner-overlay oculto">
+          <div class="spinner"></div>
+        </div>
+
+        <h3 style="text-align: center;">Distribución diaria de niveles de ruido</h3>
+
+
+                    <p>
+                      Los siguientes gráficos presentan el perfil acústico semanal de distintos sensores IoT, desagregado por días y
+                      periodos (día completo, horario diurno y nocturno).
+                      </p>
+
+        <div id="filters-container" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div class="filter-item" style="flex: 1 1 auto;">
+            <label for="filter-fecha-semana"><strong>Selecciona la Semana:</strong></label>
+            <input type="text" id="filter-fecha-semana" placeholder="Seleccione la semana"
+              style="width: 100%; max-width: 650px;" />
+          </div>
+          <div class="filter-item">
+            <button id="btn-cargar-heatmap-semana">Consultar</button>
+          </div>
+        </div>
+
+        <!-- Selector de semana -->
+        <!-- 🔹 Gráfico: Perfil diario semanal -->
+        <div id="heatmapLweek" class="heatmap-semanal"></div>
+        <div id="descripcionLweek" class="chart-description oculto">
+          <p>
+            Este gráfico resume los niveles promedio de ruido registrados por cada sensor durante los días de la semana
+            seleccionada, permitiendo comparar la variación diaria entre diferentes ubicaciones.
+          </p>
+        </div>
+
+        <!-- 🔹 Gráfico: Perfil diurno -->
+        <div id="heatmapLweekDia" class="heatmap-semanal"></div>
+        <div id="descripcionLweekDia" class="chart-description oculto">
+          <p>
+            Muestra los niveles de ruido entre las 07:00 y las 21:00, horario clave para evaluar el impacto sobre la
+            actividad humana y el entorno urbano durante el día.
+          </p>
+        </div>
+
+        <!-- 🔹 Gráfico: Perfil nocturno -->
+        <div id="heatmapLweekNoche" class="heatmap-semanal"></div>
+        <div id="descripcionLweekNoche" class="chart-description oculto">
+          <p>
+            Representa el comportamiento del ruido entre las 21:00 y las 07:00, un periodo sensible para la salud y el
+            descanso, especialmente en zonas residenciales.
+          </p>
+        </div>
+
+
+        <div style="text-align: right; margin-top: 10px;">
+          <button id="btn-generar-informe-semana" class="btn btn-primary c-button">
+            Generar Informe Semanal (PDF)
+          </button>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <div class="row">
+      <div class="column" style="position: relative;">
+        <div id="spinner-mes" class="spinner-overlay oculto">
+          <div class="spinner"></div>
+        </div>
+
+        <h3 style="text-align: center;">Distribución horaria de niveles de ruido en un mes</h3>
+
+
+        <p>
+          Los siguientes gráficos presentados permiten analizar el comportamiento acústico mes a mes, con información diaria
+          desagregada por periodos (24 horas, diurno y nocturno). Esta visualización facilita la identificación de
+          patrones persistentes de ruido, días críticos o alteraciones en el entorno sonoro.
+        </p>
+
+
+        <div id="filters-container" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div class="filter-item">
+            <label for="select-mes"><strong>Mes:</strong></label>
+            <select id="select-mes">
+              <option value="01">Enero</option>
+              <option value="02">Febrero</option>
+              <option value="03">Marzo</option>
+              <option value="04">Abril</option>
+              <option value="05">Mayo</option>
+              <option value="06">Junio</option>
+              <option value="07">Julio</option>
+              <option value="08">Agosto</option>
+              <option value="09">Septiembre</option>
+              <option value="10">Octubre</option>
+              <option value="11">Noviembre</option>
+              <option value="12">Diciembre</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label for="select-anio"><strong>Año:</strong></label>
+            <select id="select-anio"></select>
+          </div>
+
+          <div class="filter-item">
+            <button id="btn-cargar-heatmap-mes">Cargar heatmap mensual</button>
+          </div>
+        </div>
+
+        <!-- Heatmaps -->
+        <div id="heatmapLmes24h" class="heatmap-mensual"></div>
+        <div id="descripcionLmes24h" class="chart-description oculto">
+          <p>
+            Este gráfico muestra los niveles promedio diarios de ruido (24 horas) en el mes seleccionado. Permite
+            analizar
+            la evolución del ruido día a día y comparar el comportamiento entre sensores.
+          </p>
+        </div>
+
+        <div id="heatmapLmesDia" class="heatmap-mensual"></div>
+        <div id="descripcionLmesDia" class="chart-description oculto">
+          <p>
+            Este gráfico refleja los niveles promedio de ruido registrados durante el periodo diurno (07:00 - 21:00) por
+            cada día del mes seleccionado, evidenciando la actividad acústica en horas de alta interacción humana.
+          </p>
+        </div>
+
+        <div id="heatmapLmesNoche" class="heatmap-mensual"></div>
+        <div id="descripcionLmesNoche" class="chart-description oculto">
+          <p>
+            Este gráfico presenta los niveles promedio nocturnos (21:00 - 07:00) día por día. Es útil para identificar
+            posibles alteraciones del descanso o fuentes de ruido persistente en la noche.
+          </p>
+        </div>
+
+        <!-- Descripción general mensual -->
+
+
+        <div style="text-align: right; margin-top: 10px;">
+          <button id="btn-generar-informe-mes" class="btn btn-primary c-button">
+            Generar Informe Mensual (PDF)
+          </button>
+        </div>
+        
+      </div>
+    </div>
+
+
+
+<!-- Fila 1: Promedio 30 días (60%) + Boxplot (40%) -->
+<div class="graficos-analitica-fila1">
+  <div class="grafico-card">
+    <h4 style="text-align: center;">Nivel promedio por sensor (últimos 30 días)</h4>
+    <div id="main" style="height: 300px;"></div>
+    <div class="chart-description">
+      <p>
+        Este gráfico muestra los niveles de ruido promedio registrados por cada sensor en los últimos 30 días. 
+        Cada línea representa un indicador clave: 
+        <strong>L<sub>Ad</sub></strong> (promedio diurno),
+        <strong>L<sub>An</sub></strong> (promedio nocturno), y 
+        <strong>L<sub>Adn</sub></strong> (promedio total diario-noche).
+      </p>
+      <p>
+        Los sensores están ordenados de mayor a menor según L<sub>Adn</sub>. 
+        Las áreas sombreadas indican la intensidad del ruido:
+        <span style="color: #0074bd; font-weight: bold">bajo</span>,
+        <span style="color: #82cc19; font-weight: bold">moderado</span>,
+        <span style="color: #ef7d00; font-weight: bold">alto</span>, y
+        <span style="color: red; font-weight: bold">excesivo</span>.
+      </p>
+    </div>
+  </div>
+
+  <div class="grafico-card">
+    <h4 style="text-align: center;">Distribución estadística del ruido</h4>
+    <div id="boxplot" style="height: 300px;"></div>
+    <div class="chart-description">
+      <p>
+        Este gráfico muestra la distribución de niveles de ruido captados por cada sensor en los últimos 30 días. 
+        Se representan los valores mínimo, cuartiles (Q1, mediana, Q3) y máximo para cada sensor.
+      </p>
+      <p>
+        El diagrama permite identificar variabilidad, comportamiento atípico y comparaciones directas entre sensores, 
+        facilitando el diagnóstico acústico territorial.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Fila 2: Criticidad Nocturna (50%) + Criticidad Diurna (50%) -->
+<div class="graficos-analitica-fila2">
+  <div class="grafico-card">
+    <h4 style="text-align: center;">Criticidad Nocturna (> 55 dB(A))</h4>
+    <div id="criticoNocturno" style="height: 300px;"></div>
+    <div class="chart-description">
+      <p>
+        Representa el porcentaje de noches en las que cada sensor superó los 55 dB(A), umbral sensible para el descanso, en los ultimos 30 días. 
+        Un mayor porcentaje indica un entorno con posibles afectaciones al sueño y la salud.
+      </p>
+    </div>
+  </div>
+
+  <div class="grafico-card">
+    <h4 style="text-align: center;">Criticidad Diurna (> 65 dB(A))</h4>
+    <div id="criticoDiurno" style="height: 300px;"></div>
+    <div class="chart-description">
+      <p>
+        Muestra el porcentaje de días en los que el sensor superó los 65 dB(A) durante el horario diurno, 
+        valor que puede afectar el confort y la actividad diaria de las personas expuestas al ruido ambiental, para las ultimos 30 días. 
+      </p>
+    </div>
+  </div>
+</div>
+
+
+  <div id="spinnerInformeOverlay" class="spinner-informe-overlay">
+    <div>
+      <div class="spinnerInforme"></div>
+      <div class="spinner-informe-texto">Generando informe, por favor espera...</div>
+    </div>
+  </div>
+  
+  
+
+  <script src="/js/analitica/heatmap.js"></script>
+  <!-- <script src="/js/analitica/map.js"></script> -->
+  <script src="/js/analitica/criticidad.js"></script>
+  <script src="/js/analitica/boxplot.js"></script>
+  <script src="/js/analitica/resumen.js"></script>
+
+  <script src="/js/informeAnalitica.js"></script>
+
+  <!-- Litepicker JS -->
+  <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+
+</html>

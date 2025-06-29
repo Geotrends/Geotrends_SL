@@ -1,63 +1,67 @@
-/* Fondo completo */
+/* Reset básico */
 body {
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", sans-serif;
-
+  background-color: f6f6f6;
   height: 100vh;
+}
+
+/* Contenedor general */
+.login-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Columna izquierda: formulario */
+.col-left {
+  width: 40%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)),
-    /* ← Degradado overlay */ url("/images/panoramica1.jpg") no-repeat center
-      center fixed;
-  background-size: cover;
+  align-items: flex-start;
+  padding: 6rem 4rem 4rem 4rem; /* padding-top controlado */
+  background-color: #f6f6f6;
 }
 
-/* Contenedor centrado */
+/* Caja del login */
 .login-box {
-  background: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 2.5rem 2rem;
   width: 100%;
   max-width: 400px;
-  box-sizing: border-box;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-top: 0;
 }
 
-/* Logo */
 .login-box .logo {
-  width: 240px;
+  width: 400px;
   margin-bottom: 1rem;
 }
 
-/* Título */
 .login-box h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
   color: #02735e;
 }
 
-/* Inputs alineados */
+.login-box p {
+  margin-bottom: 2rem;
+  color: #444;
+  font-size: 1rem;
+}
+
 .login-box input[type="text"],
 .login-box input[type="password"] {
-  display: block;
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 1rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background: #fff;
   box-sizing: border-box;
-  color: #333;
 }
 
-/* Botón */
 .login-box button {
-  width: 100%;
+  width: 40%;
+  margin-top: 1rem;
   padding: 0.75rem;
   background: #02735e;
   color: white;
@@ -73,9 +77,48 @@ body {
   background-color: #025c4b;
 }
 
-/* Mensaje de error */
-#mensajeError {
-  margin-top: 1rem;
-  color: #c62828;
-  font-weight: bold;
+.extra-options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+/* Columna derecha: imagen */
+.col-right {
+  width: 60%;
+  overflow: hidden;
+  background: #f6f6f6;
+}
+
+.col-right-inner {
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(20% 0, 100% 0, 85% 100%, 0% 100%);
+  position: relative;
+  background: #f6f6f6;
+}
+
+.col-right-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: inherit;
+  background:
+    linear-gradient(75deg, rgba(0, 0, 0, 0.8) 0%, transparent 12%),
+    linear-gradient(-75deg, rgba(0, 0, 0, 0.8) 0%, transparent 12%);
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.col-right-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  
 }

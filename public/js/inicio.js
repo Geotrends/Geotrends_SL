@@ -37,156 +37,82 @@ document.addEventListener("DOMContentLoaded", () => {
     infoUsuario.textContent = `${usuario} (${rol})`;
   }
 
-  // Opciones por empresa y rol
-  const opcionesPorEmpresaYRol = {
-    "Geotrends SAS": {
-      admin: [
-        {
-          texto: "Ranchera",
-          submenu: [
-            { texto: "Cuentas", page: "/html/ranchera/index.html" },
-            { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-            { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
-            { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
-            { texto: "Demografía", page: "/html/ranchera/demografia.html" },
-            { texto: "Insights", page: "/html/ranchera/insights.html" },
-          ],
-        },
-        { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-        { texto: "Configurar", page: "/html/secciones/configuracion.html" },
-        { texto: "Usuarios", page: "/html/secciones/usuarios.html" },
-        { texto: "Ver reportes", page: "/html/secciones/reportes.html" },
-      ],
-      gestor: [
-        {
-          texto: "Ranchera",
-          submenu: [
-            { texto: "Cuentas", page: "/html/ranchera/index.html" },
-            { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-            { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
-            { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
-            { texto: "Demografía", page: "/html/ranchera/demografia.html" },
-            { texto: "Insights", page: "/html/ranchera/insights.html" },
-          ],
-        },
-        { texto: "Configurar", page: "/html/secciones/configuracion.html" },
-        { texto: "Ver datos", page: "/html/secciones/datos.html" },
-        { texto: "Ver reportes", page: "/html/secciones/reportes.html" },
-        { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-      ],
-      usuario: [
-        { texto: "Ver datos", page: "/html/secciones/datos.html" },
-        { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-      ],
-    },
-    Zenu: {
-      admin: [
-        {
-          texto: "Panel Acústico",
-          page: "/html/empresa/acusticapp/panel.html",
-        },
-        { texto: "Reportes", page: "/html/empresa/acusticapp/reportes.html" },
-        { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-        {
-          texto: "Ranchera",
-          submenu: [
-            { texto: "Cuentas", page: "/html/ranchera/index.html" },
-            { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-            { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
-            { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
-            { texto: "Demografía", page: "/html/ranchera/demografia.html" },
-            { texto: "Insights", page: "/html/ranchera/insights.html" },
-          ],
-        },
-      ],
-      gestor: [
-        { texto: "Ver datos", page: "/html/secciones/datos.html" },
-        { texto: "Ver reportes", page: "/html/secciones/reportes.html" },
-        { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-        {
-          texto: "Ranchera",
-          submenu: [
-            { texto: "Cuentas", page: "/html/ranchera/index.html" },
-            { texto: "Perfiles", page: "/html/ranchera/perfiles.html" },
-            { texto: "Publicaciones", page: "/html/ranchera/comentarios.html" },
-            { texto: "Imágenes", page: "/html/ranchera/imagenes.html" },
-            { texto: "Demografía", page: "/html/ranchera/demografia.html" },
-            { texto: "Insights", page: "/html/ranchera/insights.html" },
-          ],
-        },
-      ],
-    },
-  };
-
   // Sidebar
   const sidebar = document.getElementById("sidebar");
   let opcionesSidebar = [];
 
-  if (
-    empresa &&
-    opcionesPorEmpresaYRol[empresa] &&
-    opcionesPorEmpresaYRol[empresa][rol]
-  ) {
-    console.log(
-      "DEBUG - Opciones encontradas para empresa y rol:",
-      opcionesPorEmpresaYRol[empresa]?.[rol]
-    );
-    opcionesSidebar = opcionesPorEmpresaYRol[empresa][rol];
-  } else {
+  const empresaId = empresa
+    ?.toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[^a-z0-9]/gi, "");
+  const rutaMenu = `/JSON/${empresaId}.json`;
+  console.log("🌐 Buscando menú JSON para:", empresaId);
+
+  fetch(rutaMenu)
+    .then((res) => {
+      if (!res.ok) throw new Error("No se pudo cargar el menú");
+      return res.json();
+    })
+    .then((menuJson) => {
+      if (menuJson[rol]) {
+        opcionesSidebar = menuJson[rol];
+        construirSidebar();
+      } else {
+        mostrarSidebarBasico();
+      }
+    })
+    .catch((err) => {
+      console.error("❌ Error al cargar menú de empresa:", err);
+      mostrarSidebarBasico();
+    });
+
+  function mostrarSidebarBasico() {
     opcionesSidebar = [
       { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
       { texto: "Cerrar sesión", page: "/html/logout.html" },
     ];
+    construirSidebar();
   }
 
-  const contenedorOpcionesSidebar = document.createDocumentFragment();
+  function construirSidebar() {
+    const contenedorOpcionesSidebar = document.createDocumentFragment();
 
-  // Botón inicial visible en sidebar
-  contenedorOpcionesSidebar.appendChild(
-    crearEnlaceMenu("Inicio", "/html/secciones/inicio_bienvenida.html")
-  );
+    contenedorOpcionesSidebar.appendChild(
+      crearEnlaceMenu("Inicio", "/html/secciones/inicio_bienvenida.html")
+    );
 
-  opcionesSidebar.forEach((item) => {
-    if (item.submenu) {
-      contenedorOpcionesSidebar.appendChild(
-        crearSubmenu(item.texto, item.submenu)
-      );
-    } else {
-      contenedorOpcionesSidebar.appendChild(
-        crearEnlaceMenu(item.texto, item.page)
-      );
+    opcionesSidebar.forEach((item) => {
+      if (item.submenu) {
+        contenedorOpcionesSidebar.appendChild(
+          crearSubmenu(item.texto, item.submenu)
+        );
+      } else {
+        contenedorOpcionesSidebar.appendChild(
+          crearEnlaceMenu(item.texto, item.page)
+        );
+      }
+    });
+
+    sidebar.innerHTML = "";
+    sidebar.appendChild(contenedorOpcionesSidebar);
+
+    // Menú de configuración del header
+    const configMenu = document.getElementById("configMenu");
+    if (configMenu) {
+      configMenu.innerHTML = "";
+      opcionesSidebar.forEach(({ texto, page }) => {
+        const link = document.createElement("a");
+        link.href = "#";
+        link.textContent = texto;
+        link.dataset.page = page;
+        configMenu.appendChild(link);
+      });
     }
-  });
-
-  sidebar.appendChild(contenedorOpcionesSidebar);
-
-  // Cargar la página de bienvenida como contenido inicial
-  fetch("/html/secciones/inicio_bienvenida.html")
-    .then((res) => res.text())
-    .then((html) => {
-      const container = document.getElementById("contenidoDinamico");
-      container.innerHTML = html;
-    })
-    .catch(() => {
-      document.getElementById("contenidoDinamico").innerHTML =
-        "<p>Error al cargar la bienvenida.</p>";
-    });
-
-  // Menú de configuración del header
-  const configMenu = document.getElementById("configMenu");
-  if (configMenu) {
-    configMenu.innerHTML = "";
-    opcionesSidebar.forEach(({ texto, page }) => {
-      const link = document.createElement("a");
-      link.href = "#";
-      link.textContent = texto;
-      link.dataset.page = page;
-      configMenu.appendChild(link);
-    });
   }
 
   // Evento para mostrar el menú de configuración
   const btnConfig = document.getElementById("btnConfig");
+  const configMenu = document.getElementById("configMenu");
   if (btnConfig && configMenu) {
     btnConfig.addEventListener("click", () => {
       configMenu.classList.toggle("d-none");
@@ -235,16 +161,24 @@ document.addEventListener("DOMContentLoaded", () => {
                   if (mod.inicializarVistaComentarios) {
                     mod.inicializarVistaComentarios();
                   }
-                  import("/js/ranchera/informeCometarios.js").then((modComentarios) => {
-                    if (modComentarios.configurarBotonInformeComentarios) {
-                      modComentarios.configurarBotonInformeComentarios();
-                    }
-                  }).catch((err) => {
-                    console.error("❌ Error al cargar informeCometarios.js como módulo:", err);
-                  });
+                  import("/js/ranchera/informeCometarios.js")
+                    .then((modComentarios) => {
+                      if (modComentarios.configurarBotonInformeComentarios) {
+                        modComentarios.configurarBotonInformeComentarios();
+                      }
+                    })
+                    .catch((err) => {
+                      console.error(
+                        "❌ Error al cargar informeCometarios.js como módulo:",
+                        err
+                      );
+                    });
                 })
                 .catch((err) => {
-                  console.error("❌ Error al cargar módulo de comentarios:", err);
+                  console.error(
+                    "❌ Error al cargar módulo de comentarios:",
+                    err
+                  );
                 });
             } else if (url.includes("perfiles.html")) {
               import("/js/ranchera/perfiles.js")
@@ -253,13 +187,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     mod.inicializarVistaPerfiles();
                   }
                   // Importar módulo de informePerfiles.js después de cargar perfiles.js
-                  import("/js/ranchera/informePerfiles.js").then((mod) => {
-                    if (mod.configurarBotonInformePerfiles) {
-                      mod.configurarBotonInformePerfiles();
-                    }
-                  }).catch((err) => {
-                    console.error("❌ Error al cargar informePerfiles.js como módulo:", err);
-                  });
+                  import("/js/ranchera/informePerfiles.js")
+                    .then((mod) => {
+                      if (mod.configurarBotonInformePerfiles) {
+                        mod.configurarBotonInformePerfiles();
+                      }
+                    })
+                    .catch((err) => {
+                      console.error(
+                        "❌ Error al cargar informePerfiles.js como módulo:",
+                        err
+                      );
+                    });
                 })
                 .catch((err) => {
                   console.error("❌ Error al cargar módulo de perfiles:", err);
@@ -273,13 +212,16 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (url.includes("demografia.html")) {
               cargarScriptDinamico("/js/ranchera/demografia.js");
               import("/js/ranchera/informeDemografia.js")
-                .then(mod => {
+                .then((mod) => {
                   if (mod.inicializarGeneradorPDF) {
                     mod.inicializarGeneradorPDF();
                   }
                 })
-                .catch(err => {
-                  console.error("❌ Error al cargar informeDemografia.js como módulo:", err);
+                .catch((err) => {
+                  console.error(
+                    "❌ Error al cargar informeDemografia.js como módulo:",
+                    err
+                  );
                 });
             } else if (url.includes("imagenes.html")) {
               import("/js/ranchera/imagenes.js")
@@ -300,6 +242,17 @@ document.addEventListener("DOMContentLoaded", () => {
             cargarScriptDinamico("/js/perfil.js");
           } else if (url.includes("usuarios.html")) {
             cargarScriptDinamico("/js/usuarios.js");
+          }
+
+          for (const modulo in rutasModulos) {
+            if (url.toLowerCase().includes(`/${modulo.toLowerCase()}/`)) {
+              const archivo = url.split("/").pop();
+              const scripts = rutasModulos[modulo][archivo];
+              if (scripts) {
+                const scriptsArray = Array.isArray(scripts) ? scripts : [scripts];
+                scriptsArray.forEach(src => cargarScriptDinamico(src));
+              }
+            }
           }
 
           window.scrollTo(0, 0);
@@ -397,24 +350,30 @@ function crearSubmenu(titulo, submenuItems) {
 }
 
 // Asociar íconos Font Awesome según texto
+let mapaIconos = {};
+
+fetch("/JSON/iconos.json")
+  .then((res) => res.json())
+  .then((data) => {
+    mapaIconos = data;
+  })
+  .catch((err) => {
+    console.warn("⚠️ No se pudo cargar iconos personalizados:", err);
+  });
+
+let rutasModulos = {};
+
+fetch("/JSON/rutasModulos.json")
+  .then((res) => res.json())
+  .then((data) => {
+    rutasModulos = data;
+  })
+  .catch((err) => {
+    console.warn("⚠️ No se pudo cargar rutas de módulos:", err);
+  });
+
 function obtenerIcono(texto) {
-  const iconos = {
-    Inicio: "fas fa-home",
-    "Mi perfil": "fas fa-user",
-    Configurar: "fas fa-cogs",
-    Usuarios: "fas fa-users-cog",
-    "Ver datos": "fas fa-chart-line",
-    "Ver reportes": "fas fa-file-alt",
-    Ranchera: "fas fa-hat-cowboy",
-    Cuentas: "fab fa-instagram",
-    Perfiles: "fas fa-id-badge",
-    Comentarios: "fas fa-comments",
-    Insights: "fas fa-lightbulb",
-    Demografía: "fas fa-users",
-    Imágenes: "fas fa-image",
-    Publicaciones: "fas fa-newspaper"
-  };
-  return iconos[texto] || "fas fa-circle";
+  return mapaIconos[texto] || "fas fa-circle";
 }
 
 // Cerrar sesión

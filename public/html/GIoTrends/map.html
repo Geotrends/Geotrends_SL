@@ -1,0 +1,176 @@
+<!--
+@file views/map.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Sensores</title>
+
+    <link rel="stylesheet" href="/css/map.css" />
+    <link rel="stylesheet" href="/css/reglaNiveles.css" />
+    <link rel="stylesheet" href="/css/modalSensor.css" />
+    <link rel="stylesheet" href="/css/sensors-dashboard.css" />
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="/css/leaflet.css">
+    <link rel="stylesheet" href="/css/L.Control.Locate.min.css">
+    <link rel="stylesheet" href="/css/qgis2web.css">
+    <link rel="stylesheet" href="/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/css/leaflet-control-geocoder.Geocoder.css">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css"
+    />
+    <link rel="stylesheet" href="/css/spinner.css" />
+
+    <!-- Leaflet base -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+
+<!-- Script de leaflet-velocity -->
+<script src="https://unpkg.com/leaflet-velocity/dist/leaflet-velocity.min.js"></script>
+
+
+
+    </head>
+  <!-- Filtros  -->
+  <div id="filters-container">
+    <select id="filter-municipio">
+      <option value="">Todos los municipios</option>
+    </select>
+    <select id="filter-barrio">
+      <option value="">Todos los barrios</option>
+    </select>
+
+    <input
+      type="text"
+      id="filter-referencia"
+      placeholder="Buscar por referencia"
+    />
+    <select id="filter-uso-suelo">
+      <option value="">Todos los tipos</option>
+      <option value="Residencial">Residencial</option>
+      <option value="Comercial">Comercial</option>
+      <option value="Industrial">Industrial</option>
+      <option value="Industrial">Oficial</option>
+    </select>
+    <select id="filter-nivel">
+      <option value="">Todos los niveles</option>
+      <option value="bajo">Bajo (0 - 55 dBA)</option>
+      <option value="medio">Medio (55 - 65 dBA)</option>
+      <option value="alto">Alto (65 - 75 dBA)</option>
+      <option value="critico">Excesivo (> 75 dBA)</option>
+    </select>
+    <button id="btnGenerarInforme" class="btn btn-outline-primary c-button">
+      Generar informe PDF
+    </button>
+  </div>
+
+  <body>
+    <div id="regla" class="rule-container">
+      <!-- Tabla con colores -->
+      <table class="rule-table">
+        <tr>
+          <td class="gray">Sin Datos</td>
+          <td class="blue">Ruido Bajo (menor a 55 dB)</td>
+          <td class="green">Ruido Moderado (menor a 65 dB)</td>
+          <td class="orange">Ruido Alto (menor a 75 dB)</td>
+          <td class="red">Ruido Excesivo (mayor a 75 dB)</td>
+        </tr>
+      </table>
+
+      <!-- Líneas divisoras -->
+      <div class="rule-divider">
+        <!-- <div class="divider-NAN"></div> -->
+        <!-- <div class="divider-0"></div> -->
+        <div class="divider-55"></div>
+        <div class="divider-65"></div>
+        <div class="divider-75"></div>
+        <!-- <div class="divider-100"></div> -->
+      </div>
+
+      <!-- Etiquetas numéricas -->
+      <div class="rule-labels">
+        <div class="label-NAN"></div>
+        <!-- <div class="label-0">0 dBA</div> -->
+        <div class="label-55">55 dBA</div>
+        <div class="label-65">65 dBA</div>
+        <div class="label-75">75 dBA</div>
+        <!-- <div class="label-100">100 dBA</div> -->
+      </div>
+    </div>
+
+    <!-- Mapa -->
+    <div id="map" style="width: 100%; height: 100%"></div>
+
+    <!-- Modal -->
+    <div class="popup-overlay" id="frameContainer" style="display: none">
+      <div class="popup-content">
+        <div id="popup-details" class="popup-details"></div>
+      </div>
+    </div>
+
+    <div id="spinnerInformeOverlay" class="spinner-informe-overlay">
+      <div>
+        <div class="spinnerInforme"></div>
+        <div class="spinner-informe-texto">
+          Generando informe, por favor espera...
+        </div>
+      </div>
+    </div>
+
+   
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+    <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
+<!-- Versión desde un CDN -->
+<script src="/js/leaflet/L.Control.Locate.min.js"></script>
+<script src="/js/leaflet/leaflet-control-geocoder.Geocoder.js"></script>
+
+<script type="module" src="/js/modal.js"></script>
+    <script src="/js/map.js"></script>
+
+    <!-- Informes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="/js/informeMap.js"></script>
+  </body>
+</html>

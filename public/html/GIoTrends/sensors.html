@@ -1,0 +1,56 @@
+<!--
+@file views/sensors.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos de Sensores</title>
+    <link rel="stylesheet" href="/css/sensors.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+   
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="date-picker-container" style="margin-bottom: 20px;">
+            <label for="date-range">Seleccionar Fechas:</label>
+            <input id="date-range" type="text" placeholder="Selecciona un rango de fechas" />
+            <button id="filter-button">Filtrar</button>
+        </div>
+        
+        <div id="chart" style="width: 100%; height: 85vh; margin-top: 20px;"></div>
+    </div>
+    <script src="/js/sensors.js"></script>
+</body>
+</html>

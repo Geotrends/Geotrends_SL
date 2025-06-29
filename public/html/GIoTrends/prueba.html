@@ -1,0 +1,127 @@
+<!--
+@file views/prueba.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heatmap con Intensidad Ajustada</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script>
+   // Crear el mapa
+const map = L.map('map').setView([6.2442, -75.5812], 13); // Coordenadas iniciales y nivel de zoom
+
+// Añadir una capa base
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Datos de los sensores originales (lat, lng, nivel de ruido en dB)
+const sensorData = [
+  [6.245, -75.582, 70],
+  [6.243, -75.584, 65],
+  [6.247, -75.580, 75],
+  [6.242, -75.579, 60],
+  [6.240, -75.585, 80],
+  [6.246, -75.586, 90],
+  [6.244, -75.581, 85]
+];
+
+// Función para calcular la distancia entre dos puntos geográficos
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Radio de la Tierra en km
+  const toRad = angle => (angle * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+// Calcular la suma energética para fuentes cercanas
+const thresholdDistance = 0.2; // Distancia en km para considerar fuentes cercanas
+const combinedData = sensorData.map(([lat1, lon1, noise1]) => {
+  let linearSum = 10 ** (noise1 / 10); // Convertir el nivel inicial a escala lineal
+  sensorData.forEach(([lat2, lon2, noise2]) => {
+    if (lat1 !== lat2 || lon1 !== lon2) {
+      const distance = haversine(lat1, lon1, lat2, lon2);
+      if (distance <= thresholdDistance) {
+        linearSum += 10 ** (noise2 / 10); // Sumar los niveles lineales
+      }
+    }
+  });
+  const combinedNoise = 10 * Math.log10(linearSum); // Convertir de vuelta a dB
+  return [lat1, lon1, combinedNoise];
+});
+
+// Normalizar los niveles combinados a un rango de [0, 1]
+const maxNoiseLevel = 100; // Máximo nivel de ruido esperado
+const minNoiseLevel = 0; // Mínimo nivel de ruido esperado
+
+const normalizedData = combinedData.map(([lat, lon, noise]) => {
+  const intensity = (noise - minNoiseLevel) / (maxNoiseLevel - minNoiseLevel); // Normalización
+  return [lat, lon, Math.max(0, Math.min(intensity, 1))]; // Asegurarse que está en [0, 1]
+});
+
+console.log(normalizedData);
+
+// Crear el heatmap con los datos normalizados
+const heat = L.heatLayer(normalizedData, {
+  radius: 100,     // Radio del punto de calor
+  blur: 30,       // Suavizado del heatmap
+  maxZoom: 17,    // Máximo zoom para el heatmap
+  gradient: {     // Gradiente de colores según la intensidad normalizada
+    0.2: 'blue',
+    0.4: 'lime',
+    0.6: 'yellow',
+    0.8: 'orange',
+    1.0: 'red'
+  }
+}).addTo(map);
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!--
+@file views/index.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ruido IoT</title>
+
+    <link rel="stylesheet" href="/css/index.css" />
+
+    <script
+      src="https://kit.fontawesome.com/a036caa48c.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Header con navegación -->
+      <nav id="menu" class="menu">
+        <button id="menu-toggle" class="menu-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <img
+          src="/images/menu-header-image.png"
+          alt="Imagen antes de Casa"
+          id="menu-header-image"
+          class="menu-header-image"
+        />
+        <ul class="menu-list">
+          <li
+            class="menu-item menu-item-selected"
+            data-tooltip="Inicio: Página principal con resumen general"
+          >
+            <i class="fa-regular fa-circle-left"></i>
+            <span>Inicio</span>
+          </li>
+          <li
+            class="menu-item"
+            data-tooltip="Monitoreo: Visualiza sensores en tiempo real"
+          >
+            <i class="fa-regular fa-circle-play"></i>
+            <span>Monitoreo</span>
+          </li>
+          <li
+            class="menu-item"
+            data-tooltip="Históricos: Consulta datos históricos registrados"
+          >
+            <i class="fa-regular fa-floppy-disk"></i>
+            <span>Históricos</span>
+          </li>
+          <li
+            class="menu-item"
+            data-tooltip="Analítica: Realiza análisis detallados de ruido"
+          >
+            <i class="fa-regular fa-chart-bar"></i>
+            <span>Analítica</span>
+          </li>
+          <li
+            class="menu-item"
+            data-tooltip="Predicción: Estima el comportamiento del ruido por sensor"
+          >
+            <i class="fa-solid fa-forward-step"></i>
+            <span>Predicción</span>
+          </li>
+          <li
+            class="menu-item"
+            data-tooltip="Notificaciones: Recibe alertas y notificaciones"
+          >
+            <i class="fa-regular fa-bell"></i>
+            <span>Notificaciones</span>
+          </li>
+          <li
+            class="menu-item"
+            data-tooltip="Configuración: Ajusta la configuración del sistema"
+          >
+            <i class="fa-regular fa-sun"></i>
+            <span>Configuración</span>
+          </li>
+          <li
+            class="menu-item"
+            data-tooltip="Soporte: Obtén ayuda y soporte técnico"
+          >
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Soporte</span>
+          </li>
+        </ul>
+
+        <!-- menu-item-blocked -->
+
+        <a href="https://geotrends.co" target="_blank"
+          ><img
+            src="/images/menu-footer-image.png"
+            alt="Imagen del Footer"
+            id="menu-footer-image"
+            class="menu-footer-image"
+        /></a>
+      </nav>
+
+      <!-- Contenido principal -->
+      <main class="content" id="main-content"></main>
+    </div>
+
+    <script src="/js/menu-bar.js"></script>
+    <script src="/js/routes-views.js"></script>
+  </body>
+</html>
+
+<!-- <li class="menu-item menu-item-blocked">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span>Calendario</span>
+                </li> -->

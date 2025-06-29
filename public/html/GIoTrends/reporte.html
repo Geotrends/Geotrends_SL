@@ -1,0 +1,169 @@
+<!--
+@file views/reporte.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte PDF</title>
+    <link rel="stylesheet" href="/css/reporte.css">
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Data -->
+    <script src="/dummy_data/data1.js"></script>
+    <script src="/dummy_data/data2.js"></script>
+</head>
+
+<body>
+    <div class="Information">
+        <h3>Analítica</h3>
+        <!-- <h4>Análisis de tendencias del ruido</h4> -->
+        <p>
+            Descubre patrones y correlaciones con herramientas avanzadas de análisis. Evalúa el impacto del ruido en distintos sectores y toma decisiones informadas con modelos predictivos y métricas especializadas.
+        </p>
+      </div>
+
+      
+    <div class="iframe-container">
+        <div class="content-header">
+            <div class="header-title">Reporte de Ruido</div>
+            <div class="header-label">Área Metropolitana del Valle de Aburrá</div>
+            <div class="header-label">Municipio de Envigado</div>
+            <button class="header-btn">Generar reporte</button>
+        </div>
+
+        <div onclick="" class="content-filter mt-3 mb-1">
+            <h5>Selección de indicador de análisis</h5>
+            <div class="row">
+                <div class="col-sm-3 mb-2">
+                    <select class="form-select" aria-label="">
+                        <option>Seleccione ponderación frecuencial</option>
+                        <option value="1">LZeq</option>
+                        <option value="2" selected>LAeq</option>
+                        <option value="3">LCeq</option>
+                    </select>
+                </div>
+                <div class="col-sm-3 mb-2">
+                    <select class="form-select" aria-label="">
+                        <option>Seleccione ponderación temporal</option>
+                        <option value="1" selected>Slow</option>
+                        <option value="2">Fast</option>
+                        <option value="3">Impulse</option>
+                    </select>
+                </div>
+                <div class="col-sm-3 mb-2">
+                    <div class="content-filter-text">LAeq - Slow</div>
+                </div>
+                <div class="col-sm-3 mb-2">
+                    <button class="btn-amva">Analizar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7 graph-module">
+                <div id="main" class="graph-item">
+                    <div class="back-spinner">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 graph-module">
+                <div id="boxplot" class="graph-item">
+                    <div class="back-spinner">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row graph-module">
+                    <div id="criticoDiurno" class="graph-item">
+                        <div class="back-spinner">
+                            <div class="spinner-border" role="status"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row graph-module">
+                    <div id="criticoNocturno" class="graph-item">
+                        <div class="back-spinner">
+                            <div class="spinner-border" role="status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 graph-module">
+                <div id="map" class="map-containter graph-item">
+                    <div class="back-spinner">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 graph-module">
+                <div class="graph-item text-center">
+                    <p>Frecuencia de aparición de componentes tonales generales por sensor. Gráfico de barras sensor VS
+                        frecuencia. Diagrama de pareto. Se puede seleccionar diurno y nocturno.</p>
+                </div>
+            </div>
+            <div class="col-lg-6 graph-module">
+                <div class="graph-item text-center">
+                    <p>Frecuencia de componentes tonales por sensor. Bandas de tercios de octava VS frecuencia de
+                        identificación de componente tonal en el tiempo. Diagrama de barras. Se puede seleccionar diurno
+                        nocturno.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="content-modules">
+            <div id="main" class="graph-module1"></div>
+        </div> -->
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="/js/analytics-charts.js"></script>
+</body>
+
+</html>

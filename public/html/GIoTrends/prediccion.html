@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Predicción de Ruido</title>
+
+  <!-- Litepicker CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"
+  />
+  <!-- Litepicker JS -->
+  <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+
+  <!-- Font Awesome para iconos -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="/css/prediccion.css" />
+</head>
+<body>
+  <div class="Information">
+    <h3>Predicción horaria de ruido</h3>
+    <p>
+      Este módulo permite consultar predicciones horarias de los niveles de ruido ambiental para sensores activos. 
+      Puedes seleccionar un sensor y un rango de fechas para visualizar los niveles estimados, así como las métricas 
+      de confiabilidad del modelo. Los datos son generados automáticamente a partir de modelos entrenados 
+      con registros históricos y se actualizan semanalmente.
+    </p>
+  </div>
+
+  <div class="grafico" id="grafico">
+    <div class="filtros">
+      <div class="campo">
+        <label for="sensor">Sensor:</label>
+        <select id="sensor" class="selector"></select>
+      </div>
+      <div class="campo">
+        <label for="rango-fechas">Rango de fechas:</label>
+        <input type="text" id="rango-fechas" class="selector" placeholder="Selecciona un rango" required>
+      </div>
+      <div class="campo">
+        <button id="btnConsultar" class="boton">Consultar predicción</button>
+      </div>
+    </div>
+
+    <div id="textoRangoFechas" style="margin-top: 10px; font-weight: bold; padding-left: 10px;"></div>
+    <div id="metricas"></div>
+    <div id="contenidoPrediccion"></div>
+  </div>
+
+  <script src="/js/prediccion.js"></script>
+</body>
+</html>

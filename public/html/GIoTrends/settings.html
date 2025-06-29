@@ -1,0 +1,220 @@
+<!--
+@file views/settings.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - Sensores</title>
+    <link rel="stylesheet" href="/css/settings.css?v=1.0">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="Information">
+            <h3>Configuración</h3>
+            <p>Gestiona los sensores IoT, ajusta parámetros del sistema y personaliza la plataforma según tus necesidades para un monitoreo eficiente.</p>
+        </div>
+
+        <div class="iframe-container">
+            <button id="addSensorBtn" class="btn">Añadir Sensor</button>
+            <table id="sensorsTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Sensor ID</th>
+                        <th>Referencia</th>
+                        <th>Barrio</th>
+                        <th>Municipio</th>
+                        <th>Departamento</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Fecha Instalación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Filas dinámicas generadas desde el JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Personalizado -->
+<!-- Modal Personalizado -->
+<!-- Modal Personalizado -->
+<div id="editSensorModal" class="modal">
+    <div class="modal-content">
+        <!-- Botón de cerrar (X) en la parte superior derecha -->
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        
+        <h3>Editar Sensor</h3>
+
+        <form id="editSensorForm">
+            <input type="hidden" id="sensor_id_hidden">
+
+            <!-- Contenedor Grid -->
+            <div class="modal-grid">
+                <!-- 🔹 Sección Izquierda: Mapa -->
+                <div class="map-container">
+                    <label for="edit_geom">Ubicación del Sensor</label>
+                    <div id="map"></div>
+                    <input type="hidden" id="edit_geom">
+                </div>
+
+                <!-- 🔹 Sección Derecha: Datos del Sensor -->
+                <div class="sensor-fields">
+                    <label for="edit_sensor_id">Sensor ID</label>
+                    <input type="text" id="edit_sensor_id" readonly>
+
+                    <label for="edit_freq_monitoreo">Frecuencia de Monitoreo</label>
+                    <input type="text" id="edit_freq_monitoreo">
+
+                    <label for="edit_fin_monitoreo">Fin de Monitoreo</label>
+                    <input type="date" id="edit_fin_monitoreo">
+
+                    <label for="edit_clasificacion">Clasificación</label>
+                    <textarea id="edit_clasificacion" rows="2"></textarea>
+
+                    <label for="edit_referencia">Referencia</label>
+                    <input type="text" id="edit_referencia">
+                </div>
+            </div>
+
+            <!-- 🔹 Segunda Fila: Información Adicional -->
+            <div class="sensor-details">
+                <div>
+                    <label for="edit_instalacion">Instalación</label>
+                    <input type="text" id="edit_instalacion">
+                </div>
+
+                <div>
+                    <label for="edit_linea">Línea</label>
+                    <input type="text" id="edit_linea">
+                </div>
+
+                <div>
+                    <label for="edit_operador">Operador</label>
+                    <input type="text" id="edit_operador">
+                </div>
+
+                <div>
+                    <label for="edit_barrio">Barrio</label>
+                    <input type="text" id="edit_barrio">
+                </div>
+
+                <div>
+                    <label for="edit_municipio">Municipio</label>
+                    <input type="text" id="edit_municipio">
+                </div>
+
+                <div>
+                    <label for="edit_departamento">Departamento</label>
+                    <input type="text" id="edit_departamento">
+                </div>
+
+                <div>
+                    <label for="edit_tipo">Tipo</label>
+                    <input type="text" id="edit_tipo">
+                </div>
+
+                <div>
+                    <label for="edit_uso_suelo">Uso del Suelo</label>
+                    <input type="text" id="edit_uso_suelo">
+                </div>
+
+                <div>
+                    <label for="edit_estado">Estado</label>
+                    <select id="edit_estado">
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 🔹 Tercera Fila: Más Datos -->
+            <div class="sensor-details">
+                <div>
+                    <label for="edit_sector">Sector</label>
+                    <input type="text" id="edit_sector">
+                </div>
+
+                <div>
+                    <label for="edit_subsector">Subsector</label>
+                    <input type="text" id="edit_subsector">
+                </div>
+
+                <div>
+                    <label for="edit_proveedor">Proveedor</label>
+                    <input type="text" id="edit_proveedor">
+                </div>
+
+                <div>
+                    <label for="edit_direccion">Dirección</label>
+                    <input type="text" id="edit_direccion">
+                </div>
+
+                <div>
+                    <label for="edit_fecha_ins">Fecha de Instalación</label>
+                    <input type="date" id="edit_fecha_ins">
+                </div>
+
+                <div>
+                    <label for="edit_ult_mant">Último Mantenimiento</label>
+                    <input type="date" id="edit_ult_mant">
+                </div>
+            </div>
+
+            <!-- 🔹 Botones -->
+            <div class="modal-footer">
+                <button type="button" class="btn cancel" onclick="closeModal()">Cancelar</button>
+
+                <button type="submit" class="btn save">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="/js/settings.js"></script>
+
+</body>
+
+</html>

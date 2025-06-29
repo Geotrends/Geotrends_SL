@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const rancheraController = require('../controllers/rancheraController');
+const rancheraController = require('../controllers/ranchera/rancheraController');
 
 router.get('/resumen', rancheraController.obtenerResumenDashboard);
 router.get('/indicadores-semilla', rancheraController.obtenerIndicadoresSemilla);

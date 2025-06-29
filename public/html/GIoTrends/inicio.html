@@ -1,0 +1,252 @@
+<!--
+@file views/inicio.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruido IoT</title>
+
+    <link rel="stylesheet" href="/css/inicio.css">
+
+    <script src="https://kit.fontawesome.com/a036caa48c.js" crossorigin="anonymous"></script>
+</head>
+<style>
+ body{
+    background-color: white;
+ }
+ 
+</style>
+<body>
+    <!-- Contenido principal -->
+    <main class="content">
+        <!-- Contenido principal -->
+        <!-- Sección de encabezado -->
+        <section class="header-image">
+            <h1 class="header-image-text">Sistema de Monitoreo de Ruido Ambiental</h1>
+            <img src="/images/menu-header-image.png" alt="Imagen antes de Casa" id="menu-header-image"
+            class="menu-header-image">
+
+        </section>
+
+        <!-- Barra informativa -->
+        <section class="info-bar">
+            <article class="item">
+                <div class="item-content">
+                    <h3 class="item-title">Gestión del ruido ambiental</h3>
+                    <p class="item-text">El monitoreo facilita  la toma de decisiones estratégicas basadas en datos confiables, para una gestión efectiva de la contaminación sonora.</p>
+                </div>
+            </article>
+            <hr class="division">
+            <article class="item">
+                <div class="item-content">
+                    <h3 class="item-title">Sensores IoT</h3>
+                    <p class="item-text">Miden el ruido ambiental en tiempo real, facilitando la identificación de fuentes de ruido y sus dinámicas.</p>
+                </div>
+            </article>
+            <hr class="division">
+            <article class="item">
+                <div class="item-content">
+                    <h3 class="item-title">Consulta ciudadana</h3>
+                    <p class="item-text">Con mapas interactivos e indicadores, el ciudadano puede acceder y analizar el estado del ruido en 20 zonas del municipio.</p>
+                </div>
+            </article>
+        </section>
+
+        <!-- Contenedor de contenido principal -->
+        <section class="container-1">
+            <div class="content-1 contentInd">
+                <figure class="image">
+                    <div class="image-container">
+                        <img src="/images/DSC_0830.jpg" alt="">
+                    </div>
+                </figure>
+                <article class="info">
+                    <div class="info-content">
+                        <h3>Impacto ambiental y social</h3>
+                        <p>El Área Metropolitana del Valle de Aburrá en convenio con la Universidad San Buenaventura, fortalecen la gestión acústica en el territorio, con la instalación de 20 sensores IoT diseñados para ofrecer un monitoreo preciso y en tiempo real del entorno acústico. Su tecnología avanzada permite recopilar datos clave para analizar la contaminación sonora.</p>
+                        <p>Envigado es el piloto para este proyecto que complementa la red de monitoreo del municipio, facilitando la identificación de fuentes de ruido y sus dinámicas, lo que permite tomar decisiones oportunas e implementar medidas de control específicas basadas en datos en tiempo real.</p>
+                        <p>En esta plataforma los ciudadanos podrán acceder a información en tiempo real, respecto al comportamiento del ruido en  sectores con mayor interés acústico, como áreas comerciales, residenciales, industriales y de recreación.</p>
+                        <!-- <div class="btn">
+                            <span>Mira el vídeo</span>
+                        </div> -->
+                    </div>
+                </article>
+            </div>
+
+            <div class="content-1">
+                <article class="info">
+                    <div class="info-content">
+                        <h3>Sensores IoT confiables</h3>
+                        <p>Nuestros sensores IoT están diseñados para ofrecer un monitoreo preciso y en tiempo real
+                            del entorno acústico. Su tecnología avanzada permite recopilar datos clave para analizar
+                            la contaminación sonora y apoyar en la toma de decisiones informadas.</p>
+                        <h4>Conoce nuestros sensores</h4>
+                        <p>Descubre cómo nuestros dispositivos están revolucionando la gestión ambiental,
+                            facilitando soluciones sostenibles para mejorar la calidad de vida en las ciudades.</p>
+                        <!-- <div class="btn">
+                            <span>Mira el vídeo</span>
+                        </div> -->
+                    </div>
+                </article>
+                <figure class="image">
+                    <div class="image-container">
+                        <img src="/images/IMG_0711.jpg" alt="">
+                    </div>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Sección de íconos -->
+        <section class="icon-section">
+            <header class="section-header">
+                <div class="line"></div>
+                <h3>Nuestra red de monitoreo</h3>
+            </header>
+            <div class="icon-container">
+                <article class="icon-item">
+                    <div class="icon-circle">
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <i class="fas fa-microphone"></i>
+                                </div>
+                                <div class="flip-card-back">
+                                    <img src="/images/microphone-image.jpg" alt="Micrófono">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="icon-text">Monitoreo en tiempo real</p>
+                </article>
+                <article class="icon-item">
+                    <div class="icon-circle">
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="flip-card-back">
+                                    <img src="/images/chart-image.jpg" alt="Gráfica">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="icon-text">Análisis detallado</p>
+                </article>
+                <article class="icon-item">
+                    <div class="icon-circle">
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="flip-card-back">
+                                    <img src="/images/leaf-image.jpg" alt="Hoja">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="icon-text">Gestión sostenible</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="call-to-action">
+            <div class="cta-container">
+                <div class="cta-text">
+                    <h2>Beneficios del monitoreo en tiempo real</h2>
+                    <p>Implementar un sistema de monitoreo acústico en tiempo real ayuda a gestionar el territorio
+                        de manera
+                        más eficiente.</p>
+                </div>
+                <div class="cta-grid">
+                    <div class="cta-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Datos en Tiempo Real</h3>
+                        <p>Acceso inmediato a información crítica sobre niveles de ruido para una rápida toma de
+                            decisiones.
+                        </p>
+                    </div>
+                    <div class="cta-item">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h3>Gestión Territorial</h3>
+                        <p>Identifica y prioriza las áreas más afectadas por contaminación acústica para una acción
+                            eficaz.
+                        </p>
+                    </div>
+                    <div class="cta-item">
+                        <i class="fas fa-users"></i>
+                        <h3>Impacto Social</h3>
+                        <p>Mejora la calidad de vida de las comunidades al reducir los efectos nocivos del ruido.
+                        </p>
+                    </div>
+                </div>
+                <!-- <div class="cta-button">
+                    <a href="#contact" class="btn">Solicita Información</a>
+                </div> -->
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>Acerca de Nosotros</h3>
+                    <p>Proveemos soluciones innovadoras de monitoreo acústico para mejorar la calidad de vida en las
+                        ciudades.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li>Email: contacto@iotruido.com</li>
+                        <li>Teléfono: +57 123 456 789</li>
+                        <li>Dirección: Calle Ficticia #123, Medellín</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <div class="footer-socials">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Powered by <a style="color: white;" href="https://geotrends.co" target="_blank">Geotrends</a>. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

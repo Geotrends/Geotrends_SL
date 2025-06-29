@@ -6,18 +6,29 @@
   <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-  <div class="login-box">
-    <img src="/images/menu-footer-image.png" alt="Logo GeoTrends" class="logo">
-    <h2>Iniciar Sesión</h2>
-    <form id="formLogin">
-      <input type="text" id="usuario" placeholder="Usuario" required>
-      <input type="password" id="contraseña" placeholder="Contraseña" required>
-      <button type="submit">Ingresar</button>
-    </form>
-    <div id="mensajeError" class="d-none"></div>
+  <div class="login-container">
+    <div class="col-left">
+      <div class="login-box">
+        <img src="/images/menu-footer-image.png" alt="Logo GeoTrends" class="logo">
+        <h2>Bienvenido</h2>
+        <p>Inicia sesión para continuar</p>
+        <form id="formLogin">
+          <input type="text" id="usuario" placeholder="Usuario" required>
+          <input type="password" id="contraseña" placeholder="Contraseña" required>
+          <div class="extra-options">
+            <label><input type="checkbox"> Recordar</label>
+            <a href="#">¿Olvidaste tu contraseña?</a>
+          </div>
+          <button type="submit">Acceder</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-right">
+      <div class="col-right-inner">
+        <img src="/images/panoramica1.jpg" alt="Imagen institucional GeoTrends">
+      </div>
+    </div>
   </div>
-
-  <!-- Solo este script es necesario -->
   <script src="/js/login.js"></script>
 </body>
 </html>

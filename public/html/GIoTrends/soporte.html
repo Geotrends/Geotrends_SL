@@ -1,0 +1,479 @@
+<!--
+@file views/soporte.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Centro de Soporte - Plataforma IoT Ambiental</title>
+  <link rel="stylesheet" href="/css/soporte.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="content-inicio">
+
+    <!-- Header visual -->
+    <div class="header-image">
+      <div class="header-image-text">
+        Centro de Soporte
+      </div>
+    </div>
+
+
+    <!-- Introducción general -->
+<div class="container-1">
+    <div class="section-header">
+      <div class="line"></div>
+      <h3>¿Qué es esta plataforma?</h3>
+    </div>
+    <p>
+      La <strong>Plataforma IoT Ambiental</strong> es una herramienta innovadora que combina tecnología, análisis de datos y participación ciudadana para enfrentar uno de los desafíos urbanos más relevantes: el <strong>ruido ambiental</strong>.
+    </p>
+    <p>
+      Mediante una red de sensores IoT desplegados estratégicamente, esta plataforma permite capturar en tiempo real niveles de presión sonora, temperatura, humedad y otras variables asociadas. Esta información se convierte en indicadores confiables, gráficos interactivos y reportes automáticos que facilitan la comprensión del entorno acústico de nuestras ciudades.
+    </p>
+    <h4>¿Por qué es importante?</h4>
+    <ul>
+      <li>📡 Porque transforma datos crudos en <strong>información útil y comprensible</strong> para la toma de decisiones.</li>
+      <li>🧭 Porque permite una <strong>respuesta oportuna</strong> ante zonas con exceso de ruido, mejorando la calidad de vida.</li>
+      <li>🛠️ Porque respalda técnicamente procesos de control, evaluación de políticas y planificación urbana.</li>
+      <li>🤝 Porque <strong>acerca la información a la ciudadanía</strong>, promoviendo la transparencia y la corresponsabilidad ambiental.</li>
+    </ul>
+    <h4>¿Quién puede beneficiarse?</h4>
+    <ul>
+      <li>🏛️ <strong>Gestores públicos y autoridades ambientales:</strong> Para evaluar zonas críticas, planificar intervenciones y diseñar estrategias de control del ruido.</li>
+      <li>🧑‍🔬 <strong>Técnicos e investigadores:</strong> Para realizar análisis detallados, generar informes y respaldar proyectos ambientales con datos confiables.</li>
+      <li>👥 <strong>Ciudadanos y comunidades:</strong> Para conocer el nivel de ruido en su entorno, actuar con base en evidencia y exigir entornos más saludables.</li>
+    </ul>
+    <p>
+      Esta plataforma no solo mide el ruido: <strong>lo hace visible, comprensible y accionable</strong>. Es una aliada clave para construir territorios más sostenibles, informados y resilientes frente a la contaminación sonora.
+    </p>
+  </div>
+
+    <!-- Inicio -->
+    <div class="container-1">
+      <div class="section-header">
+        <div class="line"></div>
+        <h3>Inicio</h3>
+      </div>
+      <p>
+        El módulo de <strong>Inicio</strong> es la puerta de entrada a la plataforma. Aquí los usuarios pueden conocer el objetivo general del sistema de monitoreo y su contexto territorial.
+      </p>
+      <p><strong>¿Qué encontrarás en esta sección?</strong></p>
+      <ul>
+        <li>Un resumen visual del sistema: "Sistema de Monitoreo de Ruido Ambiental".</li>
+        <li>Una barra informativa con los 3 pilares del proyecto: Gestión ambiental, tecnología IoT y consulta ciudadana.</li>
+      </ul>
+      <p><strong>Contexto institucional:</strong> Convenio entre el Área Metropolitana del Valle de Aburrá y la Universidad San Buenaventura, con el municipio de Envigado como piloto.</p>
+    </div>
+
+
+    <!-- Módulo: Monitoreo -->
+    <div class="container-1">
+        <div class="section-header">
+          <div class="line"></div>
+          <h3>Módulo: Monitoreo</h3>
+        </div>
+        <p>
+          El módulo de <strong>Monitoreo</strong> te permite visualizar el comportamiento actual del ruido ambiental a través de mapas interactivos y tableros por sensor. Es ideal para hacer seguimiento en tiempo real y detectar zonas con niveles elevados de ruido.
+        </p>
+        <h4>¿Qué puedes hacer en esta sección?</h4>
+        <ul>
+          <li>Acceder al mapa de sensores IoT en el territorio.</li>
+          <li>Ver el estado de cada sensor: activo, inactivo, intensidad del ruido.</li>
+          <li>Cambiar entre:
+            <ul>
+              <li>🗺️ Vista de Mapa con distribución espacial.</li>
+              <li>📊 Dashboard de Sensores con gráficas individuales por dispositivo.</li>
+            </ul>
+          </li>
+          <li>Evaluar rápidamente las zonas más ruidosas o tranquilas.</li>
+        </ul>
+        <h4>¿Quién debería usar este módulo?</h4>
+        <ul>
+          <li>📍 Ciudadanos que quieren saber el nivel de ruido en tiempo real en su zona.</li>
+          <li>🧑‍🏭 Funcionarios o gestores que hacen seguimiento a eventos o incidentes sonoros.</li>
+          <li>🧠 Analistas que cruzan el monitoreo con otras variables (tráfico, zonas urbanas, etc.).</li>
+        </ul>
+        <h4>Errores comunes y soluciones</h4>
+        <table>
+          <thead>
+            <tr><th>Problema</th><th>Posible solución</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>El mapa no carga</td><td>Revisa tu conexión a internet. El mapa se carga como un iframe.</td></tr>
+            <tr><td>El dashboard no se muestra</td><td>Asegúrate de hacer clic en la pestaña "Sensores IoT".</td></tr>
+            <tr><td>El sensor no responde</td><td>Puede estar inactivo temporalmente. Consulta en "Configuración".</td></tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Módulo: Mapa de Sensores -->
+      <div class="container-1">
+        <div class="section-header">
+          <div class="line"></div>
+          <h3> Módulo: Mapa de Sensores</h3>
+        </div>
+        <p>
+          Este módulo permite explorar la red de sensores IoT distribuidos en el territorio. Utiliza filtros para localizar zonas específicas y analiza visualmente los niveles de ruido según colores e intensidad.
+        </p>
+        <h4>¿Qué puedes hacer en esta sección?</h4>
+        <ul>
+          <li>Visualizar todos los sensores desplegados en el mapa.</li>
+          <li>Aplicar filtros por:
+            <ul>
+              <li>Municipio</li>
+              <li>Barrio</li>
+              <li>Referencia</li>
+              <li>Uso del suelo</li>
+              <li>Nivel de ruido (según escala de colores)</li>
+            </ul>
+          </li>
+          <li>Consultar los niveles de presión sonora por sensor.</li>
+          <li>Usar la regla de colores para interpretar los datos.</li>
+          <li>Exportar un informe PDF de los sensores visibles en pantalla.</li>
+        </ul>
+        <h4>¿Quién debería usar este módulo?</h4>
+        <ul>
+          <li>🧭 Ciudadanos que quieren saber el nivel de ruido en su barrio.</li>
+          <li>🧠 Técnicos e investigadores para hacer análisis espacial.</li>
+          <li>🧑‍💼 Funcionarios públicos para evidenciar zonas críticas.</li>
+        </ul>
+        
+        <h4>Errores comunes y soluciones</h4>
+        <table>
+          <thead>
+            <tr><th>Problema</th><th>Posible solución</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>El mapa no carga</td><td>Verifica tu conexión o recarga la página.</td></tr>
+            <tr><td>No aparece ningún sensor</td><td>Asegúrate de que los filtros no estén vacíos.</td></tr>
+            <tr><td>El PDF se genera vacío</td><td>Aplica filtros y asegúrate de que haya sensores visibles.</td></tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Módulo: Sensores IoT (Dashboard por sensor) -->
+      <div class="container-1">
+        <div class="section-header">
+          <div class="line"></div>
+          <h3>Módulo: Sensores IoT (Dashboard por sensor)</h3>
+        </div>
+        <p>
+          Este módulo permite consultar el estado y los datos más recientes de cada sensor desplegado en el territorio. Se presenta como un panel visual con múltiples sensores activos en tiempo real, ideal para comparación rápida.
+        </p>
+        <h4>¿Qué puedes hacer en esta sección?</h4>
+        <ul>
+          <li>Filtrar los sensores visibles por:
+            <ul>
+              <li>Municipio</li>
+              <li>Barrio</li>
+              <li>Uso del suelo</li>
+              <li>Referencia o nombre</li>
+              <li>Nivel de ruido (según escala de colores)</li>
+            </ul>
+          </li>
+          <li>Ver el valor más reciente del nivel de ruido (LAeq o SPLZF).</li>
+          <li>Interpretar los datos fácilmente con la regla de colores.</li>
+          <li>Observar de forma inmediata la situación sonora en múltiples puntos al mismo tiempo.</li>
+        </ul>
+        <h4>¿Quién debería usar este módulo?</h4>
+        <ul>
+          <li>🧠 Técnicos de monitoreo que revisan múltiples puntos a la vez.</li>
+          <li>🏛️ Funcionarios que quieren ver el estado actual de su municipio.</li>
+          <li>👥 Usuarios generales interesados en revisar sensores cercanos.</li>
+        </ul>
+        
+        <h4>Errores comunes y soluciones</h4>
+        <table>
+          <thead>
+            <tr><th>Problema</th><th>Posible solución</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>No aparece ningún sensor</td><td>Asegúrate de no tener filtros muy restrictivos.</td></tr>
+            <tr><td>Un sensor muestra “Sin datos”</td><td>Puede estar inactivo o sin transmisión reciente.</td></tr>
+            <tr><td>El gráfico no carga</td><td>Espera unos segundos o verifica tu conexión.</td></tr>
+          </tbody>
+        </table>
+      </div>
+<!-- Módulo: Históricos -->
+<div class="container-1">
+    <div class="section-header">
+      <div class="line"></div>
+      <h3>Módulo: Históricos</h3>
+    </div>
+    <p>
+      El módulo de <strong>Históricos</strong> permite consultar y analizar el comportamiento del ruido ambiental en el tiempo. Es una herramienta clave para técnicos, investigadores, ciudadanos y autoridades locales que desean estudiar la evolución del ruido en zonas específicas.
+    </p>
+    <h4>¿Qué se puede hacer en esta sección?</h4>
+    <ul>
+      <li>Seleccionar un sensor específico desplegado en el municipio.</li>
+      <li>Elegir un rango de fechas personalizado mediante un calendario interactivo.</li>
+      <li>Visualizar los niveles de ruido mediante:
+        <ul>
+          <li>Gráficos dinámicos por hora o día</li>
+          <li>Tablas de datos organizadas</li>
+        </ul>
+      </li>
+      <li>Exportar la información en un archivo PDF.</li>
+    </ul>
+    <h4>Casos de uso comunes</h4>
+    <ul>
+      <li>Comparar el ruido de una zona entre semana y fin de semana.</li>
+      <li>Verificar niveles nocturnos cerca de zonas residenciales.</li>
+      <li>Obtener evidencia para estudios técnicos o reportes ciudadanos.</li>
+    </ul>
+    <h4>¿Quién debería usar este módulo?</h4>
+    <ul>
+      <li>🧑‍🔬 Técnicos e investigadores que necesiten análisis precisos y visuales.</li>
+      <li>🧑‍⚖️ Funcionarios públicos que evalúan zonas con quejas de ruido.</li>
+      <li>👩‍♀️ Ciudadanos curiosos que desean conocer los niveles de ruido en su barrio.</li>
+    </ul>
+    <h4>Errores comunes y soluciones</h4>
+    <table>
+      <thead>
+        <tr><th>Problema</th><th>Posible solución</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>No aparece el gráfico</td><td>Asegúrate de seleccionar tanto sensor como rango de fechas.</td></tr>
+        <tr><td>Los datos demoran en cargar</td><td>Espera unos segundos, se usan gráficos interactivos de alto detalle.</td></tr>
+        <tr><td>No genera el PDF</td><td>Revisa que existan datos antes de exportar.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Módulo: Analítica -->
+  <div class="container-1">
+    <div class="section-header">
+      <div class="line"></div>
+      <h3> Módulo: Analítica</h3>
+    </div>
+    <p>
+      El módulo de <strong>Analítica</strong> es el corazón del sistema. Permite examinar el comportamiento del ruido ambiental a lo largo del tiempo desde múltiples perspectivas: por hora, día, semana y mes, aplicando filtros avanzados y generando reportes automáticos.
+    </p>
+    <h4>¿Qué puedo hacer en esta sección?</h4>
+    <ul>
+      <li>Filtrar por:
+        <ul>
+          <li>Municipio</li>
+          <li>Barrio</li>
+          <li>Uso del suelo</li>
+          <li>Sensor específico</li>
+        </ul>
+      </li>
+      <li>Visualizar:
+        <ul>
+          <li>Niveles de ruido por hora para un día específico.</li>
+          <li>Comportamiento diurno/nocturno a lo largo de una semana.</li>
+          <li>Distribución del ruido en un calendario mensual tipo heatmap.</li>
+          <li>Cambiar tipo de ponderación (frecuencial y temporal).</li>
+        </ul>
+      </li>
+      <li>Exportar la información como informe en PDF por cada bloque.</li>
+    </ul>
+    <h4>Casos de uso comunes</h4>
+    <ul>
+      <li>Identificar zonas críticas por horarios de alto ruido.</li>
+      <li>Comparar la exposición diurna y nocturna por semana.</li>
+      <li>Planificar intervenciones en zonas con patrones preocupantes.</li>
+      <li>Generar evidencia para reuniones, reportes o medios públicos.</li>
+    </ul>
+    <h4>¿Quién debería usar este módulo?</h4>
+    <ul>
+      <li>📊 Técnicos ambientales: Para análisis detallado y toma de decisiones.</li>
+      <li>🌇 Gestores urbanos: Para planificar zonas de intervención o regulación.</li>
+      <li>👥 Ciudadanos avanzados: Que quieren investigar el entorno sonoro de su zona.</li>
+    </ul>
+    <h4>Errores comunes y soluciones</h4>
+    <table>
+      <thead>
+        <tr><th>Problema</th><th>Posible solución</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>No se carga el gráfico</td><td>Revisa que hayas aplicado filtros válidos y espera unos segundos.</td></tr>
+        <tr><td>No genera PDF</td><td>Asegúrate de que existan datos visibles en el gráfico antes de exportar.</td></tr>
+        <tr><td>Filtros vacíos</td><td>Puede que aún no se hayan cargado los sensores. Intenta recargar.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Módulo: Configuración -->
+  <div class="container-1">
+    <div class="section-header">
+      <div class="line"></div>
+      <h3> Módulo: Configuración</h3>
+    </div>
+    <p>
+      Este módulo está disponible únicamente para usuarios con rol <strong>administrador</strong>. Permite gestionar toda la base de sensores IoT activos en el sistema: agregar nuevos dispositivos, editar parámetros existentes y visualizar su ubicación sobre el mapa.
+    </p>
+    <h4>¿Qué se puede hacer en esta sección?</h4>
+    <ul>
+      <li>Consultar todos los sensores instalados en la plataforma.</li>
+      <li>Filtrar por ubicación y tipo.</li>
+      <li>Editar:
+        <ul>
+          <li>Identificación y referencia</li>
+          <li>Ubicación exacta en el mapa</li>
+          <li>Estado del sensor (activo/inactivo)</li>
+          <li>Clasificación del entorno</li>
+          <li>Fechas y frecuencia de monitoreo</li>
+        </ul>
+      </li>
+      <li>Eliminar sensores obsoletos o mal registrados.</li>
+      <li>Añadir nuevos sensores mediante un formulario guiado con ubicación geográfica interactiva.</li>
+    </ul>
+    <h4>¿Quién debería usar este módulo?</h4>
+    <ul>
+      <li>👨‍💼 Administradores técnicos de la plataforma.</li>
+      <li>🛠️ Operadores del sistema encargados del mantenimiento o despliegue de sensores.</li>
+      <li>🗺️ Analistas de infraestructura que verifican la cobertura geográfica.</li>
+    </ul>
+    <h4>Errores comunes y soluciones</h4>
+    <table>
+      <thead>
+        <tr><th>Problema</th><th>Posible solución</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>El mapa no carga</td><td>Verifica tu conexión a internet o recarga la página.</td></tr>
+        <tr><td>No se guarda la edición</td><td>Asegúrate de completar todos los campos requeridos.</td></tr>
+        <tr><td>No se ve el sensor recién creado</td><td>Actualiza la tabla con el botón "Refrescar" (si aplica).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Módulo: Notificaciones -->
+<div class="container-1">
+    <div class="section-header">
+      <div class="line"></div>
+      <h3> Módulo: Notificaciones</h3>
+    </div>
+    <p>
+      Esta sección permitirá a los usuarios inscribirse para recibir reportes automatizados por correo electrónico, ajustados a su interés: alertas inmediatas, resúmenes diarios, semanales o mensuales.
+    </p>
+    <h4>¿Qué funcionalidades tendrá?</h4>
+    <ul>
+      <li>Formulario de inscripción con nombre, correo electrónico y preferencias.</li>
+      <li>Selección del tipo de reporte a recibir (inmediato, diario, semanal, mensual).</li>
+      <li>Desuscripción o edición de preferencias en cualquier momento.</li>
+    </ul>
+    <h4>¿Quién debería usar esta sección?</h4>
+    <ul>
+      <li>📧 Ciudadanos interesados en recibir alertas de su zona.</li>
+      <li>📊 Técnicos que requieren reportes automáticos sin necesidad de ingreso continuo a la plataforma.</li>
+      <li>🏛️ Autoridades que desean estar informadas del comportamiento ambiental.</li>
+    </ul>
+    <p>
+      Próximamente encontrarás aquí el formulario de inscripción a notificaciones. Esta funcionalidad se encuentra en desarrollo.
+    </p>
+  </div>
+  
+<!-- Glosario Técnico Avanzado (Explicado de forma sencilla) -->
+<div class="container-1">
+    <div class="section-header">
+      <div class="line"></div>
+      <h3> Glosario Técnico Avanzado (Explicado de forma sencilla)</h3>
+    </div>
+    <p>Esta sección explica los términos técnicos clave utilizados en esta plataforma, ayudando a cualquier usuario a entender mejor cómo funciona la medición del ruido y qué significan los datos mostrados.</p>
+  
+    <h4>🔊 Conceptos acústicos básicos</h4>
+    <ul>
+      <li><strong>Nivel de Presión Sonora (SPL)</strong>: Es la medida técnica del nivel del ruido, expresada en decibeles (dB). Cuanto mayor es este valor, más intenso es el ruido percibido.</li>
+      <li><strong>Decibel (dB)</strong>: Unidad utilizada para medir el nivel del sonido.</li>
+      <li><strong>Nivel Equivalente (Leq)</strong>: Es un promedio del ruido registrado durante un tiempo determinado, similar a calcular el promedio de una serie de mediciones.</li>
+    </ul>
+  
+    <h4>🎚️ ¿Qué son las ponderaciones frecuenciales?</h4>
+    <ul>
+      <li><strong>Ponderación A (dB(A))</strong>: Ajusta las mediciones al oído humano. Es la más usada en estudios ambientales y regulación del ruido urbano.</li>
+      <li><strong>Ponderación C (dB(C))</strong>: Capta más sonidos graves o profundos, como maquinaria o música fuerte, útil en estudios especiales.</li>
+      <li><strong>Ponderación Z (dB(Z))</strong>: Mide todos los sonidos por igual, sin ajustes, utilizada para análisis detallados y técnicos.</li>
+    </ul>
+  
+    <h4>⏱️ Tipos de respuesta temporal (Ponderaciones temporales)</h4>
+    <ul>
+      <li><strong>Fast (F)</strong>: Mide cambios rápidos en el ruido, útil para situaciones donde el sonido varía rápidamente (tráfico).</li>
+      <li><strong>Slow (S)</strong>: Mide el ruido suavizando las variaciones rápidas, ideal para ambientes más constantes (oficinas, viviendas).</li>
+      <li><strong>Impulse (I)</strong>: Detecta picos de ruido breves y fuertes, como golpes, disparos o explosiones.</li>
+    </ul>
+  
+    <h4>📊 Indicadores estadísticos comunes</h4>
+    <ul>
+      <li><strong>L10, L50, L90</strong>: Indican cuánto tiempo el ruido supera ciertos niveles.
+        <ul>
+          <li><strong>L10</strong>: nivel superado el 10% del tiempo (picos frecuentes).</li>
+          <li><strong>L50</strong>: nivel promedio típico.</li>
+          <li><strong>L90</strong>: nivel de fondo, casi siempre presente.</li>
+        </ul>
+      </li>
+      <li><strong>Lmax / Lmin</strong>: Valores máximos y mínimos del ruido registrados.</li>
+      <li><strong>SEL (Sound Exposure Level)</strong>: Representa toda la energía del sonido registrada durante un evento específico.</li>
+    </ul>
+  
+    <h4>🎧 Análisis por bandas de frecuencia</h4>
+    <ul>
+      <li><strong>Bandas de octava</strong>: Dividen el espectro sonoro en grandes grupos, permitiendo entender qué tipos de sonidos predominan (graves, medios o agudos).</li>
+      <li><strong>Bandas de tercio de octava</strong>: Dividen el espectro en grupos más detallados, ofreciendo información precisa sobre la composición del ruido.</li>
+    </ul>
+  
+    <h4>📡 Conceptos técnicos del hardware IoT</h4>
+    <ul>
+      <li><strong>Sensor IoT</strong>: Dispositivo electrónico que mide condiciones ambientales como ruido, temperatura o humedad y envía estos datos automáticamente a una red.</li>
+      <li><strong>Calibración Acústica</strong>: Proceso que asegura que las mediciones del sensor sean precisas.</li>
+      <li><strong>Firmware</strong>: Es el software interno del sensor que controla cómo se miden, almacenan y transmiten los datos.</li>
+      <li><strong>Frecuencia de muestreo</strong>: Cantidad de veces por segundo que el sensor registra datos. Mayor frecuencia permite análisis más detallados.</li>
+    </ul>
+  </div>
+  
+
+  
+  <!-- Módulo: Ayuda / Contacto -->
+  <div class="container-1">
+    <div class="section-header">
+      <div class="line"></div>
+      <h3>🆘 Ayuda y Contacto</h3>
+    </div>
+    <p>
+      Si después de revisar esta guía aún tienes dudas, puedes contactar al equipo de soporte usando el formulario incluido al final de esta página. 
+    </p>
+    <ul>
+      <li>✉️ Puedes describir el problema y adjuntar capturas si es necesario.</li>
+      <li>👨‍💻 Nuestro equipo técnico responderá lo antes posible por correo electrónico.</li>
+      <li>🔒 Tus datos están protegidos y se usarán únicamente para efectos de soporte.</li>
+    </ul>
+    <p>
+      También puedes consultar el <a href="/docs/manual-usuario.pdf" target="_blank">Manual de Usuario</a> o acceder al <a href="https://www.youtube.com/watch?v=video-tutorial" target="_blank">Video Tutorial</a> para una guía paso a paso.
+    </p>
+  </div>
+  
+
+  </div>
+</body>
+</html>

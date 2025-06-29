@@ -1,0 +1,88 @@
+{
+  "admin": [
+    {
+      "texto": "Ranchera",
+      "submenu": [
+        { "texto": "Cuentas", "page": "/html/ranchera/index.html" },
+        { "texto": "Perfiles", "page": "/html/ranchera/perfiles.html" },
+        { "texto": "Publicaciones", "page": "/html/ranchera/comentarios.html" },
+        { "texto": "Imágenes", "page": "/html/ranchera/imagenes.html" },
+        { "texto": "Demografía", "page": "/html/ranchera/demografia.html" },
+        { "texto": "Insights", "page": "/html/ranchera/insights.html" }
+      ]
+    },
+    {
+      "texto": "IoT",
+      "submenu": [
+        { "texto": "Monitoreo", "page": "/html/GIoTrends/monitoreo.html" },
+        { "texto": "Históricos", "page": "/html/GIoTrends/historicos.html" },
+        { "texto": "Analítica", "page": "/html/GIoTrends/analitica.html" },
+        { "texto": "Predicción", "page": "/html/GIoTrends/prediccion.html" },
+        { "texto": "Mapas Dinámicos", "page": "/html/GIoTrends/mapasDinamicos.html" },
+        {
+          "texto": "Notificaciones",
+          "page": "/html/GIoTrends/notificaciones.html"
+        },
+        {
+          "texto": "Configuración",
+          "page": "/html/GIoTrends/configuracion.html"
+        },
+        { "texto": "Soporte", "page": "/html/GIoTrends/soporte.html" }
+      ]
+    },
+    {
+      "texto": "Industria",
+      "submenu": [
+        { "texto": "Normativa", "page": "/html/industria/normativa.html" },
+        { "texto": "Holografía", "page": "/html/industria/holografia.html" },
+        { "texto": "Ingeniería", "page": "/html/industria/ingenieria.html" },
+        { "texto": "Estaciones", "page": "/html/industria/estaciones.html" },
+        { "texto": "Registros", "page": "/html/industria/registros.html" },
+        { "texto": "Mapas de Ruido", "page": "/html/industria/mapas.html" }
+      ]
+    },
+    { "texto": "Mi perfil", "page": "/html/secciones/perfil.html" },
+    { "texto": "Configurar", "page": "/html/secciones/configuracion.html" },
+    { "texto": "Usuarios", "page": "/html/secciones/usuarios.html" },
+    { "texto": "Ver reportes", "page": "/html/secciones/reportes.html" }
+  ],
+  "gestor": [
+    {
+      "texto": "Ranchera",
+      "submenu": [
+        { "texto": "Cuentas", "page": "/html/ranchera/index.html" },
+        { "texto": "Perfiles", "page": "/html/ranchera/perfiles.html" },
+        { "texto": "Publicaciones", "page": "/html/ranchera/comentarios.html" },
+        { "texto": "Imágenes", "page": "/html/ranchera/imagenes.html" },
+        { "texto": "Demografía", "page": "/html/ranchera/demografia.html" },
+        { "texto": "Insights", "page": "/html/ranchera/insights.html" }
+      ]
+    },
+    {
+      "texto": "IoT",
+      "submenu": [
+        { "texto": "Monitoreo", "page": "/html/GIoTrends/monitoreo.html" },
+        { "texto": "Históricos", "page": "/html/GIoTrends/historicos.html" },
+        { "texto": "Analítica", "page": "/html/GIoTrends/analitica.html" },
+        { "texto": "Predicción", "page": "/html/GIoTrends/prediccion.html" },
+        {
+          "texto": "Notificaciones",
+          "page": "/html/GIoTrends/notificaciones.html"
+        },
+        {
+          "texto": "Configuración",
+          "page": "/html/GIoTrends/configuracion.html"
+        },
+        { "texto": "Soporte", "page": "/html/GIoTrends/soporte.html" }
+      ]
+    },
+    { "texto": "Configurar", "page": "/html/secciones/configuracion.html" },
+    { "texto": "Ver datos", "page": "/html/secciones/datos.html" },
+    { "texto": "Ver reportes", "page": "/html/secciones/reportes.html" },
+    { "texto": "Mi perfil", "page": "/html/secciones/perfil.html" }
+  ],
+  "usuario": [
+    { "texto": "Ver datos", "page": "/html/secciones/datos.html" },
+    { "texto": "Mi perfil", "page": "/html/secciones/perfil.html" }
+  ]
+}

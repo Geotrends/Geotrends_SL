@@ -1,0 +1,90 @@
+<!--
+@file views/monitoreo.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alternar Páginas</title>
+    <link rel="stylesheet" href="/css/monitoreo.css" />
+    <link rel="stylesheet" href="/css/modalSensor.css" />
+  </head>
+  <body>
+    <div class="Information">
+      <h3>Monitoreo</h3>
+      <!-- <h4>Visualiza el ruido en tiempo real</h4> -->
+      <p>
+        Visualiza el ruido en tiempo real Consulta los niveles de ruido
+        registrados por los sensores IoT en diferentes puntos del territorio.
+        Con mapas interactivos y datos actualizados, identifica fuentes de ruido
+        y su impacto en el entorno.
+      </p>
+    </div>
+
+    <div class="iframe-container">
+      <div class="tab-container">
+        <button id="btnMapa" class="tab active">Mapa</button>
+        <button id="btnSensores" class="tab">Sensores IoT</button>
+      </div>
+      <iframe id="contentFrame" src="/views/map.html" frameborder="0"></iframe>
+    </div>
+
+    <script>
+      const btnMapa = document.getElementById("btnMapa");
+      const btnSensores = document.getElementById("btnSensores");
+      const iframe = document.getElementById("contentFrame");
+
+      // Función para manejar el cambio de pestañas
+      function switchTab(tab, src) {
+        // Quitar la clase activa de todas las pestañas
+        document.querySelectorAll(".tab").forEach((button) => {
+          button.classList.remove("active");
+        });
+
+        // Añadir la clase activa a la pestaña seleccionada
+        tab.classList.add("active");
+
+        // Cambiar el contenido del iframe
+        iframe.src = src;
+      }
+
+      // Asignar eventos a las pestañas
+      btnMapa.addEventListener("click", () => {
+        switchTab(btnMapa, "/views/map.html");
+      });
+
+      btnSensores.addEventListener("click", () => {
+        switchTab(btnSensores, "/views/sensors-dashboard.html");
+      });
+    </script>
+  </body>
+</html>

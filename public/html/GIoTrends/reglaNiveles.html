@@ -1,0 +1,207 @@
+<!--
+@file views/reglaNiveles.html
+@version 1.0.0
+
+@description
+Vista o plantilla HTML del sistema.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboración con el Área Metropolitana
+del Valle de Aburrá y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+⚖️ Propiedad Intelectual:
+Este software es propiedad intelectual compartida según el Convenio 273 de 2024.
+
+📌 Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Área Metropolitana del Valle de Aburrá
+- Universidad de San Buenaventura
+
+👨‍💻 Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo Gómez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+📅 Creación: Noviembre 2024
+📅 Actualización: 30-03-2025
+
+📜 Licencia: MIT License
+
+© 2025 Geotrends. Todos los derechos reservados.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regla de Niveles de Ruido</title>
+    <style>
+        .rule-container {
+            font-family: 'Poppins', sans-serif;
+            margin: 20px auto;
+            width: 80%;
+        }
+
+        .rule-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .rule-table td {
+            height: 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            width: 20%;
+            border: 1px solid rgba(0, 0, 0, 0.509);
+            /* Corrección en la propiedad de borde */
+            box-sizing: border-box;
+            /* Asegura que los bordes no afecten el tamaño de la celda */
+        }
+
+
+        .rule-table .gray {
+            background-color: #B6B6B6;
+            color: black;
+        }
+
+        .rule-table .blue {
+            background-color: #0074BD;
+        }
+
+        .rule-table .green {
+            background-color: #82cc19;
+        }
+
+        .rule-table .orange {
+            background-color: #ef7d00;
+        }
+
+        .rule-table .red {
+            background-color: red;
+        }
+
+        .rule-labels {
+            position: relative;
+            width: 100%;
+            margin-top: 5px;
+            height: 20px;
+        }
+
+        .rule-labels div {
+            position: absolute;
+            font-size: 12px;
+            text-align: center;
+            transform: translateX(-50%);
+        }
+
+
+        .label-NAN {
+            left: 0%;
+        }
+
+        .label-0 {
+            left: 20%;
+        }
+
+        .label-55 {
+            left: 40%;
+            /* Final de la primera celda */
+        }
+
+        .label-65 {
+            left: 60%;
+            /* Final de la segunda celda */
+        }
+
+        .label-75 {
+            left: 80%;
+            /* Final de la tercera celda */
+        }
+
+        .label-100 {
+            left: 100%;
+            /* Final de la última celda */
+        }
+
+        .rule-divider {
+            width: 100%;
+            height: 5%;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 0px;
+        }
+
+        .rule-divider div {
+            width: 1px;
+            height: 5px;
+            background-color: black;
+            position: absolute;
+        }
+
+        .divider-NAN {
+            left: 0%;
+        }
+
+        .divider-0 {
+            left: 20%;
+        }
+
+        .divider-55 {
+            left: 40%;
+        }
+
+        .divider-65 {
+            left: 60%;
+        }
+
+        .divider-75 {
+            left: 80%;
+        }
+
+        .divider-100 {
+            left: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rule-container">
+        <!-- Tabla con colores -->
+        <table class="rule-table">
+            <tr>
+                <td class="gray">NaN</td>
+                <td class="blue">Ruido Bajo</td>
+                <td class="green">Ruido Moderado</td>
+                <td class="orange">Ruido Alto</td>
+                <td class="red">Ruido Excesivo</td>
+            </tr>
+        </table>
+
+        <!-- Líneas divisoras -->
+        <div class="rule-divider">
+            <div class="divider-NAN"></div>
+            <div class="divider-0"></div>
+            <div class="divider-55"></div>
+            <div class="divider-65"></div>
+            <div class="divider-75"></div>
+            <div class="divider-100"></div>
+        </div>
+
+        <!-- Etiquetas numéricas -->
+        <div class="rule-labels">
+            <div class="label-NAN">NaN</div>
+            <div class="label-0">0</div>
+            <div class="label-55">55</div>
+            <div class="label-65">65</div>
+            <div class="label-75">75</div>
+            <div class="label-100">100</div>
+        </div>
+    </div>
+</body>
+
+</html>
