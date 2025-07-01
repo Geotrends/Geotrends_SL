@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // Cargar sensores disponibles
-  const sensores = await fetch("/prediccion/sensores-disponibles").then((r) =>
+  const sensores = await fetch("/api/giotrends/prediccion/sensores").then((r) =>
     r.json()
   );
   const select = document.getElementById("sensor");
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       };
       //document.getElementById("textoRangoFechas").textContent = formatearRangoFechas(desde, hasta);
 
-      const url = `/prediccion/prediccion?sensor_id=${select.value}&desde=${desde}&hasta=${hasta}`;
+      const url = `/api/giotrends/prediccion?sensor_id=${select.value}&desde=${desde}&hasta=${hasta}`;
       try {
         const res = await fetch(url);
         const data = await res.json();
@@ -128,17 +128,21 @@ document.addEventListener("DOMContentLoaded", async () => {
               xAxisIndex: 0,
               start: 0,
               end: 100,
-              backgroundColor: "rgba(255, 255, 255, 0.2)",
-              dataBackground: {
-                lineStyle: { color: "rgb(130, 204, 25)" },
-                areaStyle: { color: "rgba(130, 204, 25, 0.3)" },
-              },
-              fillerColor: "rgba(130, 204, 25, 0.5)",
-              borderColor: "rgb(106, 166, 21)",
-              handleStyle: {
-                color: "rgb(130, 204, 25)",
-                borderColor: "rgba(130, 204, 25, 0.5)",
-              },
+                        backgroundColor: "rgba(255, 255, 255, 0.2)", // Fondo verde claro
+          dataBackground: {
+            lineStyle: {
+              color: "#2b7a9a", // Línea de fondo un poco más oscura
+            },
+            areaStyle: {
+              color: "rgba(54, 147, 182, 0.15)", // Área sombreada más sutil
+            },
+          },
+          fillerColor: "rgba(54, 147, 182, 0.4)", // Área seleccionada con buena visibilidad
+          borderColor: "#1e5f78", // Borde del slider más oscuro
+          handleStyle: {
+            color: "#3693b6", // Botón deslizante con el color base
+            borderColor: "rgba(54, 147, 182, 0.6)", // Borde del botón más definido
+          },
               textStyle: {
                 color: "rgb(0, 0, 0)",
                 fontSize: 12,

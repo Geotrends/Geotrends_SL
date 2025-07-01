@@ -25,7 +25,7 @@
     "historicosppl.html": "/js/GIoTrends/historicosPpal.js",
     "analitica.html": "/js/GIoTrends/analitica.js",
     "mapasDinamicos.html": "/js/GIoTrends/mapasDinamicos.js",
-    "prediccion.html": "/js/GIoTrends/prediccion.js",
+    "prediccionPpal.html": "/js/GIoTrends/prediccionPpal.js",
     "notificaciones.html": "/js/GIoTrends/notificaciones.js",
     "configuracion.html": "/js/GIoTrends/configuracion.js",
     "soporte.html": "/js/GIoTrends/soporte.js"

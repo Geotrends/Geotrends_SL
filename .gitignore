@@ -4,3 +4,7 @@ DATA/Zenú_Estudiantes.zip
 DATA/Zenu_Ranchera.zip
 public/temp/
 public/images/Industria/industria_1/
+
+.venv/
+models/*
+!models/.gitkeep

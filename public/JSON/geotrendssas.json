@@ -17,7 +17,7 @@
         { "texto": "Monitoreo", "page": "/html/GIoTrends/monitoreo.html" },
         { "texto": "Históricos", "page": "/html/GIoTrends/historicos.html" },
         { "texto": "Analítica", "page": "/html/GIoTrends/analitica.html" },
-        { "texto": "Predicción", "page": "/html/GIoTrends/prediccion.html" },
+        { "texto": "Predicción", "page": "/html/GIoTrends/prediccionPpal.html" },
         { "texto": "Mapas Dinámicos", "page": "/html/GIoTrends/mapasDinamicos.html" },
         {
           "texto": "Notificaciones",
@@ -52,7 +52,7 @@
       "submenu": [
         { "texto": "Tiempo Real", "page": "/html/GIoTrends/monitoreo.html" },
         { "texto": "Históricos", "page": "/html/GIoTrends/historicosppl.html" },
-        { "texto": "Predicción", "page": "/html/GIoTrends/prediccion.html" },
+        { "texto": "Predicción", "page": "/html/GIoTrends/prediccionPpal.html" },
         { "texto": "Mapa Dinámico", "page": "/html/GIoTrends/mapaDinamico.html" },
         { "texto": "Paisajes sonoros", "page": "/html/GIoTrends/paisajesSonoros.html" },
         { "texto": "Mapas de ruido", "page": "/html/GIoTrends/mapasDeRuido.html" }

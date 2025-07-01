@@ -1,0 +1,11 @@
+numpy==2.0.2
+pandas==2.2.3
+psycopg2-binary>=2.9,<3.0
+python-dateutil==2.9.0.post0
+python-dotenv==1.1.0
+pytz==2023.3
+scipy==1.13.1
+six==1.17.0
+tzdata==2025.2
+xgboost==1.7.6
+scikit-learn==1.4.2
