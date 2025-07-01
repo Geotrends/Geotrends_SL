@@ -18,7 +18,7 @@ const map = new maplibregl.Map({
 
 
 function toggleSidebar(id) {
-  const elem = document.getElementById(id); 
+  const elem = document.getElementById(id);
   const classes = elem.className.split(' ');
   const collapsed = classes.indexOf('collapsed') !== -1;
 
@@ -40,7 +40,74 @@ function toggleSidebar(id) {
 map.on('load', () => {
   toggleSidebar('left');
 
-;
+  // Cargar y desplegar los datos de paisaje sonoro desde el endpoint
+  fetch('/api/giotrends/mapa/paisaje-sonoro')
+    .then(res => res.json())
+    .then(data => {
+      map.addSource('paisajeSonoro', {
+        type: 'geojson',
+        data: data
+      });
+
+      map.addLayer({
+        id: 'paisajeSonoroLayer',
+        type: 'circle',
+        source: 'paisajeSonoro',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#3693b6',
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#ffffff'
+        }
+      });
+
+      map.on('click', 'paisajeSonoroLayer', (e) => {
+        const props = e.features[0].properties;
+
+        // ✅ Validar si el atributo contiene una URL de video embebido de YouTube
+        const videoURL = props.url && props.url.includes("youtube.com/embed") ? props.url : null;
+
+        // ✅ Construir el HTML del video, sin bordes, al inicio del popup
+        const videoHTML = videoURL
+          ? `<div style="margin:-10px -10px 10px -10px">
+               <iframe width="100%" height="200" src="${videoURL}" frameborder="0" allowfullscreen style="border:none;"></iframe>
+             </div>`
+          : '';
+
+        // ✅ Campos a mostrar en orden debajo del video
+        const camposMostrar = ['municipio', 'nombre', 'tipo', 'descripcion'];
+        const infoHTML = camposMostrar.map(key => {
+          if (props[key]) {
+            return `<strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${props[key]}`;
+          }
+          return '';
+        }).join('<br>');
+
+        // ✅ Estructura completa del popup usando clases CSS para ancho fijo y scroll
+        const popupContent = `
+          <div class="popup-sonoro">
+            ${videoHTML}
+            <div class="info-popup">${infoHTML}</div>
+          </div>
+        `;
+
+        new maplibregl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(popupContent)
+          .addTo(map);
+
+        // Centrar el mapa hacia el punto clicado para asegurar visibilidad del popup
+        map.easeTo({
+          center: e.lngLat,
+          offset: [0, -100], // desplaza hacia arriba para dejar espacio al popup
+          duration: 1000
+        });
+      });
+
+      map.on('mouseenter', 'paisajeSonoroLayer', () => map.getCanvas().style.cursor = 'pointer');
+      map.on('mouseleave', 'paisajeSonoroLayer', () => map.getCanvas().style.cursor = '');
+    })
+    .catch(err => console.error('Error al cargar paisaje sonoro:', err));
 });
 
 document.getElementById('mapStyleSelector').addEventListener('change', (e) => {

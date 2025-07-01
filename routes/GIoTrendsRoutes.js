@@ -39,6 +39,7 @@ const {
   getTablesWithGeometry,
   getTableDataForLeaflet
 } = require('../controllers/giotrends/mapController');
+const { getPaisajeSonoroData } = require('../controllers/giotrends/merController');
 
 // 🟦 Importar función getWeeklyData para análisis modal semanal
 const { getWeeklyData } = require('../controllers/giotrends/modalController');
@@ -86,6 +87,7 @@ router.post('/informes/modal-semanal', generarPDFModalSemanal);
 router.get('/mapa/data', getMapData);
 router.get('/mapa/cartobase/tables', getTablesWithGeometry);
 router.get('/mapa/cartobase/data/:tableName', getTableDataForLeaflet);
+router.get('/mapa/paisaje-sonoro', getPaisajeSonoroData);
 
 // 🟦 Ruta para análisis modal semanal
 router.get('/modal/weekly-data/:sensorId', getWeeklyData);
