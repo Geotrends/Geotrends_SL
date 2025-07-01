@@ -76,14 +76,14 @@ document.addEventListener("DOMContentLoaded", function () {
           fechaInicio = startDate.format("YYYY-MM-DD");
           fechaFin = endDate.format("YYYY-MM-DD");
           // ✅ Añadir:
-window.fechaInicioGlobal = fechaInicio;
-window.fechaFinGlobal = fechaFin;
+          window.fechaInicioGlobal = fechaInicio;
+          window.fechaFinGlobal = fechaFin;
         }
       });
     },
   });;
 
-  
+
   // ✅ Mostrar calendario al hacer clic en el icono
   iconCalendar?.addEventListener("click", function () {
     picker.show();
@@ -114,7 +114,7 @@ window.fechaFinGlobal = fechaFin;
   // 🔹 Cargar sensores desde el backend
   async function cargarSensores() {
     try {
-      const response = await fetch("/historicos/sensores");
+      const response = await fetch("/api/giotrends/historicos/sensores");
       if (!response.ok)
         throw new Error(`Error al obtener sensores: ${response.status}`);
 
@@ -171,7 +171,7 @@ window.fechaFinGlobal = fechaFin;
     spinnerGlobal?.classList.remove("oculto");
 
     // ✅ Construcción correcta de la URL con parámetros de consulta
-    const url = `/historicos/sensor/${sensor}/laeq_slow?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+    const url = `/api/giotrends/historicos/sensor/${sensor}/laeq_slow?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
     // console.log("Consultando:", url); // Verificar en la consola del navegador
 
     try {
@@ -196,7 +196,7 @@ window.fechaFinGlobal = fechaFin;
       spinnerGlobal?.classList.add("oculto");
     }
   }
-  
+
 
   botonConsultar.addEventListener("click", consultarDatos);
   cargarSensores();
@@ -223,10 +223,10 @@ window.fechaFinGlobal = fechaFin;
     /////////////
     datosGlobales = datos; // Guardamos los datos en la variable global
     // ✅ Guardar las fechas de inicio y fin del dataset completo
-if (datos && datos.length > 0) {
-  window.zoomInicioGlobal = datos[0].timestamp;
-  window.zoomFinGlobal = datos[datos.length - 1].timestamp;
-}
+    if (datos && datos.length > 0) {
+      window.zoomInicioGlobal = datos[0].timestamp;
+      window.zoomFinGlobal = datos[datos.length - 1].timestamp;
+    }
 
     // ✅ Esperar a que el gráfico tenga configuración antes de actualizar
     setTimeout(() => {
@@ -254,21 +254,21 @@ if (datos && datos.length > 0) {
       "laeq_slow": "#82cc19",     // Verde principal
       "laeq_fast": "#a2e045",     // Verde claro
       "laeq_impulse": "#5e9913",  // Verde oscuro
-    
+
       // 🎯 C-weighting (amarillo)
       "lceq_slow": "#FAC858",     // Amarillo principal
       "lceq_fast": "#ffe28a",     // Amarillo claro
       "lceq_impulse": "#d6a237",  // Amarillo oscuro
-    
+
       // 🎯 Z-weighting (azul grisáceo)
       "lzeq_slow": "#7e93ba",     // Azul grisáceo base
       "lzeq_fast": "#9fb1cc",     // Más claro
       "lzeq_impulse": "#5d6e8e",  // Más oscuro
-    
+
       // 🎯 Pico
       "lpeak": "#FF4500"          // Naranja fuerte
     };
-    
+
 
     // ✅ Series activas al inicio (modifica según lo que quieres mostrar)
     const seriesActivas = ["laeq_slow"];
@@ -366,17 +366,17 @@ if (datos && datos.length > 0) {
           backgroundColor: "rgba(255, 255, 255, 0.2)", // Fondo verde claro
           dataBackground: {
             lineStyle: {
-              color: "rgb(130, 204, 25)", // Línea de fondo en verde oscuro
+              color: "#2b7a9a", // Línea de fondo un poco más oscura
             },
             areaStyle: {
-              color: "rgba(130, 204, 25, 0.3)", // Área sombreada en tono verde
+              color: "rgba(54, 147, 182, 0.15)", // Área sombreada más sutil
             },
           },
-          fillerColor: "rgba(130, 204, 25, 0.5)", // Color del área seleccionada en verde con opacidad
-          borderColor: "rgb(106, 166, 21)", // Color del borde del slider en verde más oscuro
+          fillerColor: "rgba(54, 147, 182, 0.4)", // Área seleccionada con buena visibilidad
+          borderColor: "#1e5f78", // Borde del slider más oscuro
           handleStyle: {
-            color: "rgb(130, 204, 25)", // Color del botón deslizante
-            borderColor: "rgba(130, 204, 25, 0.5)", // Borde del botón más oscuro para contraste
+            color: "#3693b6", // Botón deslizante con el color base
+            borderColor: "rgba(54, 147, 182, 0.6)", // Borde del botón más definido
           },
           textStyle: {
             color: "rgb(0, 0, 0)", // Color del texto de las fechas en verde oscuro
@@ -1057,29 +1057,29 @@ if (datos && datos.length > 0) {
         nameLocation: "middle",   // 🔥 VOLVER a middle
         nameGap: 35,              // 🔥 Un poco más de espacio
         nameTextStyle: {
-            padding: [30, 0, 0, 0], // 🔥 Empuja el nombre hacia abajo (prueba 30px)
-            fontSize: 12,
-            fontWeight: "lighter",
-            color: "#333"
+          padding: [30, 0, 0, 0], // 🔥 Empuja el nombre hacia abajo (prueba 30px)
+          fontSize: 12,
+          fontWeight: "lighter",
+          color: "#333"
         },
         axisLabel: {
-            formatter: function (value) {
-                let fecha = new Date(value);
-                return fecha.toLocaleDateString("es-ES", {
-                    weekday: "short",
-                    day: "2-digit",
-                    month: "short"
-                });
-            },
-            fontSize: 12,
-            rotate: 45
+          formatter: function (value) {
+            let fecha = new Date(value);
+            return fecha.toLocaleDateString("es-ES", {
+              weekday: "short",
+              day: "2-digit",
+              month: "short"
+            });
+          },
+          fontSize: 12,
+          rotate: 45
         },
         axisLine: { lineStyle: { color: "#666" } },
         splitLine: { show: true, lineStyle: { type: "dashed", color: "#ccc" } },
         splitNumber: 7,
         minInterval: 3600 * 24 * 1000
-    },
-    
+      },
+
       yAxis: {
         type: "value",
         name: "Nivel (dB)",
@@ -1102,17 +1102,17 @@ if (datos && datos.length > 0) {
           backgroundColor: "rgba(255, 255, 255, 0.2)", // Fondo verde claro
           dataBackground: {
             lineStyle: {
-              color: "rgb(130, 204, 25)", // Línea de fondo en verde oscuro
+              color: "#2b7a9a", // Línea de fondo un poco más oscura
             },
             areaStyle: {
-              color: "rgba(130, 204, 25, 0.3)", // Área sombreada en tono verde
+              color: "rgba(54, 147, 182, 0.15)", // Área sombreada más sutil
             },
           },
-          fillerColor: "rgba(130, 204, 25, 0.5)", // Color del área seleccionada en verde con opacidad
-          borderColor: "rgb(106, 166, 21)", // Color del borde del slider en verde más oscuro
+          fillerColor: "rgba(54, 147, 182, 0.4)", // Área seleccionada con buena visibilidad
+          borderColor: "#1e5f78", // Borde del slider más oscuro
           handleStyle: {
-            color: "rgb(130, 204, 25)", // Color del botón deslizante
-            borderColor: "rgba(130, 204, 25, 0.5)", // Borde del botón más oscuro para contraste
+            color: "#3693b6", // Botón deslizante con el color base
+            borderColor: "rgba(54, 147, 182, 0.6)", // Borde del botón más definido
           },
           textStyle: {
             color: "rgb(0, 0, 0)", // Color del texto de las fechas en verde oscuro
@@ -1167,48 +1167,48 @@ if (datos && datos.length > 0) {
   }
 
 
-// 📌 Inicializar el gráfico de barras horizontales en `grafico5`
-const chartBarrasDias = echarts.init(document.getElementById("grafico5"));
+  // 📌 Inicializar el gráfico de barras horizontales en `grafico5`
+  const chartBarrasDias = echarts.init(document.getElementById("grafico5"));
 
-// 🔹 Función para calcular el promedio por día de la semana para 3 periodos
-function calcularPromedioPorDiaSemana(datos) {
+  // 🔹 Función para calcular el promedio por día de la semana para 3 periodos
+  function calcularPromedioPorDiaSemana(datos) {
     let dias = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
     let diasDiurno = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
     let diasNocturno = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
 
     datos.forEach((d) => {
-        let fecha = new Date(d.timestamp);
-        let diaSemana = fecha.getDay(); // 🔹 0 = Domingo, ..., 6 = Sábado
-        let hora = fecha.getHours();
-        let nivel = parseFloat(d.laeq_slow);
+      let fecha = new Date(d.timestamp);
+      let diaSemana = fecha.getDay(); // 🔹 0 = Domingo, ..., 6 = Sábado
+      let hora = fecha.getHours();
+      let nivel = parseFloat(d.laeq_slow);
 
-        dias[diaSemana].push(nivel); // Todos los datos
-        if (hora >= 7 && hora <= 20) diasDiurno[diaSemana].push(nivel); // Diurno
-        else diasNocturno[diaSemana].push(nivel); // Nocturno
+      dias[diaSemana].push(nivel); // Todos los datos
+      if (hora >= 7 && hora <= 20) diasDiurno[diaSemana].push(nivel); // Diurno
+      else diasNocturno[diaSemana].push(nivel); // Nocturno
     });
 
     // 📊 Calcular el promedio para cada periodo
     function calcularPromedio(valores) {
-        if (valores.length === 0) return null;
-        let suma = valores.reduce((acc, val) => acc + Math.pow(10, val / 10), 0);
-        return (10 * Math.log10(suma / valores.length)).toFixed(1); // 🔹 Solo un decimal
+      if (valores.length === 0) return null;
+      let suma = valores.reduce((acc, val) => acc + Math.pow(10, val / 10), 0);
+      return (10 * Math.log10(suma / valores.length)).toFixed(1); // 🔹 Solo un decimal
     }
 
     let promediosDias = Object.keys(dias).map((dia) => ({
-        dia: parseInt(dia),
-        diurno: calcularPromedio(diasDiurno[dia]),
-        nocturno: calcularPromedio(diasNocturno[dia]),
-        total: calcularPromedio(dias[dia])
+      dia: parseInt(dia),
+      diurno: calcularPromedio(diasDiurno[dia]),
+      nocturno: calcularPromedio(diasNocturno[dia]),
+      total: calcularPromedio(dias[dia])
     }));
 
     return promediosDias;
-}
+  }
 
-// 🔹 Función para actualizar el gráfico de barras dinámicamente
-function actualizarGraficoBarrasDias(chartBarrasDias, datos, chartIndicador) {
+  // 🔹 Función para actualizar el gráfico de barras dinámicamente
+  function actualizarGraficoBarrasDias(chartBarrasDias, datos, chartIndicador) {
     if (!datos || datos.length === 0) {
-        console.warn("⚠️ No hay datos disponibles para el gráfico de barras por día.");
-        return;
+      console.warn("⚠️ No hay datos disponibles para el gráfico de barras por día.");
+      return;
     }
 
     // 📌 Obtener el rango visible en el gráfico de indicadores (dataZoom)
@@ -1217,15 +1217,15 @@ function actualizarGraficoBarrasDias(chartBarrasDias, datos, chartIndicador) {
     let endIndex = datos.length;
 
     if (opciones && opciones.dataZoom && opciones.dataZoom.length > 0) {
-        startIndex = Math.round((opciones.dataZoom[0].start / 100) * datos.length);
-        endIndex = Math.round((opciones.dataZoom[0].end / 100) * datos.length);
+      startIndex = Math.round((opciones.dataZoom[0].start / 100) * datos.length);
+      endIndex = Math.round((opciones.dataZoom[0].end / 100) * datos.length);
     }
 
     // 📌 Filtrar los datos dentro del rango visible
     const datosFiltrados = datos.slice(startIndex, endIndex);
     if (datosFiltrados.length === 0) {
-        console.warn("⚠️ No hay datos visibles dentro del rango seleccionado.");
-        return;
+      console.warn("⚠️ No hay datos visibles dentro del rango seleccionado.");
+      return;
     }
 
     // 📊 Obtener los promedios por día de la semana
@@ -1259,7 +1259,7 @@ function actualizarGraficoBarrasDias(chartBarrasDias, datos, chartIndicador) {
         }
       },
       grid: { left: "5%", right: "5%", top: "20%", bottom: "10%", containLabel: true },
-      
+
       // 🔵 Ahora bien separados
       xAxis: {
         type: "value",
@@ -1274,7 +1274,7 @@ function actualizarGraficoBarrasDias(chartBarrasDias, datos, chartIndicador) {
         axisLine: { lineStyle: { color: "#666" } },
         splitLine: { show: true, lineStyle: { type: "dashed", color: "#ccc" } }
       },
-      
+
       yAxis: {
         type: "category",
         data: diasSemana.reverse(), // 🔹 Domingo arriba
@@ -1284,7 +1284,7 @@ function actualizarGraficoBarrasDias(chartBarrasDias, datos, chartIndicador) {
         axisLabel: { fontSize: 12 },
         axisLine: { lineStyle: { color: "#666" } }
       },
-    
+
       series: [
         {
           name: "Diurno",
@@ -1306,32 +1306,32 @@ function actualizarGraficoBarrasDias(chartBarrasDias, datos, chartIndicador) {
         }
       ]
     };
-    
+
     // 📊 Aplicar opciones al gráfico
     chartBarrasDias.setOption(opcionesGraficoBarrasDias);
-}
-window.chartIndicador = chartIndicador;
-window.datosGlobales = datosGlobales;
-// Después de sensores.forEach(...) o al final de cargarSensores
-
-
-function agregarDescripcionGrafico(idContenedor, textoDescripcion) {
-  const contenedor = document.getElementById(idContenedor);
-  if (!contenedor) {
-    console.warn(`⚠️ No se encontró el contenedor: ${idContenedor}`);
-    return;
   }
+  window.chartIndicador = chartIndicador;
+  window.datosGlobales = datosGlobales;
+  // Después de sensores.forEach(...) o al final de cargarSensores
 
-  // Verificar si ya existe una descripción para evitar duplicados
-  if (contenedor.nextElementSibling?.classList.contains("descripcion-grafico")) return;
 
-  const descripcion = document.createElement("div");
-  descripcion.className = "descripcion-grafico";
-  descripcion.textContent = textoDescripcion;
+  function agregarDescripcionGrafico(idContenedor, textoDescripcion) {
+    const contenedor = document.getElementById(idContenedor);
+    if (!contenedor) {
+      console.warn(`⚠️ No se encontró el contenedor: ${idContenedor}`);
+      return;
+    }
 
-  // Insertar después del contenedor del gráfico
-  contenedor.parentNode.insertBefore(descripcion, contenedor.nextSibling);
-}
+    // Verificar si ya existe una descripción para evitar duplicados
+    if (contenedor.nextElementSibling?.classList.contains("descripcion-grafico")) return;
+
+    const descripcion = document.createElement("div");
+    descripcion.className = "descripcion-grafico";
+    descripcion.textContent = textoDescripcion;
+
+    // Insertar después del contenedor del gráfico
+    contenedor.parentNode.insertBefore(descripcion, contenedor.nextSibling);
+  }
 
 
 

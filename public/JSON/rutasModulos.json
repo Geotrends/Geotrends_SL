@@ -22,7 +22,7 @@
     "monitoreo.html": [
       "/js/GIoTrends/tiempoReal.js"
     ],
-    "historicos.html": "/js/GIoTrends/historicos.js",
+    "historicosppl.html": "/js/GIoTrends/historicosPpal.js",
     "analitica.html": "/js/GIoTrends/analitica.js",
     "mapasDinamicos.html": "/js/GIoTrends/mapasDinamicos.js",
     "prediccion.html": "/js/GIoTrends/prediccion.js",

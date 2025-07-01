@@ -1,0 +1,394 @@
+/**
+@file public/css/historicos.css
+@version 1.0.0
+
+@description
+Estilos asociados a componentes o vistas.
+Este archivo forma parte del proyecto "Plataforma de Monitoreo Ambiental IoT",
+desarrollado por Geotrends - Geographic and Data Analytics, en colaboraciÃ³n con el Ãrea Metropolitana
+del Valle de AburrÃ¡ y la Universidad de San Buenaventura en el marco del Convenio 273 de 2024.
+
+âš–ï¸ Propiedad Intelectual:
+Este software es propiedad intelectual compartida segÃºn el Convenio 273 de 2024.
+
+ðŸ“Œ Entidades involucradas:
+- Geotrends - Geographic and Data Analytics
+- Ãrea Metropolitana del Valle de AburrÃ¡
+- Universidad de San Buenaventura
+
+ðŸ‘¨â€ðŸ’» Equipo de desarrollo:
+- Jonathan Ochoa Villegas (Geotrends)
+- Diego Murillo GÃ³mez (USB)
+- Camilo Herrera Arcila (Geotrends)
+
+ðŸ“… CreaciÃ³n: Noviembre 2024
+ðŸ“… ActualizaciÃ³n: 30-03-2025
+
+ðŸ“œ Licencia: MIT License
+
+Â© 2025 Geotrends. Todos los derechos reservados.
+ */
+
+body {
+  padding: 15;
+  margin: 0px;
+  height: 10vh;
+  background-color: rgba(0, 0, 0, 0);
+  flex-direction: column;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  border-radius: 10px;
+}
+.chart {
+  height: 400px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cecece;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-shadow: 4px 4px 16px 1px rgba(0, 0, 0, 0.1);
+}
+.table-container {
+  border: 1px solid #b0b0b0;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #fff;
+}
+
+.Information {
+  margin: 0px 0px 10px 0px; /* Centrar y agregar margen */
+  height: auto; /* Permite que se ajuste automÃ¡ticamente */
+  padding: 5px 20px 5px 20px; /* Espaciado interno */
+  border-radius: 16px; /* Bordes redondeados */
+  background-color: #fff; /* Fondo blanco */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Borde sutil */
+}
+
+/* Contenedor del iframe */
+.iframe-container {
+  width: 99,9%;
+  /*height: auto; /* Ajustar segÃºn la altura de las pestaÃ±as */
+  background-color: #fff; /* Fondo blanco */
+  padding: 0;
+  border-radius: 16px; /* Bordes redondeados */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Borde sutil */
+  /* height: calc(100vh - 120px); */
+  
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Contenedor principal */
+#filters-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end; /* Alinea los elementos en la parte inferior para que las etiquetas no generen huecos */
+  gap: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 1200px;
+  margin: 5px auto;
+  flex-wrap: nowrap; /* Evita que se apilen verticalmente */
+  overflow-x: auto; /* Permite desplazamiento horizontal en pantallas muy pequeÃ±as */
+}
+
+/* Cada Ã­tem del filtro */
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Permite que se expandan de forma equitativa */
+  min-width: 200px; /* Ancho mÃ­nimo para preservar legibilidad */
+}
+
+/* Estilos para inputs y selects */
+#filters-container select,
+#filters-container input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Estilo para las etiquetas */
+#filters-container label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Estilo para el input que contiene Ã­cono */
+.input-with-icon {
+  display: flex;
+}
+
+.input-with-icon .icon {
+  padding: 8px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-right: none;
+  border-radius: 5px 0 0 5px;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon input {
+  border-radius: 0 5px 5px 0;
+  border-left: none;
+}
+
+
+
+/* Cambiar la fuente, tamaÃ±o y colores del calendario Litepicker */
+/* Estilos personalizados para Litepicker */
+/* Se utiliza !important para forzar la sobrescritura de los estilos por defecto */
+
+/* Contenedor general del calendario */
+  /*             */
+  .litepicker .container__days .day-item.is-end-date {
+    color: #000000;
+    background-color: #05678d;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.litepicker .container__days .day-item.is-in-range {
+    background-color: #0895cc;
+    border-radius: 0;
+}
+
+.litepicker .container__days .day-item.is-start-date {
+    color: var(--litepicker-is-start-color);
+    background-color: #05678d;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.litepicker .container__days .day-item.is-today {
+    color: #000000 !important;  /* ðŸŽ¨ Azul para resaltar el dÃ­a actual */
+    font-weight: bold !important;  /* âœ… Aplica negrita */
+}
+
+.litepicker .container__days .day-item:hover {
+    color: #000000;
+    -webkit-box-shadow: inset 0 0 0 1px#05678d;
+    box-shadow: inset 0 0 0 1px #47700e;
+}
+
+.c-button {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color:#05678d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.c-button:hover {
+    background-color:  #044761;
+}
+
+
+
+/* ðŸ”¹ Contenedor de la segunda fila: GrÃ¡fico 2 */
+.fila-inferior {
+    width: 100%;
+    padding: 10px;
+}
+
+/* ðŸ”¹ Contenedor de filas de grÃ¡ficos */
+.fila-graficos {
+    display: flex; /* Usa flexbox para colocar grÃ¡ficos en lÃ­nea */
+    justify-content: space-between; /* Distribuye espacio */
+    gap: 20px; /* Espaciado entre grÃ¡ficos */
+    padding: 10px;
+}
+
+/* ðŸ”¹ Estilo de los grÃ¡ficos */
+.grafico {
+    flex: 1; /* Los grÃ¡ficos se expanden segÃºn el espacio disponible */
+    height: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* ðŸ”¹ Cuarta fila: Ajuste especial para tres grÃ¡ficos */
+.fila-tres-graficos .grafico {
+    flex: 1; /* Los tres grÃ¡ficos ocupan el mismo espacio */
+}
+
+/* ðŸ”¹ Ajuste Responsivo */
+@media screen and (max-width: 768px) {
+    .fila-graficos {
+        flex-direction: column; /* En mÃ³viles, los grÃ¡ficos se apilan */
+    }
+
+    .grafico {
+        width: 100%; /* Ocupa todo el ancho */
+    }
+}
+
+
+/* ðŸ”¹ Ajuste Responsivo */
+@media screen and (max-width: 768px) {
+    .fila-superior {
+        flex-direction: column; /* Apila en mÃ³viles */
+    }
+
+    #grafico1,
+    .indicadores-container {
+        width: 100%; /* Ocupan todo el ancho */
+    }
+}
+
+
+/* ðŸ”¹ Contenedor de la primera fila: GrÃ¡fico 1 + Indicadores */
+.fila-superior {
+  display: flex; /* Coloca en una fila */
+  justify-content: space-between; /* Espacio entre el grÃ¡fico y la tabla */
+  align-items: stretch; /* Ambos elementos se estiran a la misma altura */
+  gap: 20px;
+  padding: 10px;
+
+}
+
+/* ðŸ”¹ GrÃ¡fico 1 */
+#grafico1 {
+  flex: 2; /* Ambos ocupan el mismo espacio */
+  height: 380px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ðŸ”¹ GrÃ¡fico 1 */
+#grafico2 {
+  flex: 2; /* Ambos ocupan el mismo espacio */
+  height: 380px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ðŸ”¹ GrÃ¡fico 1 */
+#grafico3 {
+  flex: 1; /* Ambos ocupan el mismo espacio */
+  height: 380px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ðŸ”¹ Contenedor de la Tabla de Indicadores (Misma Altura del GrÃ¡fico) */
+.indicadores-container {
+  flex: 1; /* Ocupa el mismo tamaÃ±o que el grÃ¡fico */
+  /*height: 350px; /* Mantiene la altura igual al grÃ¡fico */
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  overflow-y: auto; /* Si hay demasiados datos, permite desplazamiento */
+}
+
+/* ðŸ”¹ Tabla de indicadores */
+.indicadores-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ðŸ”¹ Encabezado de la tabla */
+.indicadores-tabla thead {
+  background-color: #05678d;
+  color: white;
+  font-weight: bold;
+}
+
+/* ðŸ”¹ Celdas de la tabla */
+.indicadores-tabla th, .indicadores-tabla td {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* ðŸ”¹ Filas alternadas */
+.indicadores-tabla tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* ðŸ”¹ Ajuste Responsivo */
+@media (max-width: 900px) {
+  .fila-superior {
+      flex-direction: column; /* Apila en pantallas pequeÃ±as */
+      align-items: stretch;
+  }
+
+  #grafico1,
+  .indicadores-container {
+      width: 100%;
+      height: auto; /* En mÃ³viles, que crezca segÃºn el contenido */
+  }
+}
+/* 
+/* ðŸ”¹ Scrollbars generales en toda la pÃ¡gina */
+::-webkit-scrollbar {
+  width: 12px;  /* Ancho del scrollbar */
+  border: 2px solid #f9f9f9; /* Borde del scrollbar */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color del fondo del scrollbar */
+  border-radius: 10px;
+  border:12px solid #ffffff; /* Borde del track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #05678d,#05678d); /* Degradado */
+  border-radius: 10px;
+  border: 1px solid #ffffff; /* Borde de la barra de desplazamiento */
+}
+
+.descripcion-grafico {
+  text-align: center;
+  font-size: 10px;
+  color: #555;
+  margin-top: 0px;
+  padding: 0 8px;
+  font-style: italic;
+}

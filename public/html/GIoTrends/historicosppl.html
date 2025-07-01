@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alternar Páginas</title>
+  <link rel="stylesheet" href="/css/GIoTrends/monitoreo.css" />
+
+  <!-- <link rel="stylesheet" href="/css/modalSensor.css" /> -->
+</head>
+
+<body>
+  <div class="Information">
+    <h3>Históricos</h3>
+    <!-- <h4>Visualiza el ruido en tiempo real</h4> -->
+    <!-- <p>
+        Visualiza el ruido en tiempo real Consulta los niveles de ruido
+        registrados por los sensores IoT en diferentes puntos del territorio.
+        Con mapas interactivos y datos actualizados, identifica fuentes de ruido
+        y su impacto en el entorno.
+      </p>
+    </div> -->
+
+    <div class="iframe-container">
+      <div class="tab-container">
+        <button class="tab active" data-tab="resumen">Históricos</button>
+        <button class="tab" data-tab="mapa">Consolidados</button>
+      </div>
+      <iframe id="iframe-content" src="/html/GIoTrends/historicos.html" frameborder="0"></iframe>
+    </div>
+
+
+</body>
+
+</html>

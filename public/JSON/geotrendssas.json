@@ -51,7 +51,7 @@
       "texto": "Ruido Ambiental",
       "submenu": [
         { "texto": "Tiempo Real", "page": "/html/GIoTrends/monitoreo.html" },
-        { "texto": "Históricos", "page": "/html/GIoTrends/historicos.html" },
+        { "texto": "Históricos", "page": "/html/GIoTrends/historicosppl.html" },
         { "texto": "Predicción", "page": "/html/GIoTrends/prediccion.html" },
         { "texto": "Mapa Dinámico", "page": "/html/GIoTrends/mapaDinamico.html" },
         { "texto": "Paisajes sonoros", "page": "/html/GIoTrends/paisajesSonoros.html" },
