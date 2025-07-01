@@ -1,0 +1,36 @@
+body {
+  font-family: sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+  font-size: 13px;
+}
+
+.tarjetas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.tarjeta-sensor {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  transition: transform 0.2s ease;
+}
+
+.tarjeta-sensor:hover {
+  transform: scale(1.02);
+}
+
+.tarjeta-sensor h4 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.tarjeta-sensor p {
+  margin: 2px 0;
+  color: #555;
+  font-size: 0.85rem;
+}

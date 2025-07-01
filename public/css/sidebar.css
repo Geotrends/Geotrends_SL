@@ -10,7 +10,7 @@
 /* SIDEBAR */
 .sidebar {
   width: 220px;
-  background: var(--color-principal);
+  background: var(--azul-vivo);
   color: var(--blanco);
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
 .sidebar .menu-item {
   background: transparent;
   margin: 0;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 0.2rem;
   color: var(--blanco);
   text-decoration: none;
   transition: background-color 0.2s ease;
@@ -43,7 +43,7 @@
 }
 
 .sidebar .menu-item .icon {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-right: 1rem;
   min-width: 24px;
   text-align: center;
@@ -83,7 +83,7 @@
   background: transparent;
   color: var(--blanco);
   border: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding: 0.4rem 0.6rem;
   cursor: pointer;
   align-self: flex-end;
@@ -120,7 +120,7 @@
 }
 
 .submenu-toggle .icon {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-right: 1rem;
   min-width: 24px;
   text-align: center;
@@ -148,7 +148,7 @@
 .submenu .menu-item {
   padding-left: 0.5rem;
   border-left: 3px solid var(--blanco);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   background-color: transparent;
 }
 

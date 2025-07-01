@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Monitoreo Mapa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="/css/GIoTrends/monitoreoMapa.css" />
+  <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+</head>
+<body>
+  <div id="map">
+    <div id="left" class="sidebar flex-center left collapsed">
+      <div class="sidebar-content rounded-rect flex-center">
+        <div class="sidebar-info">
+          <h3>Descripción del Mapa</h3>
+          <p>Este visor muestra en tiempo real los niveles de ruido ambiental registrados por sensores IoT desplegados en el territorio.</p>
+          <p>Cada punto en el mapa representa un sensor, y el valor al centro del círculo corresponde al <strong>nivel LAeq</strong> (dB ponderado A) registrado más recientemente.</p>
+          <h4>Escala de colores:</h4>
+          <ul>
+            <li><span style="color:#2b9348;">●</span> &lt; 55 dBA – Ruido Bajo</li>
+            <li><span style="color:#ffdd57;">●</span> 55 - 64.9 dBA – Ruido Moderado</li>
+            <li><span style="color:#f8961e;">●</span> 65 - 74.9 dBA – Ruido Alto</li>
+            <li><span style="color:#ef233c;">●</span> ≥ 75 dBA – Ruido Excesivo</li>
+          </ul>
+          <h4>Funcionalidades:</h4>
+          <ul>
+            <li>Los iconos circulares muestran el valor numérico LAeq.</li>
+            <li>Haz clic sobre cualquier punto para ver detalles del sensor.</li>
+            <li>Cambia el estilo de mapa con el selector superior izquierdo.</li>
+            <li>Las edificaciones en 3D se muestran automáticamente en los mapas compatibles.</li>
+          </ul>
+        </div>
+        <div class="sidebar-toggle rounded-rect left" onclick="toggleSidebar('left')">
+          &rarr;
+        </div>
+      </div>
+    </div>
+    <div id="right" class="sidebar flex-center right collapsed">
+      <div class="sidebar-content rounded-rect flex-center">
+        Right Sidebar
+        <div class="sidebar-toggle rounded-rect right" onclick="toggleSidebar('right')">
+          &larr;
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="layer-selector" class="map-control">
+    <select id="mapStyleSelector">
+      <option value="streets">Calles</option>
+      <option value="basic">Básico</option>
+      <option value="bright">Brillante</option>
+      <option value="hybrid">Híbrido 3D</option>
+      <option value="satellite">Satélite</option>
+    </select>
+  </div>
+
+  <script src="/js/GIoTrends/monitoreoMapa.js"></script>
+</body>
+</html>

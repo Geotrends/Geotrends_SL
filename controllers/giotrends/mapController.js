@@ -106,49 +106,48 @@ exports.getTablesWithGeometry = async (req, res) => {
 
 // 📌 2️⃣ Endpoint para obtener los datos de una tabla específica y prepararlos para Leaflet
 
-    exports.getTableDataForLeaflet = async (req, res) => {
-        try {
-            const { tableName } = req.params;
-    
-            // 📌 Validar que la tabla existe en el esquema cartobase
-            const validTableQuery = `
-                SELECT table_name 
-                FROM information_schema.tables 
-                WHERE table_schema = 'cartobase' 
-                AND table_name = $1;
-            `;
-            const validTable = await pool.query(validTableQuery, [tableName]);
-    
-            if (validTable.rowCount === 0) {
-                return res.status(400).json({ message: "Tabla no válida o no encontrada en cartobase" });
-            }
-    
-            // 📌 Obtener TODAS las columnas dinámicamente
-            const query = `
-                SELECT *, ST_AsGeoJSON(geom) AS geometry
-                FROM cartobase.${tableName};
-            `;
-    
-            const { rows } = await pool.query(query);
-    
-            // 📌 Convertir los datos en formato GeoJSON
-            const geojson = {
-                type: "FeatureCollection",
-                features: rows.map(row => {
-                    // 📌 Extraer todas las columnas excepto geom
-                    const { geom, geometry, ...properties } = row;
-                    return {
-                        type: "Feature",
-                        properties, // Todas las columnas excepto la geometría
-                        geometry: JSON.parse(geometry) // Convertir a objeto GeoJSON
-                    };
-                })
-            };
-    
-            res.status(200).json(geojson);
-        } catch (error) {
-            console.error("❌ Error al obtener datos de la tabla:", error.message);
-            res.status(500).json({ message: "Error al obtener datos", error: error.message });
+exports.getTableDataForLeaflet = async (req, res) => {
+    try {
+        const { tableName } = req.params;
+
+        // 📌 Validar que la tabla existe en el esquema cartobase
+        const validTableQuery = `
+            SELECT table_name 
+            FROM information_schema.tables 
+            WHERE table_schema = 'cartobase' 
+            AND table_name = $1;
+        `;
+        const validTable = await pool.query(validTableQuery, [tableName]);
+
+        if (validTable.rowCount === 0) {
+            return res.status(400).json({ message: "Tabla no válida o no encontrada en cartobase" });
         }
-    };
-    
+
+        // 📌 Obtener TODAS las columnas dinámicamente
+        const query = `
+            SELECT *, ST_AsGeoJSON(geom) AS geometry
+            FROM cartobase.${tableName};
+        `;
+
+        const { rows } = await pool.query(query);
+
+        // 📌 Convertir los datos en formato GeoJSON
+        const geojson = {
+            type: "FeatureCollection",
+            features: rows.map(row => {
+                // 📌 Extraer todas las columnas excepto geom
+                const { geom, geometry, ...properties } = row;
+                return {
+                    type: "Feature",
+                    properties, // Todas las columnas excepto la geometría
+                    geometry: JSON.parse(geometry) // Convertir a objeto GeoJSON
+                };
+            })
+        };
+
+        res.status(200).json(geojson);
+    } catch (error) {
+        console.error("❌ Error al obtener datos de la tabla:", error.message);
+        res.status(500).json({ message: "Error al obtener datos", error: error.message });
+    }
+};

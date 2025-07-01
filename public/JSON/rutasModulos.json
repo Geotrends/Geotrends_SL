@@ -19,7 +19,9 @@
     "imagenes.html": "/js/ranchera/imagenes.js"
   },
   "GIoTrends": {
-    "monitoreo.html": "/js/GIoTrends/monitoreo.js",
+    "monitoreo.html": [
+      "/js/GIoTrends/tiempoReal.js"
+    ],
     "historicos.html": "/js/GIoTrends/historicos.js",
     "analitica.html": "/js/GIoTrends/analitica.js",
     "mapasDinamicos.html": "/js/GIoTrends/mapasDinamicos.js",

@@ -27,6 +27,11 @@
   "Ingeniería": "fas fa-drafting-compass",
   "Estaciones": "fas fa-broadcast-tower",
   "Registros": "fas fa-file-signature",
-  "Mapas de Ruido": "fas fa-map-marked-alt",
-  "Mapas Dinámicos": "fas fa-map"
+  "Ruido Ambiental": "fas fa-seedling",
+  "Tiempo Real": "fas fa-broadcast-tower",
+  "Paisajes sonoros": "fas fa-headphones",
+  "Mapas de ruido": "fas fa-layer-group",
+  "Mapa Dinámico": "fas fa-puzzle-piece"
+
+
 }
