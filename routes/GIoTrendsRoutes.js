@@ -91,7 +91,7 @@ router.get('/mapa/cartobase/data/:tableName', getTableDataForLeaflet);
 router.get('/mapa/paisaje-sonoro', getPaisajeSonoroData);
 
 // 🟦 Ruta para análisis modal semanal
-router.get('/modal/weekly-data/:sensorId', getWeeklyData);
+router.get('/modals/weekly-data/:sensorId', getWeeklyData);
 
 
 // 🔮 Rutas de predicción de ruido

@@ -2,45 +2,32 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Monitoreo Mapa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
-  <link rel="stylesheet" href="/css/GIoTrends/monitoreoMapa.css" />
-  <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+  <title>Mapas - Geotrends</title>
+      <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css' />
+    <script src='https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js'></script>
+
+  <link rel="stylesheet" href="/css/GIoTrends/mer.css" />
 </head>
 <body>
-  <div id="map">
-    <div id="left" class="sidebar flex-center left collapsed">
-      <div class="sidebar-content rounded-rect flex-center">
-        <div class="sidebar-info">
-          <h3>Descripción del Mapa</h3>
-         
-        </div>
-        <div class="sidebar-toggle rounded-rect left" onclick="toggleSidebar('left')">
-          &rarr;
-        </div>
-      </div>
-    </div>
-    <div id="right" class="sidebar flex-center right collapsed">
-      <div class="sidebar-content rounded-rect flex-center">
-        Right Sidebar
-        <div class="sidebar-toggle rounded-rect right" onclick="toggleSidebar('right')">
-          &larr;
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div id="layer-selector" class="map-control">
-    <select id="mapStyleSelector">
-      <option value="streets">Calles</option>
-      <option value="basic">Básico</option>
-      <option value="bright">Brillante</option>
-      <option value="hybrid">Híbrido 3D</option>
-      <option value="satellite">Satélite</option>
-    </select>
-  </div>
+    <div id="selector-estilo">
+      <label for="selectEstilo3D" hidden>Estilo de mapa 3D:</label>
+      <select id="selectEstilo3D" hidden>
+        <option value="maptiler-hybrid">Híbrido</option>
+        <option value="maptiler-satellite">Satélite</option>
+        <option value="maptiler-streets">Calles</option>
+        <option value="maptiler-outdoor">Outdoor</option>
+        <option value="maptiler-topo">Topográfico</option>
+        <option value="maptiler-openstreetmap">OpenStreetMap</option>
+      </select>
+    </div>
+    <div id="contenido-mapas">
+      <div id="map3d"></div>
+    </div>
+
 
   <script src="/js/GIoTrends/mer.js"></script>
+
 </body>
 </html>
