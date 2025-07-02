@@ -7,4 +7,4 @@ public/images/Industria/industria_1/
 venv
 .venv/
 models/*
-!models/.gitkeep
+!models/.gitkeeppublic/data/vias.geojson
