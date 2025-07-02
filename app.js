@@ -32,10 +32,7 @@ app.use('/api/ranchera', rancheraRoutes);
 
 // Aplicacion IoT
 
-
-
 app.use('/api/giotrends', require('./routes/GIoTrendsRoutes'));
-
 //
 
 app.use("/api", require("./routes/informesRoutes"));

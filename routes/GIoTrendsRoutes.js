@@ -87,6 +87,7 @@ router.post('/informes/modal-semanal', generarPDFModalSemanal);
 router.get('/mapa/data', getMapData);
 router.get('/mapa/cartobase/tables', getTablesWithGeometry);
 router.get('/mapa/cartobase/data/:tableName', getTableDataForLeaflet);
+
 router.get('/mapa/paisaje-sonoro', getPaisajeSonoroData);
 
 // 🟦 Ruta para análisis modal semanal

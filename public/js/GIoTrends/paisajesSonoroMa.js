@@ -49,63 +49,74 @@ map.on('load', () => {
         data: data
       });
 
-      map.addLayer({
-        id: 'paisajeSonoroLayer',
-        type: 'circle',
-        source: 'paisajeSonoro',
-        paint: {
-          'circle-radius': 6,
-          'circle-color': '#3693b6',
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#ffffff'
+      if (!data.features || data.features.length === 0) {
+        console.warn("⚠️ No se encontraron puntos de paisaje sonoro en los datos.");
+        return;
+      }
+
+      (async () => {
+        const image = await map.loadImage('/images/iconos/musica-en-la-nube.png');
+        if (!map.hasImage('paisaje-sonoro-icon')) {
+          map.addImage('paisaje-sonoro-icon', image.data);
         }
-      });
 
-      map.on('click', 'paisajeSonoroLayer', (e) => {
-        const props = e.features[0].properties;
-
-        // ✅ Validar si el atributo contiene una URL de video embebido de YouTube
-        const videoURL = props.url && props.url.includes("youtube.com/embed") ? props.url : null;
-
-        // ✅ Construir el HTML del video, sin bordes, al inicio del popup
-        const videoHTML = videoURL
-          ? `<div style="margin:-10px -10px 10px -10px">
-               <iframe width="100%" height="200" src="${videoURL}" frameborder="0" allowfullscreen style="border:none;"></iframe>
-             </div>`
-          : '';
-
-        // ✅ Campos a mostrar en orden debajo del video
-        const camposMostrar = ['municipio', 'nombre', 'tipo', 'descripcion'];
-        const infoHTML = camposMostrar.map(key => {
-          if (props[key]) {
-            return `<strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${props[key]}`;
+        map.addLayer({
+          id: 'paisajeSonoroLayer',
+          type: 'symbol',
+          source: 'paisajeSonoro',
+          layout: {
+            'icon-image': 'paisaje-sonoro-icon',
+            'icon-size': 0.09,
+            'icon-allow-overlap': true
           }
-          return '';
-        }).join('<br>');
-
-        // ✅ Estructura completa del popup usando clases CSS para ancho fijo y scroll
-        const popupContent = `
-          <div class="popup-sonoro">
-            ${videoHTML}
-            <div class="info-popup">${infoHTML}</div>
-          </div>
-        `;
-
-        new maplibregl.Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(popupContent)
-          .addTo(map);
-
-        // Centrar el mapa hacia el punto clicado para asegurar visibilidad del popup
-        map.easeTo({
-          center: e.lngLat,
-          offset: [0, -100], // desplaza hacia arriba para dejar espacio al popup
-          duration: 1000
         });
-      });
 
-      map.on('mouseenter', 'paisajeSonoroLayer', () => map.getCanvas().style.cursor = 'pointer');
-      map.on('mouseleave', 'paisajeSonoroLayer', () => map.getCanvas().style.cursor = '');
+        map.on('click', 'paisajeSonoroLayer', (e) => {
+          const props = e.features[0].properties;
+
+          // ✅ Validar si el atributo contiene una URL de video embebido de YouTube
+          const videoURL = props.url && props.url.includes("youtube.com/embed") ? props.url : null;
+
+          // ✅ Construir el HTML del video, sin bordes, al inicio del popup
+          const videoHTML = videoURL
+            ? `<div style="margin:-10px -10px 10px -10px">
+                 <iframe width="100%" height="200" src="${videoURL}" frameborder="0" allowfullscreen style="border:none;"></iframe>
+               </div>`
+            : '';
+
+          // ✅ Campos a mostrar en orden debajo del video
+          const camposMostrar = ['municipio', 'nombre', 'tipo', 'descripcion'];
+          const infoHTML = camposMostrar.map(key => {
+            if (props[key]) {
+              return `<strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${props[key]}`;
+            }
+            return '';
+          }).join('<br>');
+
+          // ✅ Estructura completa del popup usando clases CSS para ancho fijo y scroll
+          const popupContent = `
+            <div class="popup-sonoro">
+              ${videoHTML}
+              <div class="info-popup">${infoHTML}</div>
+            </div>
+          `;
+
+          new maplibregl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(popupContent)
+            .addTo(map);
+
+          // Centrar el mapa hacia el punto clicado para asegurar visibilidad del popup
+          map.easeTo({
+            center: e.lngLat,
+            offset: [0, -100], // desplaza hacia arriba para dejar espacio al popup
+            duration: 1000
+          });
+        });
+
+        map.on('mouseenter', 'paisajeSonoroLayer', () => map.getCanvas().style.cursor = 'pointer');
+        map.on('mouseleave', 'paisajeSonoroLayer', () => map.getCanvas().style.cursor = '');
+      })();
     })
     .catch(err => console.error('Error al cargar paisaje sonoro:', err));
 });
