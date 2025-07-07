@@ -8,3 +8,4 @@ venv
 .venv/
 models/*
 !models/.gitkeeppublic/data/vias.geojson
+public/data/
