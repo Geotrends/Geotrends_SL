@@ -252,7 +252,7 @@ function mostrar3D() {
     // Fuente GeoJSON
     map.addSource('zonas-ruido', {
       type: 'geojson',
-      data: '/data/vias.geojson'
+      data: '/data/mer_5m.geojson'
     });
 
     // Capa de relleno, solo aplicar si ISOVALUE no es null
