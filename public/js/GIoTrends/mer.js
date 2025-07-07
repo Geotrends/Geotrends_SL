@@ -51,17 +51,24 @@ async function cargarMenuCapasJerarquia() {
 
       capasMunicipio.forEach(capa => {
         const input = document.createElement('input');
-        input.type = 'radio';
+        input.type = 'checkbox';
         input.name = `capa-${municipio}`;
         input.value = capa.slug;
-        input.id = `radio-${capa.slug}`;
+        input.id = `chk-${municipio}-${capa.slug}`;
 
         const label = document.createElement('label');
         label.htmlFor = input.id;
         label.textContent = capa.nombre;
 
         input.addEventListener('change', () => {
-          mostrarCapaUnica(`${municipio}-${capa.slug}`, capa.nombre_tabla);
+          const layerId = `${municipio}-${capa.slug}`;
+          if (input.checked) {
+            mostrarCapaUnica(layerId, capa.nombre_tabla, capa.nombre, municipio);
+          } else {
+            if (map.getLayer(layerId)) map.removeLayer(layerId);
+            if (map.getSource(layerId)) map.removeSource(layerId);
+            capasVisibles.delete(layerId);
+          }
         });
 
         const linea = document.createElement('div');
@@ -81,18 +88,23 @@ async function cargarMenuCapasJerarquia() {
 
 const capasVisibles = new Map();
 
-function mostrarCapaUnica(id, tabla) {
+function mostrarCapaUnica(id, tabla, nombre, municipio) {
+  // Solo eliminar y desactivar capas del mismo municipio
+  const municipioActual = id.split('-')[0];
   capasVisibles.forEach((_, key) => {
-    if (map.getLayer(key)) map.removeLayer(key);
-    if (map.getSource(key)) map.removeSource(key);
+    if (key.startsWith(`${municipioActual}-`)) {
+      if (map.getLayer(key)) map.removeLayer(key);
+      if (map.getSource(key)) map.removeSource(key);
+      capasVisibles.delete(key);
+      // Desmarcar checkbox correspondiente
+      const cb = document.getElementById(`chk-${key}`);
+      if (cb) cb.checked = false;
+    }
   });
-  capasVisibles.clear();
 
   fetch(`/api/giotrends/mapa/mer/tabla/${tabla}`)
     .then(res => res.json())
     .then(geojson => {
-
-      
       map.addSource(id, {
         type: 'geojson',
         data: geojson
@@ -143,7 +155,10 @@ function mostrarCapaUnica(id, tabla) {
         const valor = feature.properties?.[campoValor];
         new maplibregl.Popup()
           .setLngLat(e.lngLat)
-          .setHTML(`<strong>${campoValor}:</strong> ${valor ?? 'Sin dato'}`)
+          .setHTML(`
+            <strong>Nivel de Presión Sonora:</strong> ${valor ?? 'Sin dato'} dB<br>
+            <strong>Mapa de origen:</strong> ${nombre} (${municipio})
+          `)
           .addTo(map);
       });
 
@@ -262,13 +277,17 @@ function mostrar3D() {
     </div>
   `;
   controlCapas.style.position = 'absolute';
-  controlCapas.style.top = '10px';
+  controlCapas.style.top = '20px';
   controlCapas.style.left = '10px';
-  controlCapas.style.backgroundColor = 'white';
+  controlCapas.style.backgroundColor = '#333333d7';
   controlCapas.style.padding = '10px';
-  controlCapas.style.zIndex = '1000';
-  controlCapas.style.maxHeight = 'calc(100% - 20px)';
+  controlCapas.style.borderRadius = '6px';
+  controlCapas.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+  controlCapas.style.zIndex = '1001';
+  controlCapas.style.maxHeight = '60vh';
   controlCapas.style.overflowY = 'auto';
+  controlCapas.style.color = '#ccc';
+  controlCapas.style.fontSize = '13px';
   map.getContainer().appendChild(controlCapas);
 
   // --- Hacer el panel de capas colapsable ---
@@ -277,6 +296,18 @@ function mostrar3D() {
   toggleBtn.addEventListener('click', () => {
     const visible = contenidoCapas.style.display === 'block';
     contenidoCapas.style.display = visible ? 'none' : 'block';
+
+    // Lógica para mover el menú lateral de capas jerárquicas (ahora desplazamiento vertical)
+    const menuLateral = document.getElementById('menu-capas-jerarquia');
+    if (menuLateral) {
+      if (!visible) {
+        // Si se va a mostrar el panel de capas
+        menuLateral.style.top = '200px'; // lo desplaza hacia abajo
+      } else {
+        // Si se va a ocultar
+        menuLateral.style.top = '70px'; // valor original
+      }
+    }
   });
 
   // --- Selector múltiple plegable para capas adicionales ---
@@ -403,6 +434,26 @@ function mostrar3D() {
     }),
     'top-right'
   );
+  // Custom styling for zoom and terrain controls
+  const styleControls = () => {
+    document.querySelectorAll('.maplibregl-ctrl-group button').forEach(btn => {
+      btn.style.backgroundColor = '#ffffffee';
+      btn.style.border = '1px solid #ccc';
+      btn.style.borderRadius = '4px';
+      btn.style.margin = '2px';
+      btn.style.width = '32px';
+      btn.style.height = '32px';
+    });
+
+    document.querySelectorAll('.maplibregl-ctrl-group').forEach(group => {
+      group.style.border = 'none';
+      group.style.boxShadow = '0 0 4px rgba(0,0,0,0.2)';
+      group.style.backgroundColor = '#fff';
+      group.style.borderRadius = '6px';
+    });
+  };
+  // Wait a bit to ensure controls are rendered before styling
+  setTimeout(styleControls, 500);
   // --- Agregar capa GeoJSON de zonas de ruido ---
   map.on('load', () => {
     // Fuente GeoJSON
@@ -461,16 +512,17 @@ function mostrar3D() {
     legendContainer.id = 'leyendaRuido';
     legendContainer.style.position = 'absolute';
     legendContainer.style.bottom = '50px';
-    legendContainer.style.right = '10px';
-    legendContainer.style.background = 'white';
+    legendContainer.style.left = '10px';
+    legendContainer.style.background = '#333333d7';
     legendContainer.style.padding = '10px';
-    legendContainer.style.borderRadius = '4px';
+    legendContainer.style.borderRadius = '6px';
     legendContainer.style.fontSize = '12px';
-    legendContainer.style.boxShadow = '0 0 6px rgba(0,0,0,0.2)';
+    legendContainer.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
     legendContainer.style.zIndex = '1000';
-    legendContainer.style.opacity = '0.7';
+    legendContainer.style.opacity = '0.85';
     legendContainer.style.transition = 'opacity 0.3s ease';
     legendContainer.style.pointerEvents = 'auto';
+    legendContainer.style.color = '#ccc';
 
     const leyendaValores = colorRamp.map((item, index) => {
       const valorInicio = item[0];
@@ -687,6 +739,11 @@ window.mostrar3D = mostrar3D;
 
 document.addEventListener('DOMContentLoaded', () => {
   window.mostrar3D();
+  // Mostrar el mapa por defecto al cargar la página:
+  // Puedes cambiar el mapa por defecto modificando los argumentos de la siguiente función:
+  // mostrarCapaUnica('<municipio>-<slug>', '<nombre_tabla>', '<nombre>', '<municipio>');
+  mostrarCapaUnica('Medellín-01', 'med_co_total_dia_4m', 'Total Día', 'Medellín');
+
   const selectEstilo = document.getElementById('estiloSelect');
   if (selectEstilo) {
     selectEstilo.addEventListener('change', () => {
@@ -696,4 +753,64 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   cargarMenuCapasJerarquia();
+
+  // Agrega listener global para clics en el mapa (consulta polígono)
+  // Espera a que 'map' esté inicializado
+  const waitForMap = setInterval(() => {
+    if (window._mapLibreMap3D) {
+      clearInterval(waitForMap);
+      window._mapLibreMap3D.on('click', (e) => {
+        const { lng, lat } = e.lngLat;
+        fetch(`/api/giotrends/consulta/poligono?lng=${lng}&lat=${lat}`)
+          .then(res => res.json())
+          .then(data => {
+            if (!data || !data.nombre) return;
+            // Abrir el sidebar derecho
+            toggleSidebar('right');
+
+            // Construir HTML dinámico con los datos
+            const sidebar = document.getElementById('right');
+            const content = sidebar.querySelector('.sidebar-content');
+
+            content.innerHTML = `
+              <div class="rounded-rect">
+                <div class="sidebar-toggle rounded-rect right" onclick="toggleSidebar('right')">&larr;</div>
+                <h2>${data.nombre}</h2>
+                <p><strong>Código:</strong> ${data.codigo}</p>
+                <p><strong>Ocupantes:</strong> ${data.sum_occupants != null ? data.sum_occupants.toFixed(1) : ''}</p>
+                <p><strong title="Índice que califica la calidad del ambiente acústico durante el día. Valores mayores indican mayor contaminación sonora.">ATNEM Día (atnem_day):</strong> ${data.atnem_day != null ? data.atnem_day.toFixed(1) : ''}</p>
+                <p><strong title="Índice que califica la calidad del ambiente acústico durante la noche. Valores mayores indican mayor contaminación sonora.">ATNEM Noche (atnem_night):</strong> ${data.atnem_night != null ? data.atnem_night.toFixed(1) : ''}</p>
+                <p><strong title="Indicador grupal de exposición al ruido diurno, ponderado por el número de personas expuestas.">GDN (gdn):</strong> ${data.gdn != null ? data.gdn.toFixed(1) + '%' : ''}</p>
+                <p><strong title="Indicador grupal de exposición al ruido nocturno, ponderado por el número de personas expuestas.">GNight (gnight):</strong> ${data.gnight != null ? data.gnight.toFixed(1) + '%' : ''}</p>
+                <p><strong title="Fracción poblacional que sufre perturbaciones del sueño según el nivel de ruido.">F_SD (f_sd):</strong> ${data.f_sd != null ? data.f_sd.toFixed(1) + '%' : ''}</p>
+                <p><strong title="Fracción poblacional que sufre perturbaciones severas según el nivel de ruido.">F_HSD (f_hsd):</strong> ${data.f_hsd != null ? data.f_hsd.toFixed(1) + '%' : ''}</p>
+                <p><strong title="Proporción de personas que declaran sentirse molestas por el ruido ambiental.">NS_A (ns_a):</strong> ${data.ns_a != null ? data.ns_a.toFixed(1) + '%' : ''}</p>
+                <p><strong title="Proporción de personas que declaran sentirse altamente molestas por el ruido ambiental.">NS_HA (ns_ha):</strong> ${data.ns_ha != null ? data.ns_ha.toFixed(1) + '%' : ''}</p>
+                <p><strong title="Índice combinado de efectos en la salud y molestias, expresado como porcentaje sobre la población afectada.">IHD (ihd):</strong> ${data.ihd != null ? data.ihd.toFixed(1) + '%' : ''}</p>
+                <p><strong>Clasificación Día:</strong> ${data.class_atnem_d}</p>
+                <p><strong>Clasificación Noche:</strong> ${data.class_atnem_n}</p>
+                <p><strong>Clasificación GDN:</strong> ${data.class_gdn}</p>
+                <p><strong>Clasificación GNIGHT:</strong> ${data.class_gnight}</p>
+                <p><strong>Área:</strong> ${data.shape_area != null ? data.shape_area.toFixed(1) : ''}</p>
+                <p><strong>Perímetro:</strong> ${data.shape_length != null ? data.shape_length.toFixed(1) : ''}</p>
+                <p><strong>Sujeto:</strong> ${data.subj}</p>
+              </div>
+            `;
+          });
+      });
+    }
+  }, 150);
 });
+
+// Función global para alternar el sidebar (solo alterna la clase collapsed)
+function toggleSidebar(id) {
+  const elem = document.getElementById(id);
+  const classes = elem.className.split(' ');
+  const collapsed = classes.indexOf('collapsed') !== -1;
+  if (collapsed) {
+    classes.splice(classes.indexOf('collapsed'), 1);
+  } else {
+    classes.push('collapsed');
+  }
+  elem.className = classes.join(' ');
+}

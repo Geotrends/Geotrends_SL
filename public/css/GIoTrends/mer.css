@@ -1,7 +1,15 @@
+iframe {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  border: none !important;
+  width: 100%;
+  height: 100%;
+}
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
+ 
   font-family: sans-serif;
   background-color: #f7f9fa;
 }
@@ -17,7 +25,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 0rem;
-  height: 100vh;
+    overflow: hidden;
 }
 
 /* Estilo base para ambos mapas */
@@ -68,6 +76,7 @@ html, body {
 #selector-estilo label {
   margin-right: 0.5rem;
   font-weight: bold;
+  
 }
 
 #selector-estilo select {
@@ -78,7 +87,7 @@ html, body {
   position: absolute;
   top: 70px;
   left: 10px;
-  background: white;
+  background:#333333d7;
   padding: 10px;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -90,16 +99,112 @@ html, body {
   font-weight: bold;
   cursor: pointer;
   padding: 4px 0;
+  color: #ccc;
 }
 
 .menu-subtitulo {
   font-weight: normal;
   cursor: pointer;
   padding-left: 10px;
+  color: #ccc;
 }
 
 .submenu {
   margin-left: 10px;
   padding-left: 10px;
   border-left: 1px dashed #ccc;
+  color: #ccc;
+}
+
+/* Sidebar derecho y clases asociadas */
+/* Sidebar flotante derecho */
+/* Sidebar base (ambos lados) */
+/* Sidebar base (ambos lados) */
+.sidebar {
+  transition: transform 0.5s;
+  z-index: 1002;
+  width: 350px;
+  height: 90%;
+  top: 50%;
+  transform: translateY(-50%);
+  position: fixed;
+  right: 10px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.3);
+  pointer-events: auto;
+}
+
+/* Sidebar derecho */
+/* Sidebar derecho */
+.right.collapsed {
+  transform: translateX(400px) translateY(-50%);
+}
+
+.flex-center.right {
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2f2f2fd6;
+}
+
+
+/* Sidebar izquierdo */
+.left {
+  left: 0;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+}
+.left.collapsed {
+  transform: translateX(-100%);
+}
+
+/* Ensure sidebar-content doesn't introduce unwanted scroll */
+.sidebar-content {
+  width: 95%;
+  height: 95%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #cfcece;
+  padding: 15px;
+  background-color: #33333300;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+/* Ocultar scroll en Webkit (Chrome, Safari, Opera) */
+.sidebar-content::-webkit-scrollbar {
+  display: none;
+}
+
+.rounded-rect {
+  overflow: hidden;
+}
+  
+
+
+/* Estilo personalizado para controles de zoom y brújula */
+.maplibregl-ctrl-group {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  border: none !important;
+}
+
+.maplibregl-ctrl-group button {
+  background-color: transparent !important;
+  color: white !important;
+  border: none !important;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 1px;
+}
+
+.maplibregl-ctrl-icon {
+  filter: invert(1) brightness(1.5); /* Convierte íconos SVG a blanco */
 }

@@ -95,10 +95,13 @@ router.get('/modals/weekly-data/:sensorId', getWeeklyData);
 
 
 //mer
-const { getCapasJerarquicas, getTablaGeometria } = require('../controllers/giotrends/merController');
+const { getCapasJerarquicas, getTablaGeometria, getPoligonoByCoords } = require('../controllers/giotrends/merController');
 
 router.get('/mapa/mer/capas-jerarquia', getCapasJerarquicas);
 router.get('/mapa/mer/tabla/:tabla', getTablaGeometria);
+
+// Consulta polígono de interés por coordenadas (lng, lat)
+router.get('/consulta/poligono', getPoligonoByCoords);
 
 // 🔮 Rutas de predicción de ruido
 router.get('/prediccion', realizarPrediccion);
