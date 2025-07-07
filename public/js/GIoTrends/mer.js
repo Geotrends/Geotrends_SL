@@ -1,4 +1,160 @@
 
+// Cargar menú jerárquico de capas desde el esquema mapas_ruido
+async function cargarMenuCapasJerarquia() {
+  const res = await fetch('/api/giotrends/mapa/mer/capas-jerarquia');
+  const capas = await res.json();
+
+  const contenedor = document.getElementById('menu-capas-jerarquia');
+  const estructura = {};
+
+  // Organizar capas jerárquicamente por país y municipio
+  capas.forEach(({ pais, municipio, ...capa }) => {
+    if (!estructura[pais]) estructura[pais] = {};
+    if (!estructura[pais][municipio]) estructura[pais][municipio] = [];
+    estructura[pais][municipio].push(capa);
+  });
+
+  // Renderizar menú con menús y submenús desplegables
+  Object.entries(estructura).forEach(([pais, municipios]) => {
+    const paisDiv = document.createElement('div');
+    paisDiv.classList.add('grupo-pais');
+    const paisTitulo = document.createElement('div');
+    paisTitulo.classList.add('menu-titulo');
+    paisTitulo.textContent = pais;
+    paisDiv.appendChild(paisTitulo);
+
+    const municipiosContainer = document.createElement('div');
+    municipiosContainer.classList.add('submenu');
+    municipiosContainer.style.display = 'none';
+
+    paisTitulo.addEventListener('click', () => {
+      const visible = municipiosContainer.style.display === 'block';
+      municipiosContainer.style.display = visible ? 'none' : 'block';
+    });
+
+    Object.entries(municipios).forEach(([municipio, capasMunicipio]) => {
+      const munDiv = document.createElement('div');
+      munDiv.classList.add('grupo-municipio');
+      const munTitulo = document.createElement('div');
+      munTitulo.classList.add('menu-subtitulo');
+      munTitulo.textContent = municipio;
+      munDiv.appendChild(munTitulo);
+
+      const capasContainer = document.createElement('div');
+      capasContainer.classList.add('submenu');
+      capasContainer.style.display = 'none';
+
+      munTitulo.addEventListener('click', () => {
+        const visible = capasContainer.style.display === 'block';
+        capasContainer.style.display = visible ? 'none' : 'block';
+      });
+
+      capasMunicipio.forEach(capa => {
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = `capa-${municipio}`;
+        input.value = capa.slug;
+        input.id = `radio-${capa.slug}`;
+
+        const label = document.createElement('label');
+        label.htmlFor = input.id;
+        label.textContent = capa.nombre;
+
+        input.addEventListener('change', () => {
+          mostrarCapaUnica(`${municipio}-${capa.slug}`, capa.nombre_tabla);
+        });
+
+        const linea = document.createElement('div');
+        linea.appendChild(input);
+        linea.appendChild(label);
+        capasContainer.appendChild(linea);
+      });
+
+      munDiv.appendChild(capasContainer);
+      municipiosContainer.appendChild(munDiv);
+    });
+
+    paisDiv.appendChild(municipiosContainer);
+    contenedor.appendChild(paisDiv);
+  });
+}
+
+const capasVisibles = new Map();
+
+function mostrarCapaUnica(id, tabla) {
+  capasVisibles.forEach((_, key) => {
+    if (map.getLayer(key)) map.removeLayer(key);
+    if (map.getSource(key)) map.removeSource(key);
+  });
+  capasVisibles.clear();
+
+  fetch(`/api/giotrends/mapa/mer/tabla/${tabla}`)
+    .then(res => res.json())
+    .then(geojson => {
+
+      
+      map.addSource(id, {
+        type: 'geojson',
+        data: geojson
+      });
+
+      const propiedades = geojson.features?.[0]?.properties || {};
+      const campoValor = Object.keys(propiedades).find(k =>
+        ['ISOVALUE', 'valor_db', 'nivel', 'laeq', 'laeq_dia'].includes(k)
+      );
+
+      const fillColor = campoValor
+        ? ['step', ['get', campoValor],
+            colorRamp[0][1], 35, colorRamp[1][1],
+            40, colorRamp[2][1], 45, colorRamp[3][1],
+            50, colorRamp[4][1], 55, colorRamp[5][1],
+            60, colorRamp[6][1], 65, colorRamp[7][1],
+            70, colorRamp[8][1], 75, colorRamp[9][1],
+            80, colorRamp[10][1], 999, colorRamp[10][1]]
+        : '#cccccc';
+
+      const capasSuperiores = ['vias-superior', 'pistas-aereas', 'limites', 'agua', 'parques', '3d-buildings'];
+      let beforeId = null;
+      for (const capa of capasSuperiores) {
+        if (map.getLayer(capa)) {
+          beforeId = capa;
+          break;
+        }
+      }
+
+      map.addLayer({
+        id,
+        type: 'fill',
+        source: id,
+        layout: {},
+        paint: {
+          'fill-color': fillColor,
+          'fill-opacity': campoValor ? 0.8 : 0.5
+        },
+        filter: campoValor ? ['!=', ['get', campoValor], null] : undefined
+      }, beforeId);
+
+      capasVisibles.set(id, true);
+
+      map.on('click', id, (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: [id] });
+        if (!features.length) return;
+        const feature = features[0];
+        const valor = feature.properties?.[campoValor];
+        new maplibregl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(`<strong>${campoValor}:</strong> ${valor ?? 'Sin dato'}`)
+          .addTo(map);
+      });
+
+      map.on('mouseenter', id, () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+      map.on('mouseleave', id, () => {
+        map.getCanvas().style.cursor = '';
+      });
+    });
+}
 // Paleta de colores para rampas de color de ruido (para leyenda y mapa)
 
 // Variable global para el mapa principal
@@ -250,10 +406,10 @@ function mostrar3D() {
   // --- Agregar capa GeoJSON de zonas de ruido ---
   map.on('load', () => {
     // Fuente GeoJSON
-    map.addSource('zonas-ruido', {
-      type: 'geojson',
-      data: '/data/mer_5m.geojson'
-    });
+    // map.addSource('zonas-ruido', {
+    //   type: 'geojson',
+    //   data: '/data/mer_5m.geojson'
+    // });
 
     // Capa de relleno, solo aplicar si ISOVALUE no es null
     map.addLayer({
@@ -537,8 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log("🔄 Cambio de estilo de mapa 3D:", selectEstilo.value);
       window.mostrar3D();
     });
-  } else {
-    // Solo advertir si realmente se espera que exista
-    // console.warn("⚠️ Selector de estilo no encontrado en el DOM.");
   }
+
+  cargarMenuCapasJerarquia();
 });

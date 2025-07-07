@@ -74,3 +74,32 @@ html, body {
   padding: 0.3rem;
   font-size: 1rem;
 }
+.menu-lateral {
+  position: absolute;
+  top: 70px;
+  left: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 1001;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.menu-titulo {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.menu-subtitulo {
+  font-weight: normal;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.submenu {
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px dashed #ccc;
+}

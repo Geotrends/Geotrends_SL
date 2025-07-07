@@ -94,6 +94,12 @@ router.get('/mapa/paisaje-sonoro', getPaisajeSonoroData);
 router.get('/modals/weekly-data/:sensorId', getWeeklyData);
 
 
+//mer
+const { getCapasJerarquicas, getTablaGeometria } = require('../controllers/giotrends/merController');
+
+router.get('/mapa/mer/capas-jerarquia', getCapasJerarquicas);
+router.get('/mapa/mer/tabla/:tabla', getTablaGeometria);
+
 // 🔮 Rutas de predicción de ruido
 router.get('/prediccion', realizarPrediccion);
 router.get('/prediccion/sensores', sensoresDisponibles);
