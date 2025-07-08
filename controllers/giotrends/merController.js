@@ -1,4 +1,3 @@
-
 // 📌 Endpoint para consultar polígono por coordenadas (lng, lat)
 exports.getPoligonoByCoords = async (req, res) => {
   try {

@@ -5,16 +5,25 @@
   <title>Monitoreo Mapa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
-  <link rel="stylesheet" href="/css/GIoTrends/monitoreoMapa.css" />
+  <link rel="stylesheet" href="/css/GIoTrends/MapasDinamicos.css" />
   <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+
+
 </head>
 <body>
   <div id="map">
     <div id="left" class="sidebar flex-center left collapsed">
       <div class="sidebar-content rounded-rect flex-center">
         <div class="sidebar-info">
-          <h3>Descripción del Mapa</h3>
-
+          <div id="municipio-selector" style="margin-top: 10px;">
+            <label for="selectMunicipio">Selecciona un municipio:</label>
+            <select id="selectMunicipio">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div id="slidersComponentes" style="margin-top: 10px;"></div>
+          <button id="resetSliders" style="margin-top: 10px;">Resetear sliders</button>
         </div>
         <div class="sidebar-toggle rounded-rect left" onclick="toggleSidebar('left')">
           &rarr;

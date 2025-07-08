@@ -94,7 +94,7 @@ async function fetchData(endpoint) {
 
 // Función para actualizar el gráfico con datos reales
 async function updateChartWithData(myChart) {
-    const endpoint = '/analitica/niveles30avg';
+    const endpoint = '/api/giotrends/analitica/niveles30avg';
     const rawData = await fetchData(endpoint);
 
     // Preprocesar los datos

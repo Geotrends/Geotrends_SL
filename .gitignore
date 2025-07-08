@@ -9,3 +9,5 @@ venv
 models/*
 !models/.gitkeeppublic/data/vias.geojson
 public/data/
+public/data/*
+!public/data/AMVA.json

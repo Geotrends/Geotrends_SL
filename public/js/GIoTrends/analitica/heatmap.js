@@ -350,7 +350,7 @@ $(document).ready(function () {
   $("select").select2({ width: "200px", dropdownAutoWidth: true });
 
   // Obtener datos desde el backend
-  fetch("/analitica/sensores")
+  fetch("api/giotrends/analitica/sensores")
     .then((response) => response.json())
     .then((data) => {
       sensoresData = data;
@@ -613,7 +613,7 @@ function obtenerDatosHeatmap() {
   // console.log("📌 Fecha seleccionada:", fechaSeleccionada);
 
   // 🔹 Hacer la solicitud al backend con sensores y fecha
-  fetch("/analitica/laeqhora", {
+  fetch("api/giotrends/a/analitica/laeqhora", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -949,17 +949,17 @@ function obtenerDatosHeatmapSemana() {
   // console.log("📌 Sensores filtrados:", sensoresSeleccionados);
 
   Promise.all([
-    fetch("/analitica/laeqsemana", {
+    fetch("api/giotrends/a/analitica/laeqsemana", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sensores: sensoresSeleccionados, fechaInicio, fechaFin, tipoResumen: "general" }),
     }).then((res) => res.json()),
-    fetch("/analitica/laeqsemana", {
+    fetch("api/giotrends/a/analitica/laeqsemana", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sensores: sensoresSeleccionados, fechaInicio, fechaFin, tipoResumen: "dia" }),
     }).then((res) => res.json()),
-    fetch("/analitica/laeqsemana", {
+    fetch("api/giotrends/a/analitica/laeqsemana", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sensores: sensoresSeleccionados, fechaInicio, fechaFin, tipoResumen: "noche" }),

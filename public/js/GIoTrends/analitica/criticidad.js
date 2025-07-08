@@ -29,7 +29,7 @@ Este software es propiedad intelectual compartida según el Convenio 273 de 2024
 © 2025 Geotrends. Todos los derechos reservados.
  */
 
-const endpoint = '/analitica/superan?umbral_diurno=65&umbral_nocturno=65&umbral_total=65';
+const endpoint = '/api/giotrends/analitica/superan?umbral_diurno=65&umbral_nocturno=65&umbral_total=65';
 
 // Función asíncrona para obtener y procesar los datos
 async function fetchAndRenderCharts() {

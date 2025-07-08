@@ -1,0 +1,221 @@
+    html, body, #map {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.rounded-rect {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 50px -25px black;
+}
+
+.flex-center {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center.left {
+  left: 0px;
+}
+
+.flex-center.right {
+  right: 0px;
+}
+
+.sidebar-content {
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  background-color: #22222289;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  width: 1.3em;
+  height: 1.3em;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-toggle.left {
+  right: -1.5em;
+}
+
+.sidebar-toggle.right {
+  left: -1.5em;
+}
+
+.sidebar-toggle:hover {
+  color: #0aa1cf;
+  cursor: pointer;
+}
+
+.sidebar {
+  transition: transform 1s;
+  z-index: 9998;
+  width: 500px;
+  height: 100%;
+}
+
+.left.collapsed {
+  transform: translateX(-490px);
+}
+
+.right.collapsed {
+  transform: translateX(490px);
+}
+
+#rightPanel {
+    position: relative;
+    display: block;
+    height: 100%;
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.panel-content {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+
+/* Personalización del ícono circular con valor LAeq */
+.custom-marker {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.custom-marker::before {
+  content: '';
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--marker-color) 50%, transparent);
+  border: 2px solid var(--marker-color, #999);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-marker::after {
+  content: '';
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: var(--marker-color, #999);
+  border: 2px solid white;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.marker-value {
+  font-size: 10px;
+  font-weight: normal;
+  color: white;
+  z-index: 2;
+}
+
+.marker-unit {
+  font-size: 7px;
+  font-weight: normal;
+  color: white;
+  z-index: 2;
+  margin-left: 2px;
+}
+
+.map-control {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  padding: 4px;
+}
+
+#mapStyleSelector {
+  font-size: 13px;
+  padding: 4px;
+  border: none;
+  outline: none;
+}
+/* Estilos para la información de la barra lateral */
+.sidebar-info {
+  font-size: 13px;
+  padding: 10px;
+  width: 100%;
+}
+
+.sidebar-info h3,
+.sidebar-info h4 {
+  color: #05678d;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.sidebar-info p,
+.sidebar-info li {
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.sidebar-info ul {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+/* Estilos para el contenedor de sliders integrado al panel lateral izquierdo */
+#slidersComponentes {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ffffff10;
+  border-radius: 6px;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
+}
+
+#slidersComponentes label {
+  font-size: 13px;
+  color: #ffffff;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+
+#slidersComponentes input[type="range"] {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+#slidersComponentes span {
+  font-weight: bold;
+  font-size: 13px;
+  color: #0aa1cf;
+}

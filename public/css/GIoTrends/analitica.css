@@ -1,0 +1,385 @@
+
+body {
+    margin: 0;
+    height: 100vh; /* Asegura que el body ocupe toda la pantalla */
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.header-description {
+    margin-bottom: 10px;
+    padding: 5px 25px;
+    width: 100%;
+    height: auto;
+    background-color: white;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.filter {
+    margin-bottom: 10px;
+    padding: 5px 25px;
+    width: 100%;
+    height: auto;
+    background-color: white;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor Principal */
+.content {
+    flex: 1; /* Hace que tome todo el espacio disponible */
+    /* background-color: white; */
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Se activa el scroll si el contenido sobrepasa */
+    padding: 0px;
+}
+
+#map { 
+    width: 100%;
+    height: 360px;
+    border-radius: 10px;
+}
+
+.criticidad {
+    width: 100%;
+    height: 360px;
+}
+
+.heatmap-content {
+    margin-bottom: 10px;
+    width: 100%;
+    height: auto;
+    padding: 20px 5px;
+    background-color: white;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+/* Fila que ocupa el 100% del contenedor */
+.row {
+    margin-bottom: 10px;
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap; /* ✅ Permite que los elementos bajen si no caben */
+    justify-content: start; /* ✅ Distribuye los elementos */
+    align-items: flex-start;
+}
+
+
+
+
+/* Columnas que se ajustan al ancho total de la fila */
+.column {
+    width: 100%;  /* ✅ Asegura que ocupe todo el ancho */
+    max-width: 100%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgb(185, 185, 185);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: auto;
+    display: block; /* ✅ Asegura que no sea inline-block */
+}
+
+
+.column_heatmap {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgb(185, 185, 185);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: auto;
+    width: fit-content;  /* ✅ Se ajusta al contenido sin encogerse demasiado */
+    min-width: 600px;    /* ✅ Asegura que no sea demasiado pequeño */
+    display: block;      /* ✅ Ajusta el ancho correctamente */
+    margin: 0 auto;      /* ✅ Centra el elemento */
+    position: relative; /* <- esta es la clave */
+}
+
+
+/* Diseño responsive: cuando el ancho sea menor a 600px, las columnas ocupan toda la fila */
+@media (max-width: 600px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .column {
+        width: 100%; /* Cada columna ocupa todo el ancho de la fila */
+    }
+}
+
+@media (max-width: 500px) {
+    body {
+        font-size: 10px;
+    }
+}
+
+/* Estilos de menus desplegables y de selección"*/
+
+#filters-container {
+    display: flex; /* 🔹 Usa flexbox para organizar los filtros en línea */
+    flex-wrap: wrap; /* 🔹 Permite que los filtros se acomoden en múltiples líneas en pantallas pequeñas */
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* 🔹 Espacio entre los filtros */
+    padding: 15px; /* 🔹 Agrega espaciado interno */
+    background-color: #f9f9f9; /* 🔹 Fondo opcional para mejor visualización */
+    border-radius: 8px; /* 🔹 Esquinas redondeadas */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 🔹 Sombra ligera */
+    width: 95%; /* 🔹 Usa el 90% del ancho de la pantalla */
+    max-width: 2200px; /* 🔹 No se expande demasiado en pantallas grandes */
+    margin: 5px auto; /* 🔹 Centra el contenedor en la pantalla */
+}
+
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    width: 200px; /* Control de ancho para uniformidad */
+}
+
+.filter-item label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+select, input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+}
+
+.input-with-icon .icon {
+    margin-right: 8px;
+}
+
+
+
+select, input {
+    width: 200px;
+    padding: 5px;
+}
+.sensor-list {
+    margin-top: 20px;
+}
+
+#btn-cargar-heatmap {
+    padding: 8px 16px;
+    margin-left: 100px;
+    font-size: 12px;
+    background-color: rgb(130, 204, 25);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100px;
+}
+#btn-cargar-heatmap-semana {
+    padding: 8px 16px;
+    margin-left: 100px;
+    font-size: 12px;
+    background-color: rgb(130, 204, 25);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100px;
+}
+
+
+#filter-fecha:hover {
+    background-color: #e9ecef;
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    border: 2px solid ;
+    border-radius: 5px;
+    padding: 8px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.input-with-icon .icon {
+    margin-right: 8px;
+    color:rgb(130, 204, 25);
+}
+
+.input-with-icon:hover {
+    background-color: #f1f1f1;
+}
+
+/* Contenedor general del calendario */
+/* 📌 Estilos del Contenedor Principal del Calendario */
+.litepicker {
+    background-color: #ffffff;
+  
+    border-radius: 10px !important;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    font-family: "Arial", sans-serif;
+}
+
+/* 🔹 Encabezado del calendario */
+.litepicker .litepicker-header {
+    background-color: rgb(130, 204, 25) !important;
+    color: white !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 10px !important;
+    font-weight: bold !important;
+    text-align: center;
+}
+
+/* 🔹 Botones de navegación (mes anterior/siguiente) */
+.litepicker .litepicker-prev-month, 
+.litepicker .litepicker-next-month {
+    color: white !important;
+    font-size: 18px !important;
+    cursor: pointer;
+}
+
+.litepicker .litepicker-prev-month:hover, 
+.litepicker .litepicker-next-month:hover {
+    color: #ffdd57 !important;
+}
+
+/* 🔹 Días del calendario */
+.litepicker .litepicker-day {
+    color: #333 !important;
+    font-size: 14px !important;
+    padding: 5px !important;
+    border-radius: 5px !important;
+    cursor: pointer;
+}
+
+/* 🔹 Día actual */
+.litepicker .litepicker-day.is-today {
+    color: #000000 !important;
+    font-weight: bold !important;
+}
+
+/* 🔹 Día seleccionado (Inicio del rango) */
+.litepicker .container__days .day-item.is-start-date {
+    color: #ffffff !important;
+    background-color: #82cc19 !important;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+/* 🔹 Día seleccionado (Fin del rango) */
+.litepicker .container__days .day-item.is-end-date {
+    color: #000000 !important;
+    background-color: #82cc19 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+}
+
+/* 🔹 Días intermedios en el rango */
+.litepicker .container__days .day-item.is-in-range {
+    background-color: #81cc1992 !important;
+    border-radius: 0 !important;
+}
+
+/* 🔹 Día en hover */
+.litepicker .container__days .day-item:hover {
+    color: #000000 !important;
+    -webkit-box-shadow: inset 0 0 0 1px #82cc19 !important;
+    box-shadow: inset 0 0 0 1px #47700e !important;
+}
+
+/* 🔹 Botón de 'Hoy' */
+.litepicker .litepicker-button {
+    background-color:  #82cc19 !important;
+    color: white !important;
+    padding: 8px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+}
+
+.litepicker .litepicker-button:hover {
+    background-color: #d60fa8 !important;
+}
+
+
+  
+  .chart-description {
+    padding: 12px 18px;
+    border-left: 4px solid #ccc;
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .oculto {
+    display: none;
+  }
+
+  .c-button {
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: rgb(130, 204, 25);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.c-button:hover {
+    background-color:  rgb(79, 124, 15);
+}
+
+.graficos-analitica-fila1 {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 25px;
+    margin-top: 25px;
+  }
+  
+  .graficos-analitica-fila2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 50% y 50% */
+    gap: 25px;
+    margin-top: 25px;
+  }
+  
+  .grafico-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  

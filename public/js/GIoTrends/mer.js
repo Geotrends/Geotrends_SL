@@ -175,17 +175,17 @@ function mostrarCapaUnica(id, tabla, nombre, municipio) {
 // Variable global para el mapa principal
 let map;
 const colorRamp = [
-  [35, '#a1d99b'],
-  [40, '#31a354'],
-  [45, '#006d2c'],
-  [50, '#fee391'],
-  [55, '#fec44f'],
-  [60, '#fe9929'],
-  [65, '#ef3b2c'],
-  [70, '#f768a1'],
-  [75, '#74c476'],
-  [80, '#0570b0'],
-  [85, '#08306b']
+  [30, '#a1d99b'],
+  [35, '#31a354'],
+  [40, '#006d2c'],
+  [45, '#fee391'],
+  [50, '#fec44f'],
+  [55, '#fe9929'],
+  [60, '#ef3b2c'],
+  [65, '#f768a1'],
+  [70, '#74c476'],
+  [75, '#0570b0'],
+  [80, '#08306b']
 ];
 
 // Generar expresión de estilo para 'fill-color' usando colorRamp
