@@ -244,6 +244,8 @@ async function actualizarMunicipio(nombreMunicipio) {
   }
 
   // Restablecer sliders a 100% cada vez que se cambia de municipio
+  const aplicarAjustes = document.getElementById('activarSliders')?.checked;
+
   componentes.forEach(componente => {
     const slider = document.getElementById(`slider-${componente}`);
     const label = document.getElementById(`label-${componente}`);
@@ -253,13 +255,25 @@ async function actualizarMunicipio(nombreMunicipio) {
     }
   });
 
-  slidersComponente.forEach(slider => slider.disabled = false);
+  slidersComponente.forEach(slider => {
+    slider.disabled = !aplicarAjustes;
+  });
+  const resetBtn = document.getElementById('resetSliders');
+  if (resetBtn) resetBtn.disabled = !aplicarAjustes;
 }
 
 map.on('load', () => {
   toggleSidebar('left');
   // cargarDatosDesdeJSON se llamará solo al seleccionar municipio
   cargarMunicipios();
+
+  // Deshabilitar sliders inicialmente si el checkbox no está activado
+  const activarCheckbox = document.getElementById('activarSliders');
+  if (activarCheckbox && !activarCheckbox.checked) {
+    slidersComponente.forEach(slider => {
+      slider.disabled = true;
+    });
+  }
 
   document.getElementById('selectMunicipio').addEventListener('change', (e) => {
     actualizarMunicipio(e.target.value);
@@ -277,20 +291,18 @@ map.on('load', () => {
     }
   });
 
-  if (document.getElementById('activarSliders')?.checked) {
-    actualizarEnergiaAjustada();
-  }
-
   document.getElementById('activarSliders')?.addEventListener('change', (e) => {
     const activar = e.target.checked;
     slidersComponente.forEach(slider => {
       slider.disabled = !activar;
     });
+    const resetBtn = document.getElementById('resetSliders');
+    if (resetBtn) resetBtn.disabled = !activar;
 
     if (activar) {
       actualizarEnergiaAjustada();
     } else {
-      actualizarCapaConOffset(0);
+      restaurarDatosOriginales();
     }
   });
 });
@@ -449,5 +461,66 @@ function actualizarEnergiaAjustada() {
 
   if (map.getSource('ruido')) {
     map.getSource('ruido').setData(datosFiltrados);
+
+    map.on('click', 'puntos-ruido', function (e) {
+      const props = e.features[0].properties;
+      const contenido = `
+        <strong>ID:</strong> ${props.id_rec}<br>
+        <strong>SumTotal:</strong> ${parseFloat(props.sumTotal).toFixed(2)}<br>
+        <strong>Principal:</strong> ${parseFloat(props.principal).toFixed(2)}<br>
+        <strong>Servicio:</strong> ${parseFloat(props.servicio).toFixed(2)}
+      `;
+      new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(contenido)
+        .addTo(map);
+    });
+
+    map.on('mouseenter', 'puntos-ruido', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', 'puntos-ruido', function () {
+      map.getCanvas().style.cursor = '';
+    });
+  }
+}
+
+function restaurarDatosOriginales() {
+  if (!datosOriginales.length) return;
+
+  const datosRestaurados = {
+    type: "FeatureCollection",
+    features: datosOriginales.map(f => ({
+      ...f,
+      properties: {
+        ...f.properties,
+        sumTotal: f.properties.sum_total ? parseFloat(f.properties.sum_total) : parseFloat(f.originalSumTotal)
+      }
+    }))
+  };
+
+  if (map.getSource('ruido')) {
+    map.getSource('ruido').setData(datosRestaurados);
+
+    map.on('click', 'puntos-ruido', function (e) {
+      const props = e.features[0].properties;
+      const contenido = `
+        <strong>ID:</strong> ${props.id_rec}<br>
+        <strong>SumTotal:</strong> ${parseFloat(props.sumTotal).toFixed(2)}<br>
+        <strong>Principal:</strong> ${parseFloat(props.principal).toFixed(2)}<br>
+        <strong>Servicio:</strong> ${parseFloat(props.servicio).toFixed(2)}
+      `;
+      new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(contenido)
+        .addTo(map);
+    });
+
+    map.on('mouseenter', 'puntos-ruido', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', 'puntos-ruido', function () {
+      map.getCanvas().style.cursor = '';
+    });
   }
 }
