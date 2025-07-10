@@ -79,6 +79,7 @@ function debounce(fn, delay) {
 
 const componentes = ['principal', 'autopista', 'servicio', 'menor', 'colectora'];
 const container = document.getElementById('slidersComponentes');
+const slidersComponente = [];
 if (!container) {
   console.error("❌ No se encontró el contenedor #slidersComponentes");
 } else {
@@ -92,6 +93,7 @@ if (!container) {
 
     const debouncedActualizar = debounce(actualizarEnergiaAjustada, 300);
     const slider = document.getElementById(`slider-${componente}`);
+    slidersComponente.push(slider);
 
     slider.addEventListener('input', () => {
       document.getElementById(`label-${componente}`).textContent = slider.value;
@@ -175,8 +177,27 @@ async function actualizarMunicipio(nombreMunicipio) {
   const bbox = turf.bbox(envelope);
   map.fitBounds(bbox, { padding: 40, duration: 1000 });
 
-  if (datosOriginales.length === 0) {
-    await cargarDatosDesdeJSON();
+  // Cargar datos desde el endpoint por municipio
+  try {
+    const response = await fetch(`/api/giotrends/dinamico/puntos/${encodeURIComponent(nombreMunicipio)}`);
+    const data = await response.json();
+
+    datosOriginales = data.features
+      .filter(f => f.geometry && f.geometry.type === "Point")
+      .map(f => ({
+        ...f,
+        originalSumTotal: parseFloat(f.properties.sumTotal),
+        originalPrincipal: parseFloat(f.properties.principal),
+        originalAutopista: parseFloat(f.properties.autopista),
+        originalServicio: parseFloat(f.properties.servicio),
+        originalMenor: parseFloat(f.properties.menor),
+        originalColectora: parseFloat(f.properties.colectora)
+      }));
+
+    console.log("📉 Total puntos cargados desde API:", datosOriginales.length);
+  } catch (error) {
+    console.error('❌ Error al cargar puntos desde API:', error);
+    return;
   }
 
   const factores = {
@@ -231,6 +252,8 @@ async function actualizarMunicipio(nombreMunicipio) {
       label.textContent = '100';
     }
   });
+
+  slidersComponente.forEach(slider => slider.disabled = false);
 }
 
 map.on('load', () => {
@@ -249,7 +272,26 @@ map.on('load', () => {
       slider.value = 100;
       label.textContent = '100';
     });
+    if (document.getElementById('activarSliders')?.checked) {
+      actualizarEnergiaAjustada();
+    }
+  });
+
+  if (document.getElementById('activarSliders')?.checked) {
     actualizarEnergiaAjustada();
+  }
+
+  document.getElementById('activarSliders')?.addEventListener('change', (e) => {
+    const activar = e.target.checked;
+    slidersComponente.forEach(slider => {
+      slider.disabled = !activar;
+    });
+
+    if (activar) {
+      actualizarEnergiaAjustada();
+    } else {
+      actualizarCapaConOffset(0);
+    }
   });
 });
 
@@ -347,7 +389,7 @@ function actualizarCapaConOffset(offset) {
       ...f,
       properties: {
         ...f.properties,
-        sumTotal: f.originalSumTotal + offset
+        sumTotal: f.originalSumTotal
       }
     }))
   };
@@ -368,7 +410,7 @@ function actualizarCapaConOffset(offset) {
         'circle-radius': 4,
         'circle-color': [
           'step', ['get', 'sumTotal'],
-          colorRamp[0][1],  // -99 hasta <35 transparente
+          colorRamp[0][1],
           35, colorRamp[1][1],
           40, colorRamp[2][1],
           45, colorRamp[3][1],
@@ -388,6 +430,9 @@ function actualizarCapaConOffset(offset) {
 }
 
 function actualizarEnergiaAjustada() {
+  const aplicarAjustes = document.getElementById('activarSliders')?.checked;
+  if (!aplicarAjustes) return;
+
   if (!datosOriginales.length) return;
 
   if (!ultimaGeometriaMunicipio) return;

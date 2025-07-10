@@ -172,4 +172,3 @@ exports.getLatestSensorsData = async (req, res) => {
     }
 };
 
-

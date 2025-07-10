@@ -5,7 +5,7 @@
   <title>Monitoreo Mapa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
-  <link rel="stylesheet" href="/css/GIoTrends/MapasDinamicos.css" />
+  <link rel="stylesheet" href="/css/GIoTrends/mapasDinamicos.css" />
   <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
 
@@ -21,6 +21,12 @@
             <select id="selectMunicipio">
               <option value="">Todos</option>
             </select>
+          </div>
+          <div style="margin-top: 10px;">
+            <label>
+              <input type="checkbox" id="activarSliders" />
+              Aplicar ajustes con sliders
+            </label>
           </div>
           <div id="slidersComponentes" style="margin-top: 10px;"></div>
           <button id="resetSliders" style="margin-top: 10px;">Resetear sliders</button>

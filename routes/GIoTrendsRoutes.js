@@ -50,7 +50,7 @@ const {
 } = require('../controllers/giotrends/prediccionController');
 
 // Importar funciones del controlador dinamicoController
-const { getMunicipios, getGeometriaMunicipio } = require('../controllers/giotrends/dinamicoController');
+const { getMunicipios, getGeometriaMunicipio, getPuntosPorMunicipio } = require('../controllers/giotrends/dinamicoController');
 
 
 // 📌 Rutas de analítica IoT
@@ -118,5 +118,6 @@ router.put('/settings/:id', updateSensor);
 // Nueva ruta para obtener municipios
 router.get('/dinamico/municipios', getMunicipios);
 router.get('/dinamico/municipios/:nombre', getGeometriaMunicipio);
+router.get('/dinamico/puntos/:nombre', getPuntosPorMunicipio);
 
 module.exports = router;

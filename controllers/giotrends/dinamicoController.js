@@ -75,3 +75,41 @@ exports.getGeometriaMunicipio = async (req, res) => {
     res.status(500).json({ error: "Error interno" });
   }
 };
+
+exports.getPuntosPorMunicipio = async (req, res) => {
+  const nombre = req.params.nombre;
+  try {
+    const query = `
+      SELECT
+        id,
+        ST_AsGeoJSON(geom) AS geometry,
+        id_rec,
+        principal,
+        autopista,
+        servicio,
+        menor,
+        colectora,
+        sum_Total
+      FROM mapa_dinamico.amva_puntos
+      WHERE municipio = $1 AND geom IS NOT NULL;
+    `;
+    const { rows } = await pool.query(query, [nombre]);
+
+    const geojson = {
+      type: "FeatureCollection",
+      features: rows.map(row => {
+        const { geometry, geom, ...props } = row;
+        return {
+          type: "Feature",
+          geometry: JSON.parse(geometry),
+          properties: props
+        };
+      })
+    };
+
+    res.status(200).json(geojson);
+  } catch (error) {
+    console.error("❌ Error al obtener puntos por municipio:", error.message);
+    res.status(500).json({ message: "Error al obtener datos", error: error.message });
+  }
+};
