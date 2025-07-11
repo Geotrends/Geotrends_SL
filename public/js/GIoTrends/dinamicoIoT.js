@@ -260,19 +260,21 @@ async function actualizarMunicipio(nombreMunicipio) {
   });
   const resetBtn = document.getElementById('resetSliders');
   if (resetBtn) resetBtn.disabled = !aplicarAjustes;
+
+  // --- Añadir capa de puntos de sensores monitoreo con icono ---
+  // Eliminado: carga de imágenes externas y capas de icono para sensores de monitoreo.
 }
 
 map.on('load', () => {
   toggleSidebar('left');
-  // cargarDatosDesdeJSON se llamará solo al seleccionar municipio
   cargarMunicipios();
 
-  // Deshabilitar sliders inicialmente si el checkbox no está activado
   const activarCheckbox = document.getElementById('activarSliders');
   if (activarCheckbox && !activarCheckbox.checked) {
     slidersComponente.forEach(slider => {
       slider.disabled = true;
     });
+    document.getElementById('resetSliders').disabled = true;
   }
 
   document.getElementById('selectMunicipio').addEventListener('change', (e) => {
@@ -305,6 +307,31 @@ map.on('load', () => {
       restaurarDatosOriginales();
     }
   });
+
+  agregarEdificios3D();
+
+  // 🔧 Verificar y asignar evento al checkbox de puntos históricos
+  setTimeout(() => {
+    const toggleHistoricos = document.getElementById('toggleHistoricos');
+    if (toggleHistoricos) {
+      console.log("✅ Checkbox 'toggleHistoricos' encontrado");
+      toggleHistoricos.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          console.log("🟩 Checkbox activado: cargando puntos históricos...");
+          cargarPuntosHistoricos();
+        } else {
+          console.log("🟥 Checkbox desactivado: removiendo puntos históricos...");
+          if (typeof marcadoresHistoricos !== 'undefined') {
+            marcadoresHistoricos.forEach(m => m.remove());
+          } else {
+            console.warn("⚠️ marcadoresHistoricos no está definido.");
+          }
+        }
+      });
+    } else {
+      console.error("❌ No se encontró el checkbox con id 'toggleHistoricos'");
+    }
+  }, 500); // Esperar medio segundo para asegurar que el DOM esté listo
 });
 
 document.getElementById('mapStyleSelector').addEventListener('change', (e) => {
@@ -523,4 +550,83 @@ function restaurarDatosOriginales() {
       map.getCanvas().style.cursor = '';
     });
   }
+}
+// --- Puntos Históricos (LAeq) ---
+let marcadoresHistoricos = [];
+
+function cargarPuntosHistoricos() {
+  console.log('🟡 Cargando puntos históricos...');
+
+  fetch('/api/giotrends/mapa/data')
+    .then(response => response.json())
+    .then(data => {
+      console.log('🟢 Puntos históricos cargados:', data.length);
+      marcadoresHistoricos.forEach(m => m.remove());
+      marcadoresHistoricos = [];
+
+      data.forEach(sensor => {
+        const { longitude, latitude, sensor_name, municipio, barrio, laeq_slow, timestamp, id } = sensor;
+
+        const popup = new maplibregl.Popup({ offset: 25 }).setHTML(`
+          <strong>${sensor_name}</strong><br>
+          <em>${barrio}, ${municipio}</em><br>
+          LAeq: ${laeq_slow} dB<br>
+          <small>${new Date(timestamp).toLocaleString('es-CO', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}</small>
+        `);
+
+        const el = document.createElement('div');
+        el.className = 'custom-marker';
+
+        const spanMain = document.createElement('span');
+        spanMain.className = 'marker-value';
+        spanMain.textContent = parseFloat(laeq_slow).toFixed(1);
+
+        const spanUnit = document.createElement('span');
+        spanUnit.className = 'marker-unit';
+        spanUnit.textContent = 'dBA';
+
+        el.appendChild(spanMain);
+        el.appendChild(spanUnit);
+
+        const dB = parseFloat(laeq_slow);
+        let color = '#025159';
+        if (dB < 55) {
+          color = '#2b9348';
+        } else if (dB < 65) {
+          color = '#ffdd57';
+        } else if (dB < 75) {
+          color = '#f8961e';
+        } else {
+          color = '#ef233c';
+        }
+
+        el.style.setProperty('--marker-color', color);
+
+        el.addEventListener('click', (evt) => {
+          evt.stopPropagation();
+          showWeeklyHistoryPanel(sensor.id || sensor.sensor_id);
+          const rightSidebar = document.getElementById('right');
+          if (rightSidebar.classList.contains('collapsed')) {
+            toggleSidebar('right');
+          }
+        });
+
+        const marcador = new maplibregl.Marker({ element: el })
+          .setLngLat([longitude, latitude])
+          .setPopup(popup)
+          .addTo(map);
+
+        marcadoresHistoricos.push(marcador);
+      });
+    })
+    .catch(error => {
+      console.error('❌ Error al cargar puntos históricos:', error);
+    });
 }
