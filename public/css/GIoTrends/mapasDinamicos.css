@@ -27,8 +27,8 @@
 
 .sidebar-content {
   position: absolute;
-  width: 95%;
-  height: 95%;
+  width: 75%;
+  
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   color: rgb(255, 255, 255);
@@ -63,16 +63,16 @@
 .sidebar {
   transition: transform 1s;
   z-index: 9998;
-  width: 500px;
+  width: 330px;
   height: 100%;
 }
 
 .left.collapsed {
-  transform: translateX(-490px);
+  transform: translateX(-290px);
 }
 
 .right.collapsed {
-  transform: translateX(490px);
+  transform: translateX(290px);
 }
 
 #rightPanel {
@@ -192,6 +192,10 @@
   margin-bottom: 10px;
 }
 
+#slider-principal {
+  width: 100%;
+  margin: 10px 0;
+}
 /* Estilos para el contenedor de sliders integrado al panel lateral izquierdo */
 #slidersComponentes {
   margin-top: 20px;
@@ -217,5 +221,27 @@
 #slidersComponentes span {
   font-weight: bold;
   font-size: 13px;
-  color: #0aa1cf;
+  color: #ffffff;
+}
+
+input[type="range"] {
+  accent-color: #3693b6;
+}
+
+#municipio-selector label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+#municipio-selector select {
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  color: #333;
 }

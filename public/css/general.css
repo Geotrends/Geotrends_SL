@@ -55,7 +55,7 @@ button {
     font-family: inherit;
     font-size: 0.95rem;
     font-weight: bold;
-    background-color: #02735e;
+    background-color: #3693b6;
     color: white;
     border: none;
     padding: 0.5rem 1.2rem;
@@ -65,7 +65,7 @@ button {
 }
 
 button:hover {
-    background-color: #025c4b;
+    background-color: #05678d;
 }
 
 /* 5. Enlaces */
@@ -102,7 +102,7 @@ input, select, textarea {
     left: 0;
     height: 60px;
     width: 100%;
-    background-color: var(--azul-vivo);
+    background-color: var( --azul-brillante);
     color: var(--blanco);
     display: flex;
     justify-content: space-between;

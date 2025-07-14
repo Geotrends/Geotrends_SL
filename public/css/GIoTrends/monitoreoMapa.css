@@ -95,8 +95,8 @@ html, body, #map {
 /* Personalización del ícono circular con valor LAeq */
 .custom-marker {
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: 108px;
+  height: 1088px;
   transform: translate(-50%, -50%);
   z-index: 10;
   display: flex;
@@ -104,15 +104,16 @@ html, body, #map {
   align-items: center;
   font-family: Arial, sans-serif;
 }
-
 .custom-marker::before {
   content: '';
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: 108px;
+  height: 108px;
   border-radius: 50%;
-  background-color: color-mix(in srgb, var(--marker-color) 50%, transparent);
-  border: 2px solid var(--marker-color, #999);
+  background: radial-gradient(circle, 
+    color-mix(in srgb, var(--marker-color) 100%, transparent) 0%, 
+    color-mix(in srgb, var(--marker-color) 40%, transparent) 40%, 
+    transparent 90%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -121,8 +122,8 @@ html, body, #map {
 .custom-marker::after {
   content: '';
   position: absolute;
-  width: 35px;
-  height: 35px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: var(--marker-color, #999);
   border: 2px solid white;
@@ -133,16 +134,16 @@ html, body, #map {
 }
 
 .marker-value {
-  font-size: 10px;
-  font-weight: normal;
-  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
   z-index: 2;
 }
 
 .marker-unit {
-  font-size: 7px;
+  font-size: 8px;
   font-weight: normal;
-  color: white;
+  color: rgb(50, 50, 50);
   z-index: 2;
   margin-left: 2px;
 }

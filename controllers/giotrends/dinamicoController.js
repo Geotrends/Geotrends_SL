@@ -1,4 +1,3 @@
-// 📌 Endpoint para obtener todos los puntos del esquema mapa_dinamico.AMVA en formato GeoJSON
 const { pool: pool } = require('../../db/conexion'); 
 exports.getMapaDinamico = async (req, res) => {
   try {
@@ -112,4 +111,36 @@ exports.getPuntosPorMunicipio = async (req, res) => {
     console.error("❌ Error al obtener puntos por municipio:", error.message);
     res.status(500).json({ message: "Error al obtener datos", error: error.message });
   }
+};
+
+// --- Añadir función getIsocurvas ---
+const path = require('path');
+const fs = require('fs');
+const { exec } = require('child_process');
+
+exports.getIsocurvas = (req, res) => {
+  const municipio = req.params.municipio;
+  if (!municipio || municipio === 'undefined') {
+    return res.status(400).json({ error: "Debe especificar un municipio válido." });
+  }
+
+  const scriptPath = path.join(__dirname, '../../scripts/generar_isocurvas.py');
+  const geojsonPath = path.join(__dirname, `../../scripts/isocurvas_${municipio.toLowerCase()}.geojson`);
+  const pythonPath = path.join(__dirname, '../../.venv/bin/python3');
+
+  exec(`${pythonPath} ${scriptPath} "${municipio}"`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`❌ Error al ejecutar el script: ${error.message}`);
+      return res.status(500).json({ error: 'Error al generar isocurvas' });
+    }
+
+    fs.readFile(geojsonPath, 'utf8', (err, data) => {
+      if (err) {
+        console.error('❌ Error al leer el archivo GeoJSON generado:', err.message);
+        return res.status(500).json({ error: 'Archivo GeoJSON no encontrado' });
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.send(data);
+    });
+  });
 };

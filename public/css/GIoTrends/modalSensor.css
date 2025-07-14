@@ -43,7 +43,7 @@ Este software es propiedad intelectual compartida según el Convenio 273 de 2024
 
 /* 📌 Estilos del botón */
 .toggle-button {
-    background-color: rgb(130, 204, 25);
+    background-color: #3693b6;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -53,7 +53,7 @@ Este software es propiedad intelectual compartida según el Convenio 273 de 2024
 }
 
 .toggle-button:hover {
-    background-color:  rgb(79, 124, 15);
+    background-color:  #05678d;
 }
 
 /* 📌 Contenedor en 4 columnas */
@@ -104,7 +104,7 @@ Este software es propiedad intelectual compartida según el Convenio 273 de 2024
 }
 
 .close-button:hover {
-    color: rgb(130, 204, 25);
+    color:  #05678d;
 }
 
 .popup-header {
@@ -167,7 +167,7 @@ Este software es propiedad intelectual compartida según el Convenio 273 de 2024
   }
 
   .indicator-card {
-    background-color: #81cc1988 !important; /* verde institucional */
+    background-color: #3694b6b6 !important; /* verde institucional */
     color: rgb(0, 0, 0) !important;
     font-weight: lighter;
     border-radius: 8px;

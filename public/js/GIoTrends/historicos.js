@@ -251,9 +251,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // ✅ Definir colores personalizados (verde para la serie activa)
     const coloresSeries = {
       // 🎯 A-weighting (verde)
-      "laeq_slow": "#82cc19",     // Verde principal
-      "laeq_fast": "#a2e045",     // Verde claro
-      "laeq_impulse": "#5e9913",  // Verde oscuro
+      "laeq_slow": "#3693b6",     // Verde principal
+      "laeq_fast": "#05678d",     // Verde claro
+      "laeq_impulse": "#04516e",  // Verde oscuro
 
       // 🎯 C-weighting (amarillo)
       "lceq_slow": "#FAC858",     // Amarillo principal
@@ -568,14 +568,14 @@ document.addEventListener("DOMContentLoaded", function () {
         name: "Z Slow",
         type: "bar",
         data: [], // Se actualizará dinámicamente
-        itemStyle: { color: "#7e93ba", borderRadius: [3, 3, 0, 0] },
+        itemStyle: { color: "#277167", borderRadius: [3, 3, 0, 0] },
 
       },
       {
         name: "A Slow",
         type: "bar",
         data: [],
-        itemStyle: { color: "#82cc19", borderRadius: [3, 3, 0, 0] },
+        itemStyle: { color: "#3693b6", borderRadius: [3, 3, 0, 0] },
 
       },
       {
@@ -913,8 +913,8 @@ document.addEventListener("DOMContentLoaded", function () {
           data: promediosHoras.map((d) => d.laeq_slow),
           step: "end",
           smooth: false,
-          lineStyle: { width: 2, color: "#82cc19" }, // Verde
-          itemStyle: { color: "#82cc19" },
+          lineStyle: { width: 2, color: "#3693b6" }, // Verde
+          itemStyle: { color: "#3693b6" },
           showSymbol: false
         },
         {
@@ -1155,8 +1155,8 @@ document.addEventListener("DOMContentLoaded", function () {
           step: "end",  // 📌 Esto hace que la línea sea escalonada
           data: promediosDiarios.map((d) => [d.dia, d.promedioTotal]),
           smooth: false,
-          lineStyle: { width: 2, color: "#91CC75" }, // Rojo
-          itemStyle: { color: "#91CC75" },
+          lineStyle: { width: 2, color: "#3693b6" }, // Rojo
+          itemStyle: { color: "#3693b6" },
           showSymbol: false
         }
       ]
@@ -1302,7 +1302,7 @@ document.addEventListener("DOMContentLoaded", function () {
           name: "24 Horas",
           type: "bar",
           data: promediosDias.map((d) => d.total).reverse(),
-          itemStyle: { color: "#91CC75", borderRadius: [0, 3, 3, 0] }
+          itemStyle: { color: "#3693b6", borderRadius: [0, 3, 3, 0] }
         }
       ]
     };

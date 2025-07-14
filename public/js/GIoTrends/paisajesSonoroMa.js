@@ -13,7 +13,7 @@ const map = new maplibregl.Map({
   zoom: 12.5,
   center,
   pitch: 0,
-  style: mapStyles.streets,
+  style: mapStyles.hybrid,
 });
 
 let datosPaisaje = null;
@@ -48,10 +48,35 @@ function agregarPaisajeSonoro(data) {
     if (map.getSource('paisajeSonoro')) map.removeSource('paisajeSonoro');
     if (map.hasImage('paisaje-sonoro-icon')) map.removeImage('paisaje-sonoro-icon');
 
-    const image = await map.loadImage('/images/iconos/musica-en-la-nube.png');
-    if (!map.hasImage('paisaje-sonoro-icon')) {
-      map.addImage('paisaje-sonoro-icon', image.data);
-    }
+    const canvas = document.createElement('canvas');
+    canvas.width = 70;
+    canvas.height = 70;
+    const ctx = canvas.getContext('2d');
+
+    // Sombra antes de dibujar el círculo
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+
+    // Círculo azul
+    ctx.beginPath();
+    ctx.arc(35, 35, 30, 0, Math.PI * 2, true);
+    ctx.fillStyle = '#0aa1cf';
+    ctx.fill();
+
+    // Triángulo blanco estilo YouTube
+    ctx.beginPath();
+    ctx.moveTo(28, 23);
+    ctx.lineTo(28, 47);
+    ctx.lineTo(48, 35);
+    ctx.closePath();
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+
+    const imageData = ctx.getImageData(0, 0, 70, 70);
+    if (map.hasImage('paisaje-sonoro-icon')) map.removeImage('paisaje-sonoro-icon');
+    map.addImage('paisaje-sonoro-icon', imageData);
 
     map.addSource('paisajeSonoro', {
       type: 'geojson',
@@ -64,7 +89,7 @@ function agregarPaisajeSonoro(data) {
       source: 'paisajeSonoro',
       layout: {
         'icon-image': 'paisaje-sonoro-icon',
-        'icon-size': 0.09,
+        'icon-size': 0.4,
         'icon-allow-overlap': true
       }
     });

@@ -37,6 +37,94 @@ function toggleSidebar(id) {
 }
 
 
+// --- Función para agregar capa heatmap de sensores ---
+function agregarHeatmap(data) {
+  const geojson = {
+    type: "FeatureCollection",
+    features: data
+      .filter(sensor => !isNaN(parseFloat(sensor.laeq_slow)))
+      .map(sensor => ({
+        type: "Feature",
+        properties: {
+          laeq: parseFloat(sensor.laeq_slow)
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [sensor.longitude, sensor.latitude]
+        }
+      }))
+  };
+
+  if (map.getSource('sensores-heatmap')) {
+    map.getSource('sensores-heatmap').setData(geojson);
+  } else {
+    map.addSource('sensores-heatmap', {
+      type: 'geojson',
+      data: geojson
+    });
+
+    /*
+    map.addLayer({
+      id: 'heatmap-sensores',
+      type: 'heatmap',
+      source: 'sensores-heatmap',
+      maxzoom: 18,
+      paint: {
+        'heatmap-weight': ['interpolate', ['linear'], ['get', 'laeq'], 50, 0, 80, 1],
+        'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 15, 4],
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0, 'rgba(2,81,89,0)',
+          0.2, '#2b9348',
+          0.4, '#ffdd57',
+          0.6, '#f8961e',
+          1, '#ef233c'
+        ],
+        'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 60, 15, 100],
+        'heatmap-opacity': 0.9
+      }
+    });
+    */
+
+    map.addLayer({
+      id: 'sensores-circle',
+      type: 'circle',
+      source: 'sensores-heatmap',
+      minzoom: 13,
+      paint: {
+        // Increase the spread of the circle layer
+        'circle-radius': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          13, ['interpolate', ['linear'], ['get', 'laeq'], 50, 12, 80, 24],
+          18, ['interpolate', ['linear'], ['get', 'laeq'], 50, 24, 80, 36]
+        ],
+        'circle-color': [
+          'interpolate',
+          ['linear'],
+          ['get', 'laeq'],
+          50, '#2b9348',
+          60, '#f9c74f',
+          70, '#f8961e',
+          80, '#ef233c'
+        ],
+        'circle-stroke-color': 'white',
+        'circle-stroke-width': 2,
+        'circle-opacity': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          13, 0,
+          14, 1
+        ]
+      }
+    }, 'heatmap-sensores');
+  }
+}
+
 map.on('load', () => {
   // toggleSidebar('left');
 
@@ -44,6 +132,8 @@ map.on('load', () => {
   fetch('/api/giotrends/mapa/data')
     .then(response => response.json())
     .then(data => {
+      agregarHeatmap(data);
+
       data.forEach(sensor => {
         const { longitude, latitude, sensor_name, municipio, barrio, laeq_slow, timestamp, id } = sensor;
 
@@ -120,6 +210,9 @@ document.getElementById('mapStyleSelector').addEventListener('change', (e) => {
   map.setStyle(mapStyles[selected]);
   map.once('style.load', () => {
     agregarEdificios3D();
+    fetch('/api/giotrends/mapa/data')
+      .then(res => res.json())
+      .then(agregarHeatmap);
   });
 });
 
@@ -190,10 +283,11 @@ function showWeeklyHistoryPanel(sensorId) {
       <div id="sensor-info-container">
         <div class="sensor-summary">
           <h3 id="sensor-title">Cargando información...</h3>
-          <button id="toggle-sensor-info" class="toggle-button">Ocultar detalles</button>
+         <!-- <button id="toggle-sensor-info" class="toggle-button">Ocultar detalles</button> 
           <div id="export-pdf-container" class="export-section ">
             <button id="export-pdf-button" class="export-button c-button">PDF</button>
           </div>
+          -->
         </div>
         <div id="sensor-details"></div>
       </div>
@@ -267,16 +361,12 @@ function showWeeklyHistoryPanel(sensorId) {
       }
       document.getElementById("sensor-title").innerHTML = `${sensorInfo.referencia}: ${sensorInfo.barrio}`;
       document.getElementById("sensor-details").innerHTML = `
-        <div class="sensor-column">
-          <div class="sensor-detail"><strong>Dirección:</strong> ${sensorInfo.direccion || "No disponible"}</div>
-          <div class="sensor-detail"><strong>Municipio:</strong> ${sensorInfo.municipio} (${sensorInfo.departamento})</div>
+       <div class="sensor-column">
+     <div class="sensor-detail"><strong>Dirección:</strong> ${sensorInfo.direccion || "No disponible"}</div>
+        <!--  <div class="sensor-detail"><strong>Municipio:</strong> ${sensorInfo.municipio} (${sensorInfo.departamento})</div>-->
           <div class="sensor-detail"><strong>Clasificación:</strong> ${sensorInfo.clasificacion || "No disponible"}</div>
-        </div>
-        <div class="sensor-column">
-          <div class="sensor-detail"><strong>Tipo:</strong> ${sensorInfo.tipo}</div>
-          <div class="sensor-detail"><strong>Sector:</strong> ${sensorInfo.sector || "No disponible"}</div>
-          <div class="sensor-detail"><strong>Subsector:</strong> ${sensorInfo.subsector || "No disponible"}</div>
-        </div>
+     </div>
+
       `;
       if (!weekly || weekly.length === 0) {
         document.getElementById("indicators-container").innerHTML = `<div class="no-data">🚨 Sin datos recientes</div>`;
@@ -499,17 +589,17 @@ function renderWeeklyLineChart(weeklyData) {
         backgroundColor: "rgba(255, 255, 255, 0.2)",
         dataBackground: {
           lineStyle: {
-            color: "rgb(130, 204, 25)",
+            color: "rgba(54, 148, 182, 0.56)",
           },
           areaStyle: {
             color: "rgba(130, 204, 25, 0.3)",
           },
         },
-        fillerColor: "rgba(130, 204, 25, 0.5)",
-        borderColor: "rgb(106, 166, 21)",
+        fillerColor: "#05678d",
+        borderColor: "#05678d",
         handleStyle: {
-          color: "rgb(130, 204, 25)",
-          borderColor: "rgba(130, 204, 25, 0.5)",
+          color: " #3693b6",
+          borderColor: "# 05678d",
         },
         textStyle: {
           color: "rgb(0, 0, 0)",
@@ -532,7 +622,7 @@ function renderWeeklyLineChart(weeklyData) {
         name: "LAeq Slow",
         type: "line",
         data: laeqSlow,
-        color: "rgb(130, 204, 25)",
+        color: "#5caac8",
         smooth: false,
         width: 1,
         symbol: "none",
@@ -682,13 +772,13 @@ function renderDynamicTercioBarChart(weeklyData, lineChart) {
         name: "Z Slow",
         type: "bar",
         data: terciosMeanZ,
-        color: "#7ea3ba",
+        color: "#12c151",
       },
       {
         name: "A Slow",
         type: "bar",
         data: terciosMeanA,
-        color: "#82cc19",
+        color: "#5caac8",
       },
       {
         name: "C Slow",

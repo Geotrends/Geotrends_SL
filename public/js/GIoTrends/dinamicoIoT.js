@@ -268,6 +268,8 @@ async function actualizarMunicipio(nombreMunicipio) {
 map.on('load', () => {
   toggleSidebar('left');
   cargarMunicipios();
+  // Llamar a la función para cargar y mostrar las isocurvas generadas desde el backend
+  //cargarIsocurvasGeneradas();
 
   const activarCheckbox = document.getElementById('activarSliders');
   if (activarCheckbox && !activarCheckbox.checked) {
@@ -279,6 +281,7 @@ map.on('load', () => {
 
   document.getElementById('selectMunicipio').addEventListener('change', (e) => {
     actualizarMunicipio(e.target.value);
+     // cargarIsocurvasGeneradas();
   });
 
   document.getElementById('resetSliders').addEventListener('click', () => {
@@ -629,4 +632,53 @@ function cargarPuntosHistoricos() {
     .catch(error => {
       console.error('❌ Error al cargar puntos históricos:', error);
     });
+}
+function cargarIsocurvasGeneradas() {
+  const municipio = document.getElementById('selectMunicipio').value;
+
+  if (!municipio || municipio === "Todos") {
+    console.warn("⚠️ No se ha seleccionado un municipio válido para generar isocurvas.");
+    return;
+  }
+
+  fetch(`/api/giotrends/dinamico/isocurvas/${encodeURIComponent(municipio)}`)
+  .then(res => res.json())
+  .then(data => {
+    if (map.getSource('isocurvas')) {
+      map.getSource('isocurvas').setData(data);
+    } else {
+      map.addSource('isocurvas', {
+        type: 'geojson',
+        data: data
+      });
+
+      map.addLayer({
+        id: 'isocurvas-fill',
+        type: 'fill',
+        source: 'isocurvas',
+        paint: {
+          'fill-color': [
+            'step',
+            ['get', 'valor'],
+            'rgba(255,255,255,0)', 30,
+            '#a1d99b', 35,
+            '#31a354', 40,
+            '#006d2c', 45,
+            '#fee391', 50,
+            '#fec44f', 55,
+            '#fe9929', 60,
+            '#ef3b2c', 65,
+            '#f768a1', 70,
+            '#74c476', 75,
+            '#0570b0', 80,
+            '#08306b'
+          ],
+          'fill-opacity': 0.6
+        }
+      });
+    }
+  })
+  .catch(err => {
+    console.error("❌ Error cargando isocurvas:", err.message);
+  });
 }
