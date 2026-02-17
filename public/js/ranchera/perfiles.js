@@ -27,7 +27,22 @@ import { generarRedPerfiles } from "./utils/redes.js";
 import { crearGraficoScatter, crearGraficoPie, crearGraficoBarras } from "./utils/charts.js";
 import { generarRedSegmentacionSentimiento } from "./utils/redes.js";
 
-
+const NOMBRES_PERFIL_INGLES = {
+  "idiomas eafit": "EAFIT Languages",
+  "arquitectura usb medellín": "USB Architecture Medellín",
+  "orquesta sinfónica eafit": "EAFIT Symphony Orchestra",
+  "urbam eafit": "urbam EAFIT",
+  "nodo": "Node",
+  "nodo eafit": "EAFIT Node",
+  "ranchera oficial": "Ranchera Official",
+  "ranchera": "Ranchera",
+};
+function nombrePerfilEnIngles(nombre) {
+  if (!nombre || typeof nombre !== "string") return nombre;
+  const key = nombre.trim().toLowerCase();
+  return NOMBRES_PERFIL_INGLES[key] || NOMBRES_PERFIL_INGLES[key.replace(/\s+/g, " ")] || nombre;
+}
+if (typeof window !== "undefined") window.traducirNombrePerfil = nombrePerfilEnIngles;
 
 let perfilesSemillaGlobal = []; // Declarar al inicio del archivo para usar globalmente
 
@@ -59,7 +74,7 @@ export function inicializarVistaPerfiles() {
           const option = document.createElement("option");
           option.value = p.fuente_id;
           option.setAttribute("data-username", p.username);
-          option.textContent = `${p.full_name || "Sin nombre"} (@${p.username})`;
+          option.textContent = `${nombrePerfilEnIngles(p.full_name) || p.full_name || "No name"} (@${p.username})`;
           option.selected = true;
           selector.appendChild(option);
         }
@@ -69,7 +84,7 @@ export function inicializarVistaPerfiles() {
       if (window.jQuery && $.fn.select2) {
         $('#selectorPerfil').select2({
           width: 'resolve',
-          placeholder: 'Selecciona perfiles semilla',
+          placeholder: 'Select seed profiles',
           allowClear: true,
           closeOnSelect: false,
           tags: false
@@ -79,9 +94,9 @@ export function inicializarVistaPerfiles() {
       const selectorTipoCuenta = document.createElement("select");
       selectorTipoCuenta.id = "selectorTipoCuenta";
       selectorTipoCuenta.innerHTML = `
-          <option value="">-- ¿Es cuenta de negocio? --</option>
-          <option value="true">Cuenta de negocio</option>
-          <option value="false">Cuenta personal</option>
+          <option value="">-- Business account? --</option>
+          <option value="true">Business account</option>
+          <option value="false">Personal account</option>
         `;
       document.querySelector(".controls-nube").appendChild(selectorTipoCuenta);
 
@@ -159,7 +174,7 @@ export function inicializarVistaPerfiles() {
 
       const selectorCategorias = document.getElementById("selectorCategoria");
       selectorCategorias.innerHTML =
-        "<option value=''>-- Seleccione categoría --</option>";
+        "<option value=''>-- Select category --</option>";
       [...categoriasSet].sort().forEach((cat) => {
         const opt = document.createElement("option");
         opt.value = cat;
@@ -183,25 +198,26 @@ export function inicializarVistaPerfiles() {
       const selectorPrivacidad = document.createElement("select");
       selectorPrivacidad.id = "selectorPrivacidad";
       selectorPrivacidad.innerHTML = `
-          <option value="">-- Cuenta privada o no --</option>
-          <option value="true">Privado</option>
-          <option value="false">Público</option>
+          <option value="">-- Private account? --</option>
+          <option value="true">Private</option>
+          <option value="false">Public</option>
         `;
       contenedorControles.appendChild(selectorPrivacidad);
 
       const selectorVerificado = document.createElement("select");
       selectorVerificado.id = "selectorVerificado";
       selectorVerificado.innerHTML = `
-          <option value="">-- Cuenta verificada o no --</option>
-          <option value="true">Verificada</option>
-          <option value="false">No verificada</option>
+          <option value="">-- Verified account? --</option>
+          <option value="true">Verified</option>
+          <option value="false">Not verified</option>
         `;
       contenedorControles.appendChild(selectorVerificado);
 
       // === Agregar botón de reinicio de filtros ===
       const botonReset = document.createElement("button");
       botonReset.id = "botonResetFiltros";
-      botonReset.textContent = "Reiniciar filtros";
+      botonReset.className = "btn-reset-filtros";
+      botonReset.textContent = "Reset filters";
       contenedorControles.appendChild(botonReset);
 
       // === Evento click para reiniciar filtros ===
@@ -370,7 +386,7 @@ export function inicializarVistaPerfiles() {
 
         crearGraficoBarras({
           contenedorId: 'grafico-emojis',
-          titulo: 'Emojis más usados',
+          titulo: 'Most used emojis',
           categorias: datosEmojis.map(e => e[0]),
           datos: datosEmojis.map(e => e[1]),
           color: '#3693b6',
@@ -381,7 +397,7 @@ export function inicializarVistaPerfiles() {
               margin: 10
             }}
         });
-        agregarDescripcionGrafico('grafico-emojis', 'Este gráfico muestra los emojis más utilizados por los perfiles seleccionados, lo cual puede reflejar estilos emocionales o patrones de comunicación frecuentes.');
+        agregarDescripcionGrafico('grafico-emojis', 'This chart shows the most used emojis by the selected profiles, which can reflect emotional styles or frequent communication patterns.');
 
         // === ACTUALIZAR TARJETAS CUANTITATIVAS ===
         const totalPerfiles = perfilesFiltrados.length;
@@ -395,36 +411,36 @@ export function inicializarVistaPerfiles() {
 
         if (document.getElementById("tarjetaTotalPerfiles"))
           document.getElementById("tarjetaTotalPerfiles").innerHTML = `
-            <strong>Total de perfiles:</strong> ${totalPerfiles.toLocaleString()}
+            <strong>Total profiles:</strong> ${totalPerfiles.toLocaleString()}
           `;
 
         if (document.getElementById("tarjetaPrivacidad"))
           document.getElementById("tarjetaPrivacidad").innerHTML = `
-            <strong>Privacidad:</strong><br>
-            Privados: ${privados}<br>
-            Públicos: ${totalPerfiles - privados}
+            <strong>Privacy:</strong><br>
+            Private: ${privados}<br>
+            Public: ${totalPerfiles - privados}
           `;
 
         if (document.getElementById("tarjetaVerificacion"))
           document.getElementById("tarjetaVerificacion").innerHTML = `
-            <strong>Verificación:</strong><br>
-            Verificados: ${verificados}<br>
-            No verificados: ${totalPerfiles - verificados}
+            <strong>Verification:</strong><br>
+            Verified: ${verificados}<br>
+            Not verified: ${totalPerfiles - verificados}
           `;
 
         if (document.getElementById("tarjetaTipoCuenta"))
           document.getElementById("tarjetaTipoCuenta").innerHTML = `
-            <strong>Tipo de cuenta:</strong><br>
-            Negocio: ${negocios}<br>
+            <strong>Account type:</strong><br>
+            Business: ${negocios}<br>
             Personal: ${totalPerfiles - negocios}
           `;
 
         if (document.getElementById("tarjetaSentimiento"))
           document.getElementById("tarjetaSentimiento").innerHTML = `
-            <strong>Sentimiento:</strong><br>
-            Positivo: ${sentimientoPositivo}<br>
-            Neutro: ${sentimientoNeutro}<br>
-            Negativo: ${sentimientoNegativo}
+            <strong>Sentiment:</strong><br>
+            Positive: ${sentimientoPositivo}<br>
+            Neutral: ${sentimientoNeutro}<br>
+            Negative: ${sentimientoNegativo}
           `;
 
         // (Bloque de actualización dinámica de emojis eliminado para evitar duplicidad)
@@ -432,10 +448,10 @@ export function inicializarVistaPerfiles() {
         // Luego actualizar el scatter plot con los perfiles filtrados
         crearGraficoScatter({
           contenedorId: "scatterFollowersPosts",
-          titulo: "Seguidores",
+          titulo: "Followers",
           datos: perfilesFiltrados
         });
-        agregarDescripcionGrafico('scatterFollowersPosts', 'Gráfico de dispersión que relaciona la cantidad de seguidores con el número de publicaciones de cada perfil analizado.');
+        agregarDescripcionGrafico('scatterFollowersPosts', 'Scatter plot relating follower count to number of posts per analyzed profile.');
       };
 
       selectorCategorias.addEventListener("change", aplicarFiltrosNube);
@@ -478,9 +494,9 @@ export function inicializarVistaPerfiles() {
     });
 
     let reglasSegmentacionUsuario = {
-      "Estudiantes": ["universidad", "eafit", "estudiante"],
-      "Músicos": ["música", "banda", "instrumento"],
-      "Gastronomía": ["comida", "chef", "asado"]
+      "Students": ["university", "eafit", "student"],
+      "Musicians": ["music", "band", "instrument"],
+      "Gastronomy": ["food", "chef", "grill"]
     };
     
     function renderizarEditorReglas() {
@@ -500,9 +516,9 @@ export function inicializarVistaPerfiles() {
     
       const agregarNueva = document.createElement("div");
       agregarNueva.innerHTML = `
-        <input type="text" placeholder="Nueva categoría" id="nuevaCategoria" style="width:20%;" />
-        <input type="text" placeholder="Palabras clave separadas por coma" id="nuevasPalabras" style="width:60%;" />
-        <button id="agregarCategoria">➕ Añadir</button>
+        <input type="text" placeholder="New category" id="nuevaCategoria" style="width:20%;" />
+        <input type="text" placeholder="Keywords separated by comma" id="nuevasPalabras" style="width:60%;" />
+        <button id="agregarCategoria">➕ Add</button>
       `;
       editor.appendChild(agregarNueva);
     
@@ -537,7 +553,7 @@ export function inicializarVistaPerfiles() {
     const seccionGraficoSegmentacion = document.querySelector(".grafico-segmentacion");
     if (seccionGraficoSegmentacion) {
       const btnSegmentar = document.createElement("button");
-      btnSegmentar.textContent = "Segmentar audiencia";
+      btnSegmentar.textContent = "Segment audience";
       btnSegmentar.style.marginBottom = "1rem";
       btnSegmentar.style.padding = "0.5rem 1rem";
       btnSegmentar.style.backgroundColor = "#388e3c";
@@ -620,7 +636,7 @@ async function cargarGraficosSentimiento() {
 
     crearGraficoPie({
       contenedorId: 'grafico-pie-sentimiento',
-      titulo: 'Distribución de sentimiento',
+      titulo: 'Sentiment distribution',
       datos: Object.entries(conteoSentimiento).map(([name, value]) => ({ name, value }))
     });
     agregarDescripcionGrafico('grafico-pie-sentimiento', 'Distribución del sentimiento predominante detectado en los comentarios asociados a los perfiles seleccionados.');
@@ -630,7 +646,7 @@ async function cargarGraficosSentimiento() {
 
     crearGraficoBarras({
       contenedorId: 'grafico-emojis',
-      titulo: 'Emojis más usados',
+      titulo: 'Most used emojis',
       categorias: datosEmojis.map(e => e[0]),
       datos: datosEmojis.map(e => e[1]),
       color: '#3693b6',
@@ -641,7 +657,7 @@ async function cargarGraficosSentimiento() {
           margin: 10
         }}
     });
-    agregarDescripcionGrafico('grafico-emojis', 'Este gráfico muestra los emojis más utilizados por los perfiles seleccionados, lo cual puede reflejar estilos emocionales o patrones de comunicación frecuentes.');
+    agregarDescripcionGrafico('grafico-emojis', 'This chart shows the most used emojis by the selected profiles, which can reflect emotional styles or frequent communication patterns.');
 
     const mapeoContenedores = {
       POSITIVO: "contenedorWordCloudPositivo",
@@ -741,7 +757,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
 
   crearGraficoBarras({
     contenedorId: 'grafico-segmentacion-audiencia',
-    titulo: 'Perfiles por categoría',
+    titulo: 'Profiles by category',
     categorias,
     datos: valores
   });
@@ -777,7 +793,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
   if (contenedorStack) {
     const chart = echarts.init(contenedorStack);
     chart.setOption({
-      title: { text: 'Sentimiento por categoría detectada', left: 'center' },
+      title: { text: 'Sentiment by detected category', left: 'center' },
       tooltip: { trigger: 'axis' },
       legend: { bottom: 0, data: ['POSITIVO', 'NEUTRO', 'NEGATIVO'] },
       xAxis: { type: 'category', data: categoriasStack },
@@ -792,7 +808,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
     });
     window.addEventListener('resize', () => chart.resize());
     // Descripción para gráfico de sentimiento por categoría
-    agregarDescripcionGrafico('grafico-sentimiento-por-categoria', 'Sentimiento predominante por cada categoría detectada en la segmentación de audiencia.');
+    agregarDescripcionGrafico('grafico-sentimiento-por-categoria', 'Predominant sentiment per category detected in audience segmentation.');
   }
 
   // === NUEVO BLOQUE: Red de segmentación por sentimiento con ECharts ===
@@ -883,11 +899,11 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
     selectorCriterio.id = "selectorCriterioTop";
     selectorCriterio.style.margin = "1rem 0";
     selectorCriterio.innerHTML = `
-      <option value="followers_count">Más seguidores</option>
-      <option value="emoji_density">Mayor densidad de emojis</option>
-      <option value="positive">Mayor puntuación positiva</option>
-      <option value="negative">Mayor puntuación negativa</option>
-      <option value="cantidad_keywords">Más palabras clave</option>
+      <option value="followers_count">Most followers</option>
+      <option value="emoji_density">Highest emoji density</option>
+      <option value="positive">Highest positive score</option>
+      <option value="negative">Highest negative score</option>
+      <option value="cantidad_keywords">Most keywords</option>
     `;
     contenedorTopPerfiles.insertBefore(selectorCriterio, contenedorTopPerfiles.firstChild);
   }
@@ -942,12 +958,12 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
       <div class="tarjeta-indicador" style="margin-bottom: 0.75rem;">
         <div>
           <strong>@${p.username}</strong><br/>
-          Seguidores: ${p.followers?.toLocaleString("es-CO") || '--'}<br/>
-          Sentimiento: ${p.sentiment || 'NEUTRO'}<br/>
+          Followers: ${p.followers?.toLocaleString("es-CO") || '--'}<br/>
+          Sentiment: ${p.sentiment || 'NEUTRAL'}<br/>
           <div style="font-size: 0.8rem; margin-top: 0.3rem;">
-            <strong>Bio:</strong> ${p.biography || 'Sin biografía'}<br/>
-            <strong>Palabras clave:</strong> ${(typeof p.keywords === 'string' ? JSON.parse(p.keywords).join(", ") : p.keywords?.join(", ")) || '--'}<br/>
-            <strong>Análisis:</strong> ${p.interpretation || '--'}
+            <strong>Bio:</strong> ${p.biography || 'No biography'}<br/>
+            <strong>Keywords:</strong> ${(typeof p.keywords === 'string' ? JSON.parse(p.keywords).join(", ") : p.keywords?.join(", ")) || '--'}<br/>
+            <strong>Analysis:</strong> ${p.interpretation || '--'}
           </div>
         </div>
       </div>
@@ -978,12 +994,12 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
         <div class="tarjeta-indicador" style="margin-bottom: 0.75rem;">
           <div>
             <strong>@${p.username}</strong><br/>
-            Seguidores: ${p.followers?.toLocaleString("es-CO") || '--'}<br/>
-            Sentimiento: ${p.sentiment || 'NEUTRO'}<br/>
+            Followers: ${p.followers?.toLocaleString("es-CO") || '--'}<br/>
+            Sentiment: ${p.sentiment || 'NEUTRAL'}<br/>
             <div style="font-size: 0.8rem; margin-top: 0.3rem;">
-              <strong>Bio:</strong> ${p.biography || 'Sin biografía'}<br/>
-              <strong>Palabras clave:</strong> ${(typeof p.keywords === 'string' ? JSON.parse(p.keywords).join(", ") : p.keywords?.join(", ")) || '--'}<br/>
-              <strong>Análisis:</strong> ${p.interpretation || '--'}
+              <strong>Bio:</strong> ${p.biography || 'No biography'}<br/>
+              <strong>Keywords:</strong> ${(typeof p.keywords === 'string' ? JSON.parse(p.keywords).join(", ") : p.keywords?.join(", ")) || '--'}<br/>
+              <strong>Analysis:</strong> ${p.interpretation || '--'}
             </div>
           </div>
         </div>
@@ -1005,7 +1021,7 @@ function generarAnalisisInicial() {
   }
   // Si sigue vacío, no continuar
   if (!seleccionados || seleccionados.length === 0) {
-    console.warn("⚠️ No hay perfiles seleccionados para analizar.");
+    console.warn("⚠️ No profiles selected for analysis.");
     return;
   }
   fetch("/api/ranchera/perfiles-por-fuente", {
@@ -1033,7 +1049,7 @@ function generarAnalisisInicial() {
       const selectorCategorias =
         document.getElementById("selectorCategoria");
       selectorCategorias.innerHTML =
-        "<option value=''>-- Seleccione categoría --</option>";
+        "<option value=''>-- Select category --</option>";
       [...categoriasSet].sort().forEach((cat) => {
         const opt = document.createElement("option");
         opt.value = cat;
@@ -1078,15 +1094,15 @@ function generarAnalisisInicial() {
 
       crearGraficoScatter({
         contenedorId: "scatterFollowersPosts",
-        titulo: "Seguidores",
+        titulo: "Followers",
         datos: perfiles,
       });
-      agregarDescripcionGrafico('scatterFollowersPosts', 'Gráfico de dispersión que relaciona la cantidad de seguidores con el número de publicaciones de cada perfil analizado.');
+      agregarDescripcionGrafico('scatterFollowersPosts', 'Scatter plot relating follower count to number of posts per analyzed profile.');
 
       // 🔥 Forzar primer despliegue de Emojis aunque esté vacío
 crearGraficoBarras({
   contenedorId: 'grafico-emojis',
-  titulo: 'Emojis más usados',
+  titulo: 'Most used emojis',
   categorias: ['🙂'],
   datos: [0],
   color: '#3693b6',
@@ -1097,7 +1113,7 @@ crearGraficoBarras({
       margin: 10
     }}
 });
-agregarDescripcionGrafico('grafico-emojis', 'Este gráfico muestra los emojis más utilizados por los perfiles seleccionados, lo cual puede reflejar estilos emocionales o patrones de comunicación frecuentes.');
+agregarDescripcionGrafico('grafico-emojis', 'This chart shows the most used emojis by the selected profiles, which can reflect emotional styles or frequent communication patterns.');
 
       // 🚀 Crear WordClouds de inmediato con los datos del scatter
 const textoBiografias = perfiles.map((p) => p.biography || "").join(" ");
@@ -1115,36 +1131,36 @@ const sentimientoNegativo = perfiles.filter(p => (p.sentiment || "").toUpperCase
 
 if (document.getElementById("tarjetaTotalPerfiles"))
   document.getElementById("tarjetaTotalPerfiles").innerHTML = `
-    <strong>Total de perfiles:</strong> ${totalPerfiles.toLocaleString()}
+    <strong>Total profiles:</strong> ${totalPerfiles.toLocaleString()}
   `;
 
 if (document.getElementById("tarjetaPrivacidad"))
   document.getElementById("tarjetaPrivacidad").innerHTML = `
-    <strong>Privacidad:</strong><br>
-    Privados: ${privados}<br>
-    Públicos: ${totalPerfiles - privados}
+    <strong>Privacy:</strong><br>
+    Private: ${privados}<br>
+    Public: ${totalPerfiles - privados}
   `;
 
 if (document.getElementById("tarjetaVerificacion"))
   document.getElementById("tarjetaVerificacion").innerHTML = `
-    <strong>Verificación:</strong><br>
-    Verificados: ${verificados}<br>
-    No verificados: ${totalPerfiles - verificados}
+    <strong>Verification:</strong><br>
+    Verified: ${verificados}<br>
+    Not verified: ${totalPerfiles - verificados}
   `;
 
 if (document.getElementById("tarjetaTipoCuenta"))
   document.getElementById("tarjetaTipoCuenta").innerHTML = `
-    <strong>Tipo de cuenta:</strong><br>
-    Negocio: ${negocios}<br>
+    <strong>Account type:</strong><br>
+    Business: ${negocios}<br>
     Personal: ${totalPerfiles - negocios}
   `;
 
 if (document.getElementById("tarjetaSentimiento"))
   document.getElementById("tarjetaSentimiento").innerHTML = `
-    <strong>Sentimiento:</strong><br>
-    Positivo: ${sentimientoPositivo}<br>
-    Neutro: ${sentimientoNeutro}<br>
-    Negativo: ${sentimientoNegativo}
+    <strong>Sentiment:</strong><br>
+    Positive: ${sentimientoPositivo}<br>
+    Neutral: ${sentimientoNeutro}<br>
+    Negative: ${sentimientoNegativo}
   `;
 
 procesarYActualizarWordCloudBiografias({
@@ -1162,7 +1178,7 @@ procesarYActualizarWordCloudBiografias({
   valorSliderId: "valorNombres",
   contenedorId: "contenedorWordCloudNombres",
 });
-agregarDescripcionGrafico('contenedorWordCloudNombres', 'Nube de palabras formada con los nombres de los perfiles. Las palabras más grandes son los nombres más frecuentes.');
+agregarDescripcionGrafico('contenedorWordCloudNombres', 'Word cloud from profile names. Larger words are the most frequent names.');
       // Llamar a los gráficos de sentimiento tras el análisis
       cargarGraficosSentimiento();
 

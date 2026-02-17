@@ -183,11 +183,11 @@ function cargarFormularioEditarPerfil(token, usuario) {
             })
               .then(res => res.json())
               .then(res => {
-                mensaje.textContent = '✅ Perfil actualizado correctamente';
+                mensaje.textContent = '✅ Profile updated successfully';
                 mensaje.classList.remove('d-none');
               })
               .catch(err => {
-                mensaje.textContent = '❌ Error al actualizar perfil';
+                mensaje.textContent = '❌ Error updating profile';
                 mensaje.classList.remove('d-none');
               });
           });

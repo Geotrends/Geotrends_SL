@@ -47,12 +47,12 @@ export function configurarBotonInformeComentarios() {
 
       const resumenFiltrosHTML = `
         <ul style="list-style:none; padding-left:0;">
-          <li><strong>Palabra clave:</strong> ${filtrosSeleccionados.palabraClave}</li>
-          <li><strong>Tipo:</strong> ${filtrosSeleccionados.tipo}</li>
-          <li><strong>Sentimiento:</strong> ${filtrosSeleccionados.sentimiento}</li>
-          <li><strong>Fecha desde:</strong> ${filtrosSeleccionados.fechaDesde}</li>
-          <li><strong>Fecha hasta:</strong> ${filtrosSeleccionados.fechaHasta}</li>
-          <li><strong>Mínimo de likes:</strong> ${filtrosSeleccionados.minLikes}</li>
+          <li><strong>Keyword:</strong> ${filtrosSeleccionados.palabraClave}</li>
+          <li><strong>Type:</strong> ${filtrosSeleccionados.tipo}</li>
+          <li><strong>Sentiment:</strong> ${filtrosSeleccionados.sentimiento}</li>
+          <li><strong>Date from:</strong> ${filtrosSeleccionados.fechaDesde}</li>
+          <li><strong>Date to:</strong> ${filtrosSeleccionados.fechaHasta}</li>
+          <li><strong>Min. likes:</strong> ${filtrosSeleccionados.minLikes}</li>
         </ul>
       `;
 
@@ -79,7 +79,7 @@ export function configurarBotonInformeComentarios() {
         nubeKeywords
       } = graficosCapturados;
 
-      const tablaResumen = document.querySelector(".resumen-quantitativo-comentarios")?.outerHTML || "<p><em>No hay tabla resumen disponible</em></p>";
+      const tablaResumen = document.querySelector(".resumen-quantitativo-comentarios")?.outerHTML || "<p><em>No summary table available</em></p>";
 
       const data = {
         graficoScatterComentarios,

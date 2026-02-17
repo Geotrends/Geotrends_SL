@@ -367,17 +367,21 @@
 }
 
 
-#botonResetFiltros {
+#botonResetFiltros,
+.btn-reset-filtros {
   padding: 0.5rem 1rem;
-  background-color: #e0e0e0;
-  border: 1px solid #999;
-  border-radius: 5px;
+  background-color: #02735e;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
 }
 
-#botonResetFiltros:hover {
-  background-color: #d6e4ff;
-  border-color: #1976d2;
+#botonResetFiltros:hover,
+.btn-reset-filtros:hover {
+  background-color: #025c4b;
+  border-color: rgba(255, 255, 255, 0.4);
 }
 #contenedorWordCloudPositivo,
 #contenedorWordCloudNeutro,

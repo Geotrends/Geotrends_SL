@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
 
       if (!res.ok) {
-        mensajeError.textContent = data.error || 'Credenciales inválidas';
+        mensajeError.textContent = data.error || 'Invalid credentials';
         mensajeError.classList.remove('d-none');
         return;
       }
@@ -39,7 +39,7 @@ localStorage.setItem('usuario', payload.usuario);
 window.location.href = '/html/inicio.html';
 
     } catch (err) {
-      mensajeError.textContent = 'Error de conexión con el servidor';
+      mensajeError.textContent = 'Server connection error';
       mensajeError.classList.remove('d-none');
     }
   });

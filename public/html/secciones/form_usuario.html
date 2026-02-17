@@ -1,32 +1,32 @@
 <div class="formulario-creacion">
-    <h3><i class="fas fa-user-plus"></i> Crear Nuevo Usuario</h3>
+    <h3><i class="fas fa-user-plus"></i> Create New User</h3>
     <form id="formNuevoUsuario" class="form-nuevo-usuario">
       <div class="form-group">
-        <label for="usuario">Nombre de Usuario</label>
+        <label for="usuario">Username</label>
         <input type="text" id="usuario" required />
       </div>
   
       <div class="form-group">
-        <label for="contraseña">Contraseña</label>
+        <label for="contraseña">Password</label>
         <input type="password" id="contraseña" required />
       </div>
 
       <div class="form-group">
-        <label for="correo">Correo electrónico</label>
+        <label for="correo">Email</label>
         <input type="email" id="correo" name="correo" required />
       </div>
   
       <div class="form-group">
-        <label for="rol">Rol</label>
+        <label for="rol">Role</label>
         <select id="rol" required>
-          <option value="usuario">Usuario</option>
-          <option value="gestor">Gestor</option>
-          <option value="admin">Administrador</option>
+          <option value="usuario">User</option>
+          <option value="gestor">Manager</option>
+          <option value="admin">Administrator</option>
         </select>
       </div>
   
-      <button type="submit" class="btn btn-primary">Guardar</button>
-      <button type="button" id="btnCancelar" class="btn btn-outline-secondary">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" id="btnCancelar" class="btn btn-outline-secondary">Cancel</button>
   
       <p id="mensajeForm" class="d-none mensaje"></p>
     </form>

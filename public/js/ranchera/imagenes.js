@@ -1,5 +1,11 @@
 import * as echarts from "https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.esm.min.js";
 
+const TAG_LABEL_EN = {
+  niños: "children", adultos: "adults", jovenes: "youth", animales: "animals",
+  gato: "cat", perro: "dog", deportes: "sports", comida: "food", moda: "fashion",
+  turismo: "tourism", grupo_personas: "group of people", sonrisa: "smile"
+};
+
 export function inicializarVistaImagenes() {
     console.log("JS activo");
    // const estado = document.getElementById("estadoConexion");
@@ -66,6 +72,8 @@ export function inicializarVistaImagenes() {
       emociones: ["grupo_personas", "sonrisa"]
     };
 
+    const categoryNamesEn = { edad: "Age", animales: "Animals", hobbies: "Hobbies", emociones: "Emotions" };
+
     const categoryNames = Object.keys(categorias);
     const categoryMap = {};
     categoryNames.forEach((nombre, i) => {
@@ -101,13 +109,13 @@ export function inicializarVistaImagenes() {
     const chart = echarts.init(graficoRelaciones);
     chart.setOption({
       title: {
-        text: "Relaciones entre etiquetas de imagen",
+        text: "Image tag relationships",
         top: "top",
         left: "center"
       },
       tooltip: {},
       legend: {
-        data: categoryNames,
+        data: categoryNames.map(n => categoryNamesEn[n] || n),
         orient: 'vertical',
         left: 'left'
       },
@@ -118,14 +126,15 @@ export function inicializarVistaImagenes() {
         roam: true,
         label: {
           show: true,
-          position: "right"
+          position: "right",
+          formatter: (params) => TAG_LABEL_EN[params.name] || params.name
         },
         edgeSymbol: ["none", "arrow"],
         edgeSymbolSize: [4, 8],
         edgeLabel: {
           fontSize: 12
         },
-        categories: categoryNames.map((name, i) => ({ name })),
+        categories: categoryNames.map((name) => ({ name: categoryNamesEn[name] || name })),
         data: nodes,
         links: enlaces,
         lineStyle: {
@@ -150,7 +159,7 @@ export function inicializarVistaImagenes() {
     // Descripción para graficoRelacionesEtiquetas
     const desc1 = document.createElement("p");
     desc1.className = "descripcion-grafico";
-    desc1.textContent = "Este gráfico muestra cómo se relacionan las etiquetas más frecuentes presentes en las imágenes, agrupadas por categorías temáticas.";
+    desc1.textContent = "This chart shows how the most frequent tags in images relate to each other, grouped by thematic categories.";
     contenedor.appendChild(desc1);
 
     // === NUBE DE PALABRAS DE ETIQUETAS (con slider de frecuencia mínima) ===
@@ -160,11 +169,11 @@ export function inicializarVistaImagenes() {
       wrapper.className = "bloque-contenedor";
 
       const titulo = document.createElement("h3");
-      titulo.textContent = "Nube de palabras de etiquetas";
+      titulo.textContent = "Tag word cloud";
 
       const sliderLabel = document.createElement("label");
       sliderLabel.innerHTML = `
-        <span style="margin-right: 10px;">Frecuencia mínima:</span>
+        <span style="margin-right: 10px;">Minimum frequency:</span>
         <input type="range" id="sliderEtiquetas" min="1" max="20" step="1" value="3" style="vertical-align: middle;">
         <span id="valorSliderEtiquetas">3</span>
       `;
@@ -219,7 +228,7 @@ export function inicializarVistaImagenes() {
       // Descripción para nube de palabras
       const desc2 = document.createElement("p");
       desc2.className = "descripcion-grafico";
-      desc2.textContent = "Nube de palabras que representa la frecuencia de etiquetas utilizadas en todas las imágenes procesadas.";
+      desc2.textContent = "Word cloud of tag frequency across all processed images.";
       wrapper.appendChild(desc2);
     }).then(() => {
       // === HEATMAP CUENTAS vs CATEGORÍAS ===
@@ -266,7 +275,7 @@ export function inicializarVistaImagenes() {
         tooltip: {
           position: 'top',
           formatter: function (params) {
-            return `${cuentas[params.value[0]]} / ${categoriasHeatmap[params.value[1]]} : ${params.value[2]}`;
+            return `${cuentas[params.value[0]]} / ${TAG_LABEL_EN[categoriasHeatmap[params.value[1]]] || categoriasHeatmap[params.value[1]]} : ${params.value[2]}`;
           }
         },
         grid: {
@@ -283,7 +292,7 @@ export function inicializarVistaImagenes() {
         },
         yAxis: {
           type: 'category',
-          data: categoriasHeatmap,
+          data: categoriasHeatmap.map(c => TAG_LABEL_EN[c] || c),
           splitArea: { show: true }
         },
         visualMap: {
@@ -295,7 +304,7 @@ export function inicializarVistaImagenes() {
           bottom: '5%'
         },
         series: [{
-          name: 'Frecuencia',
+          name: 'Frequency',
           type: 'heatmap',
           data: heatmapData,
           label: {
@@ -313,7 +322,7 @@ export function inicializarVistaImagenes() {
       // Descripción para heatmapCuentasCategorias
       const desc3 = document.createElement("p");
       desc3.className = "descripcion-grafico";
-      desc3.textContent = "Este mapa de calor muestra la frecuencia con que cada cuenta publica imágenes relacionadas con diferentes categorías.";
+      desc3.textContent = "Heatmap of how often each account posts images related to each category.";
       contenedor4.appendChild(desc3);
 
       // === HEATMAP AGRUPADO estilo heatmap-large ===
@@ -369,7 +378,7 @@ export function inicializarVistaImagenes() {
         },
         yAxis: {
           type: 'category',
-          data: categoriasHeatmap,
+          data: categoriasHeatmap.map(c => TAG_LABEL_EN[c] || c),
           splitArea: { show: true }
         },
         visualMap: {
@@ -381,7 +390,7 @@ export function inicializarVistaImagenes() {
           bottom: '5%'
         },
         series: [{
-          name: 'Frecuencia',
+          name: 'Frequency',
           type: 'heatmap',
           data: heatmapDataTop,
           label: {
@@ -510,18 +519,18 @@ export function inicializarVistaImagenes() {
 
       chart2.setOption({
         title: {
-          text: "Relación usuarios - etiquetas y coocurrencias",
+          text: "User–tag and co-occurrence relationship",
           top: "top",
           left: "center"
         },
         tooltip: {},
         legend: [{
-          data: ["usuarios", "etiquetas"]
+          data: ["users", "tags"]
         }],
         series: [{
           type: "graph",
           layout: "force",
-          categories: [{ name: "usuarios" }, { name: "etiquetas" }],
+          categories: [{ name: "users" }, { name: "tags" }],
           roam: true,
           label: {
             show: false
@@ -555,7 +564,7 @@ export function inicializarVistaImagenes() {
       // Descripción para grafoUsuariosEtiquetas
       const desc4 = document.createElement("p");
       desc4.className = "descripcion-grafico";
-      desc4.textContent = "Red que muestra las conexiones entre usuarios y las etiquetas más frecuentes en sus publicaciones.";
+      desc4.textContent = "Network showing connections between users and the most frequent tags in their posts.";
       contenedor2.appendChild(desc4);
 
       // === GRAFO USUARIO ↔ CATEGORÍAS FIJAS ===
@@ -635,17 +644,17 @@ export function inicializarVistaImagenes() {
       const chart3 = echarts.init(contenedor3);
       chart3.setOption({
         title: {
-          text: "Relación usuarios y categorías fijas",
+          text: "Users and fixed categories relationship",
           top: "top",
           left: "center"
         },
         tooltip: {},
         legend: {
-          data: ["usuarios", "categorías"]
+          data: ["users", "categories"]
         },
         series: [{
           type: "graph",
-          categories: [{ name: "usuarios" }, { name: "categorías" }],
+          categories: [{ name: "users" }, { name: "categories" }],
           layout: "force",
           force: {
             repulsion: 1000,
@@ -734,7 +743,7 @@ fetch("/api/ranchera/imagenes-etiquetas")
 
       const imagenes = data.filter(d => d.path.startsWith(`${usuarioSeleccionado}_`));
       if (imagenes.length === 0) {
-        if (galeria) galeria.innerHTML = "<p>No hay imágenes para este usuario.</p>";
+        if (galeria) galeria.innerHTML = "<p>No images for this user.</p>";
         // Aún así, permitir que la nube de palabras se genere (estará vacía)
       }
 

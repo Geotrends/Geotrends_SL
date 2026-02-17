@@ -83,11 +83,14 @@
   color: #fff;
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
-  margin-bottom: 1.25rem;
 }
 .panel-imagenes-contenedor #selectorUsuario option {
   background: #1a1a2e;
   color: #fff;
+}
+
+.panel-imagenes-contenedor .carrusel #contenedorCarrusel {
+  margin-top: 1.25rem;
 }
 
 .panel-imagenes-contenedor label input[type="range"] {

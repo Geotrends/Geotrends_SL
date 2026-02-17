@@ -19,6 +19,23 @@ function normalizarNombrePerfil(p) {
   return (p.full_name || p.fullname || p.username || "").trim();
 }
 
+// Map seed profile names to English for charts (axis and legend)
+const NOMBRES_PERFIL_INGLES = {
+  "idiomas eafit": "EAFIT Languages",
+  "arquitectura usb medellín": "USB Architecture Medellín",
+  "orquesta sinfónica eafit": "EAFIT Symphony Orchestra",
+  "urbam eafit": "urbam EAFIT",
+  "nodo": "Node",
+  "nodo eafit": "EAFIT Node",
+  "ranchera oficial": "Ranchera Official",
+  "ranchera": "Ranchera",
+};
+function nombrePerfilEnIngles(nombre) {
+  if (!nombre || typeof nombre !== "string") return nombre;
+  const key = nombre.trim().toLowerCase();
+  return NOMBRES_PERFIL_INGLES[key] || NOMBRES_PERFIL_INGLES[key.replace(/\s+/g, " ")] || nombre;
+}
+
 console.log("✅ main.js cargado correctamente");
 
 // Reusable function to render resumen-estadisticas as cards with animation
@@ -30,24 +47,24 @@ export function renderizarResumenEstadisticas(data, contenedor) {
 
   const fechaInicioFormateada =
     data.fechaInicio && data.fechaInicio !== "Sin datos"
-      ? new Date(data.fechaInicio).toLocaleDateString("es-ES", opcionesFecha)
-      : "Sin datos";
+      ? new Date(data.fechaInicio).toLocaleDateString("en-US", opcionesFecha)
+      : "No data";
 
   const fechaFinFormateada =
     data.fechaFin && data.fechaFin !== "Sin datos"
-      ? new Date(data.fechaFin).toLocaleDateString("es-ES", opcionesFecha)
-      : "Sin datos";
+      ? new Date(data.fechaFin).toLocaleDateString("en-US", opcionesFecha)
+      : "No data";
 
   const resumen = [
-    { titulo: "Perfiles analizados", valor: data.total ?? 0, icono: "fa-users" },
-    { titulo: "Publicaciones analizadas", valor: data.publicaciones ?? 0, icono: "fa-images" },
-    { titulo: "Comentarios analizados", valor: data.comentarios ?? 0, icono: "fa-comments" },
-    { titulo: "Sentimiento positivo", valor: data.sentimientoPositivo ?? "0%", icono: "fa-smile" },
-    { titulo: "Sentimiento neutro", valor: data.sentimientoNeutro ?? "0%", icono: "fa-meh" },
-    { titulo: "Sentimiento negativo", valor: data.sentimientoNegativo ?? "0%", icono: "fa-frown" },
-    { titulo: "Fecha inicio publicaciones", valor: fechaInicioFormateada, icono: "fa-calendar-alt" },
-    { titulo: "Fecha fin publicaciones", valor: fechaFinFormateada, icono: "fa-calendar-check" },
-    { titulo: "Días analizados", valor: data.diasAnalizados ?? "0", icono: "fa-clock" },
+    { titulo: "Profiles analyzed", valor: data.total ?? 0, icono: "fa-users" },
+    { titulo: "Posts analyzed", valor: data.publicaciones ?? 0, icono: "fa-images" },
+    { titulo: "Comments analyzed", valor: data.comentarios ?? 0, icono: "fa-comments" },
+    { titulo: "Positive sentiment", valor: data.sentimientoPositivo ?? "0%", icono: "fa-smile" },
+    { titulo: "Neutral sentiment", valor: data.sentimientoNeutro ?? "0%", icono: "fa-meh" },
+    { titulo: "Negative sentiment", valor: data.sentimientoNegativo ?? "0%", icono: "fa-frown" },
+    { titulo: "Posts start date", valor: fechaInicioFormateada, icono: "fa-calendar-alt" },
+    { titulo: "Posts end date", valor: fechaFinFormateada, icono: "fa-calendar-check" },
+    { titulo: "Days analyzed", valor: data.diasAnalizados ?? "0", icono: "fa-clock" },
   ];
 
   const tarjetasExistentes = contenedor.querySelectorAll(".tarjeta-resumen");
@@ -63,11 +80,14 @@ export function renderizarResumenEstadisticas(data, contenedor) {
         typeof item.valor === "number" ||
         (typeof item.valor === "string" && item.valor.includes("%"));
 
+      const esFecha =
+        item.titulo.includes("Fecha") || item.titulo.includes("date");
+
       tarjeta.innerHTML = `
         <h3>
           <span class="contador ${
-            item.valor === "Sin datos" ? "sin-datos" : ""
-          } ${item.titulo.includes("Fecha") ? "fecha" : ""}" ${
+            (item.valor === "Sin datos" || item.valor === "No data") ? "sin-datos" : ""
+          } ${esFecha ? "fecha" : ""}" ${
             esNumeroOporcentaje ? `data-valor="${item.valor}"` : ""
           }>
             ${esNumeroOporcentaje ? "0" : item.valor}
@@ -181,8 +201,8 @@ export async function inicializarDashboardRanchera() {
 function renderizarGraficoPublicacionesNodos() {
   crearGraficoBarras({
     contenedorId: "grafico-publicaciones-nodos",
-    titulo: "Publicaciones por Nodo Semilla",
-    categorias: ["Nodo A", "Nodo B", "Nodo C", "Nodo D"],
+    titulo: "Posts by seed node",
+    categorias: ["Node A", "Node B", "Node C", "Node D"],
     datos: [120, 200, 150, 80],
   });
 }
@@ -197,21 +217,21 @@ async function cargarIndicadoresSemilla() {
 
     if (!data.top3 || !Array.isArray(data.top3) || data.top3.length === 0) {
       contenedorTop.innerHTML = `
-        <h3>Top 6 perfiles con más seguidores:</h3>
-        <p>No hay perfiles disponibles.</p>
+        <h3>Top 6 profiles with most followers:</h3>
+        <p>No profiles available.</p>
       `;
       return;
     }
 
     contenedorTop.innerHTML = `
-      <h3>Top 6 perfiles con más seguidores:</h3>
+      <h3>Top 6 profiles with most followers:</h3>
       <div class="top-perfiles">
         ${data.top3.map(p => `
           <a href="https://www.instagram.com/${p.username}/" target="_blank" class="perfil-tarjeta-link">
             <div class="perfil-tarjeta">
               <div class="perfil-info">
-                <p class="nombre-completo"><strong>${p.full_name ?? "Sin nombre completo"}</strong></p>
-                <p class="info">@${p.username} ${p.verified ? '<i class="fa fa-check-circle" style="color:#1da1f2;" title="Cuenta verificada"></i>' : ""}</p>
+                <p class="nombre-completo"><strong>${p.full_name ?? "No full name"}</strong></p>
+                <p class="info">@${p.username} ${p.verified ? '<i class="fa fa-check-circle" style="color:#1da1f2;" title="Verified account"></i>' : ""}</p>
                 
               </div>
             </div>
@@ -229,8 +249,8 @@ async function cargarIndicadoresSemilla() {
   } catch (error) {
     if (contenedorTop) {
       contenedorTop.innerHTML = `
-        <h3>Top 6 perfiles con más seguidores:</h3>
-        <p>Error al cargar perfiles.</p>
+        <h3>Top 6 profiles with most followers:</h3>
+        <p>Error loading profiles.</p>
       `;
     }
     console.error("❌ Error al cargar indicadores semilla:", error);
@@ -244,21 +264,21 @@ async function renderizarGraficosDescriptivos() {
 
     crearGraficoBarras({
       contenedorId: "grafico-categorias",
-      titulo: "Distribución por Categoría de Negocio",
+      titulo: "Distribution by business category",
       categorias: data.categorias.map(
         (c) =>
           (c.business_category_name || "")
             .split(",")
             .map((cat) => cat.trim())
-            .find((cat) => cat.toLowerCase() !== "none") || "Sin categoría"
+            .find((cat) => cat.toLowerCase() !== "none") || "Uncategorized"
       ),
       datos: data.categorias.map((c) => c.count),
     });
 
     crearGraficoBarras({
       contenedorId: "grafico-tipo-perfil",
-      titulo: "Perfiles Públicos vs Privados",
-      categorias: ["Públicos", "Privados"],
+      titulo: "Public vs private profiles",
+      categorias: ["Public", "Private"],
       datos: [data.publicos, data.privados],
       color: "#1565C0",
     });
@@ -272,38 +292,40 @@ async function renderizarGraficosComparativos() {
     const res = await fetch("/api/ranchera/stats-semilla");
     const perfiles = await res.json();
 
-    const nombresCompletos = perfiles.map((p) => p.full_name ?? p.username);
+    window.perfilesSemillaGlobal = perfiles;
+    window.traducirNombrePerfil = nombrePerfilEnIngles;
+
+    const nombresCompletos = perfiles.map((p) => nombrePerfilEnIngles(p.full_name ?? p.username));
     const seguidores = perfiles.map((p) => p.followers_count);
     const seguidos = perfiles.map((p) => p.follows_count);
     const publicaciones = perfiles.map((p) => p.posts_count);
 
     crearGraficoBarras({
       contenedorId: "grafico-comparativo-seguidores",
-      titulo: "Cantidad de videos IGTV por perfil",
+      titulo: "IGTV video count per profile",
       categorias: nombresCompletos,
       datos: perfiles.map((p) => p.igtv_video_count),
       color: "#2E7D32",
-      nombreEjeX: "Perfil",
-      nombreEjeY: "Videos IGTV",
+      nombreEjeX: "Profile",
+      nombreEjeY: "IGTV videos",
     });
 
     crearGraficoBarras({
       contenedorId: "grafico-comparativo-publicaciones",
-      titulo: "Cantidad de publicaciones por perfil",
+      titulo: "Post count per profile",
       categorias: nombresCompletos,
       datos: publicaciones,
       color: "#6A1B9A",
-      nombreEjeX: "Perfil",
-      nombreEjeY: "Publicaciones",
+      nombreEjeX: "Profile",
+      nombreEjeY: "Posts",
     });
 
     crearGraficoScatter({
       contenedorId: "grafico-scatter-seguidores",
-      titulo: "Relación Seguidores vs Seguidos",
+      titulo: "Followers vs following",
       datos: perfiles,
     });
 
-    // Añadido: Renderizar gráficos de seguidores y seguidos por perfil semilla aquí
     renderizarGraficoSeguidoresSemillas(perfiles);
     renderizarGraficoSeguidosSemillas(perfiles);
   } catch (error) {
@@ -317,7 +339,7 @@ async function renderizarGraficoLineaTiempo() {
 
     crearGraficoLineas({
       contenedorId: "grafico-linea-tiempo",
-      titulo: "Línea de tiempo de publicaciones por perfil semilla",
+      titulo: "Timeline of posts per seed profile",
       categorias: fechas,
       series: series,
     });
@@ -399,26 +421,25 @@ function procesarTextoABiogramas(texto) {
 let usernameToFuenteId = {};
 
 function renderizarGraficoSeguidoresSemillas(perfiles) {
-  usernameToFuenteId = {}; // Reiniciamos el mapa
+  usernameToFuenteId = {};
   perfiles.forEach(p => {
-    const nombreNormalizado = normalizarNombrePerfil(p);
-    if (nombreNormalizado) {
-      usernameToFuenteId[nombreNormalizado] = p.fuente_id;
+    const nombreDisplay = nombrePerfilEnIngles(normalizarNombrePerfil(p));
+    if (nombreDisplay) {
+      usernameToFuenteId[nombreDisplay] = p.fuente_id;
     }
   });
 
   // 🔄 Reiniciar gráfico antes de crear uno nuevo
   reiniciarGrafico("grafico-seguidores-semillas");
 
-  // 🛠️ Crear el gráfico correctamente:
   crearGraficoBarras({
     contenedorId: "grafico-seguidores-semillas",
-    titulo: "Seguidores por perfil semilla",
-    categorias: perfiles.map((p) => normalizarNombrePerfil(p)),
+    titulo: "Followers per seed profile",
+    categorias: perfiles.map((p) => nombrePerfilEnIngles(normalizarNombrePerfil(p))),
     datos: perfiles.map((p) => p.followers_count),
     color: "#5caac8",
-    nombreEjeX: "",
-    nombreEjeY: "",
+    nombreEjeX: "Profile",
+    nombreEjeY: "Followers",
   });
 
   // 🛠️ Luego sí, agregar eventos
@@ -476,12 +497,12 @@ function renderizarGraficoSeguidosSemillas(perfiles) {
   reiniciarGrafico("grafico-seguidos-semillas");
   crearGraficoBarras({
     contenedorId: "grafico-seguidos-semillas",
-    titulo: "Seguidos por perfil semilla",
-    categorias: perfiles.map((p) => normalizarNombrePerfil(p)),
+    titulo: "Following per seed profile",
+    categorias: perfiles.map((p) => nombrePerfilEnIngles(normalizarNombrePerfil(p))),
     datos: perfiles.map((p) => p.follows_count),
     color: "#cccccc",
-    nombreEjeX: "",
-    nombreEjeY: "",
+    nombreEjeX: "Profile",
+    nombreEjeY: "Following",
   });
 
   const chart = echarts.getInstanceByDom(document.getElementById("grafico-seguidos-semillas"));
@@ -541,7 +562,7 @@ async function filtrarIndicadoresPorFuenteId(fuenteId) {
     }
 
     contenedorTop.innerHTML = `
-      <h3>Top perfiles con más seguidores:</h3>
+      <h3>Top profiles with most followers:</h3>
       <div class="top-perfiles">
         ${
           Array.isArray(data.top3)
@@ -550,17 +571,17 @@ async function filtrarIndicadoresPorFuenteId(fuenteId) {
                 <div class="perfil-tarjeta">
                   <img src="/api/ranchera/proxy-img?url=${encodeURIComponent(p.profile_pic_url)}" alt="${p.username}" class="perfil-img">
                   <div class="perfil-info">
-                    <p class="nombre-completo"><strong>${p.full_name ?? "Sin nombre completo"}</strong></p>
+                    <p class="nombre-completo"><strong>${p.full_name ?? "No full name"}</strong></p>
                     <p class="info">@${p.username} ${
-                      p.verified ? '<i class="fa fa-check-circle" style="color:#1da1f2;" title="Cuenta verificada"></i>' : ""
+                      p.verified ? '<i class="fa fa-check-circle" style="color:#1da1f2;" title="Verified account"></i>' : ""
                     }</p>
-                    <p class="info">${Number(p.followersCount).toLocaleString("es-CO")} seguidores</p>
-                    <p class="info">${Number(p.follows_count).toLocaleString("es-CO")} seguidos</p>
+                    <p class="info">${Number(p.followersCount).toLocaleString("es-CO")} followers</p>
+                    <p class="info">${Number(p.follows_count).toLocaleString("es-CO")} following</p>
                   </div>
                 </div>
               </a>
             `).join("")
-            : `<p>No hay datos de perfiles destacados para este filtro.</p>`
+            : `<p>No featured profile data for this filter.</p>`
         }
       </div>
     `;
@@ -569,8 +590,8 @@ async function filtrarIndicadoresPorFuenteId(fuenteId) {
     const contenedorTop = document.getElementById("top-perfiles-semilla");
     if (contenedorTop) {
       contenedorTop.innerHTML = `
-        <h3>Top 6 perfiles con más seguidores:</h3>
-        <p>Error al cargar perfiles.</p>
+        <h3>Top 6 profiles with most followers:</h3>
+        <p>Error loading profiles.</p>
       `;
     }
   }

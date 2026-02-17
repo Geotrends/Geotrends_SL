@@ -68,8 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function mostrarSidebarBasico() {
     opcionesSidebar = [
-      { texto: "Mi perfil", page: "/html/secciones/perfil.html" },
-      { texto: "Cerrar sesión", page: "/html/logout.html" },
+      { texto: "My profile", page: "/html/secciones/perfil.html" },
+      { texto: "Sign out", page: "/html/logout.html" },
     ];
     construirSidebar();
   }
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const contenedorOpcionesSidebar = document.createDocumentFragment();
 
     contenedorOpcionesSidebar.appendChild(
-      crearEnlaceMenu("Inicio", "/html/secciones/inicio_bienvenida.html")
+      crearEnlaceMenu("Home", "/html/secciones/inicio_bienvenida.html")
     );
 
     opcionesSidebar.forEach((item) => {
@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
           window.scrollTo(0, 0);
         } catch {
           document.getElementById("contenidoDinamico").innerHTML =
-            "<p>Error al cargar el contenido.</p>";
+            "<p>Error loading content.</p>";
         }
       }
 

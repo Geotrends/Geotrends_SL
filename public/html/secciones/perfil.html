@@ -1,25 +1,25 @@
 <section class="perfil">
-  <h2><i class="fas fa-user"></i> Mi Perfil</h2>
+  <h2><i class="fas fa-user"></i> My Profile</h2>
 
   <div class="perfil-datos">
 
-    <div class="perfil-foto-clickeable" title="Haz clic para cambiar tu foto">
+    <div class="perfil-foto-clickeable" title="Click to change your photo">
       <label for="inputFoto">
-        <img id="fotoPerfil" src="/images/default_user.png" alt="Foto de perfil" />
+        <img id="fotoPerfil" src="/css/isologo-02.png" alt="GeoTrends logo" />
        </label>
       <input type="file" id="inputFoto" accept="image/*" style="display: none;" />
     </div>
 
     <div class="perfil-info">
-      <p><strong>Usuario:</strong> <span id="perfilUsuario"></span></p>
-      <p><strong>Nombre:</strong> <span id="perfilNombre"></span></p>
-      <p><strong>Apellidos:</strong> <span id="perfilApellidos"></span></p>
-      <p><strong>Correo electrónico:</strong> <span id="perfilCorreo"></span></p>
-      <p><strong>Organización:</strong> <span id="perfilOrganizacion"></span></p>
-      <p><strong>Rol en la organización:</strong> <span id="perfilRolOrg"></span></p>
-      <p><strong>Rol del sistema:</strong> <span id="perfilRol"></span></p>
-      <p><strong>Fecha de registro:</strong> <span id="perfilFecha"></span></p>
-      <p><strong>Último acceso:</strong> <span id="perfilUltimoAcceso"></span></p>
+      <p><strong>Username:</strong> <span id="perfilUsuario"></span></p>
+      <p><strong>First name:</strong> <span id="perfilNombre"></span></p>
+      <p><strong>Last name:</strong> <span id="perfilApellidos"></span></p>
+      <p><strong>Email:</strong> <span id="perfilCorreo"></span></p>
+      <p><strong>Organization:</strong> <span id="perfilOrganizacion"></span></p>
+      <p><strong>Role in organization:</strong> <span id="perfilRolOrg"></span></p>
+      <p><strong>System role:</strong> <span id="perfilRol"></span></p>
+      <p><strong>Registration date:</strong> <span id="perfilFecha"></span></p>
+      <p><strong>Last login:</strong> <span id="perfilUltimoAcceso"></span></p>
     </div>
 
   
@@ -27,10 +27,10 @@
 
   <div class="perfil-acciones">
     <button id="btnEditarPerfil" class="btn btn-outline-primary">
-      <i class="fas fa-pen"></i> Editar perfil
+      <i class="fas fa-pen"></i> Edit profile
     </button>
     <button id="btnMostrarCambioPass" class="btn btn-outline-secondary">
-      <i class="fas fa-key"></i> Cambiar contraseña
+      <i class="fas fa-key"></i> Change password
     </button>
   </div>
 
@@ -38,7 +38,7 @@
   <div id="seccionCambioPassword" class="d-none"></div>
 
   <div class="perfil-bitacora">
-    <h3><i class="fas fa-clock"></i> Últimos accesos</h3>
+    <h3><i class="fas fa-clock"></i> Recent logins</h3>
     <ul id="listaBitacora"></ul>
   </div>
 </section>
@@ -70,10 +70,10 @@ if (inputFoto) {
 
       const resultado = await res.json();
       if (!resultado.ok) {
-        alert('No se pudo actualizar la foto');
+        alert('Could not update photo');
       }
     } catch (err) {
-      console.error('Error al subir foto:', err);
+      console.error('Error uploading photo:', err);
     }
   });
 }

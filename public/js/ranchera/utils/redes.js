@@ -65,7 +65,7 @@ categorias.forEach((cat, index) => {
       nodos.set(nodeId, {
         id: nodeId,
         name: semilla.full_name || semilla.username || fuenteId,
-        biography: semilla.biography || 'Sin biografía',
+        biography: semilla.biography || 'No biography',
         // symbol: `image:/api/ranchera/proxy-img?url=${encodeURIComponent(semilla.profile_pic_url || semilla.profile_pic_url_hd || '')}`,
         avatar: semilla.profile_pic_url || semilla.profile_pic_url_hd || '',
         category: categoriaIndex,
@@ -103,7 +103,7 @@ categorias.forEach((cat, index) => {
           ? Math.min(80, 10 + Math.log(perfil.follower_count) * 4)
           : 10,
         value: perfil.follower_count || 1,
-        biography: perfil.biography || 'Sin biografía',
+        biography: perfil.biography || 'No biography',
         x: pos.x + Math.random() * 30,
         y: pos.y + Math.random() * 30
       });
@@ -127,7 +127,7 @@ categorias.forEach((cat, index) => {
   // Configuración del gráfico ECharts
   const option = {
     title: {
-      text: 'Red de conexiones semilla → perfiles',
+      text: 'Seed to profiles connection network',
       left: 'center'
     },
     tooltip: {}, // Habilita tooltip al pasar el mouse
@@ -220,10 +220,10 @@ categorias.forEach((cat, index) => {
               <div style="text-align:center;">
                 ${proxyUrl ? `<img src="${proxyUrl}" style="width:60px; height:60px; border-radius:50%; margin-bottom:8px;" /><br/>` : ''}
                 <strong>${data.name}</strong><br/>
-                Seguidores: ${data.value?.toLocaleString() || 'N/A'}<br/>
-                Categoría: ${params.data.category !== undefined ? categorias[params.data.category]?.name : 'N/A'}<br/>
-                <em style="font-size: 0.8em; display: block; margin-top: 6px;">${data.biography || 'Sin biografía'}</em>
-                <a href="https://instagram.com/${username}" target="_blank" style="color: #007bff;">Ver perfil</a>
+                Followers: ${data.value?.toLocaleString() || 'N/A'}<br/>
+                Category: ${params.data.category !== undefined ? categorias[params.data.category]?.name : 'N/A'}<br/>
+                <em style="font-size: 0.8em; display: block; margin-top: 6px;">${data.biography || 'No biography'}</em>
+                <a href="https://instagram.com/${username}" target="_blank" style="color: #007bff;">View profile</a>
               </div>
             `;
           }
@@ -248,7 +248,7 @@ categorias.forEach((cat, index) => {
   contenedorBotones.style.margin = "0.5rem 0";
 
   const btnSelectAll = document.createElement("button");
-  btnSelectAll.textContent = "Mostrar todas";
+  btnSelectAll.textContent = "Show all";
   btnSelectAll.style.marginRight = "0.5rem";
   btnSelectAll.onclick = () => {
     categoriasNombres.forEach(name => {
@@ -257,7 +257,7 @@ categorias.forEach((cat, index) => {
   };
 
   const btnUnselectAll = document.createElement("button");
-  btnUnselectAll.textContent = "Ocultar todas";
+  btnUnselectAll.textContent = "Hide all";
   btnUnselectAll.onclick = () => {
     categoriasNombres.forEach(name => {
       chart.dispatchAction({ type: 'legendUnSelect', name });
@@ -328,7 +328,7 @@ export function generarRedSegmentacionSentimiento({ perfiles, analisis }, contai
     const sentimiento = a?.sentiment || 'NEUTRO';
     // Usar followers_count de analisis si existe, sino 1
     const seguidores = a?.followers_count || 1;
-    const biografia = a?.biography || 'Sin biografía';
+    const biografia = a?.biography || 'No biography';
     let palabras = '';
     if (Array.isArray(a?.keywords)) {
       palabras = a.keywords.join(', ');
@@ -376,7 +376,7 @@ export function generarRedSegmentacionSentimiento({ perfiles, analisis }, contai
 
   chart.setOption({
     title: {
-      text: 'Red de Segmentación por Sentimiento',
+      text: 'Sentiment segmentation network',
       left: 'center'
     },
     tooltip: {
@@ -387,16 +387,16 @@ export function generarRedSegmentacionSentimiento({ perfiles, analisis }, contai
             <div style="text-align:center; max-width:250px; white-space:normal; word-wrap:break-word;">
               <strong>@${data.name}</strong><br/>
               <div style="font-size: 12px;">
-                Seguidores: ${data.value?.toLocaleString() || 'N/A'}<br/>
-                Sentimiento: ${data.sentimiento || 'NEUTRO'}<br/>
+                Followers: ${data.value?.toLocaleString() || 'N/A'}<br/>
+                Sentiment: ${(data.sentimiento === 'POSITIVO' ? 'Positive' : data.sentimiento === 'NEGATIVO' ? 'Negative' : data.sentimiento === 'NEUTRO' ? 'Neutral' : data.sentimiento) || 'Neutral'}<br/>
                 <div style="margin-top:0.3em;">
-                  <strong>Bio:</strong><br/>${data.biography || 'Sin biografía'}
+                  <strong>Bio:</strong><br/>${data.biography || 'No biography'}
                 </div>
                 <div style="margin-top:0.3em;">
-                  <strong>Palabras clave:</strong><br/>${data.palabras || '--'}
+                  <strong>Keywords:</strong><br/>${data.palabras || '--'}
                 </div>
                 <div style="margin-top:0.3em;">
-                  <strong>Análisis:</strong><br/>${data.interpretation || '--'}
+                  <strong>Analysis:</strong><br/>${data.interpretation || '--'}
                 </div>
               </div>
             </div>
@@ -413,7 +413,7 @@ export function generarRedSegmentacionSentimiento({ perfiles, analisis }, contai
       textStyle: { fontSize: 12 }
     }],
     series: [{
-      name: 'Segmentación',
+      name: 'Segmentation',
       type: 'graph',
       layout: 'force',
       data: nodos,

@@ -28,9 +28,9 @@ import { generarRedSegmentacionSentimiento } from "./utils/redes.js";
     // Asegúrate de definir reglas si no existen
     if (!window.reglasSegmentacionUsuario) {
       window.reglasSegmentacionUsuario = {
-        "Estudiantes": ["universidad", "estudiante", "u", "campus"],
-        "Música": ["música", "cantante", "banda"],
-        "Fitness": ["fitness", "gimnasio", "crossfit"]
+        "Students": ["university", "student", "campus"],
+        "Musicians": ["music", "band", "instrument"],
+        "Gastronomy": ["food", "chef", "grill"]
       };
     }
 
@@ -65,7 +65,7 @@ async function realizarSegmentacionAudiencia(reglas = window.reglasSegmentacionU
   }
 
   if (fuentesSeleccionadas.length === 0) {
-    alert("Por favor, selecciona al menos un perfil semilla antes de segmentar.");
+    alert("Please select at least one seed profile before segmenting.");
     return;
   }
 
@@ -113,7 +113,7 @@ console.log("📊 Datos enviados al gráfico scatter:", datosScatter);
 
 window.scatterDemografiaChart = crearGraficoScatter({
   contenedorId: 'grafico-scatter-demografia',
-  titulo: 'Distribución de Perfiles Segmentados',
+  titulo: 'Segmented profiles distribution',
   datos: datosScatter
 });
 
@@ -136,7 +136,7 @@ window.scatterDemografiaChart = crearGraficoScatter({
   // === Gráfico de cantidad de perfiles por categoría ===
   crearGraficoBarrasHorizontal({
     contenedorId: 'grafico-cantidad-por-categoria',
-    titulo: 'Cantidad de perfiles por categoría',
+    titulo: 'Profile count by category',
     categorias,
     datos: valores,
     color: '#5caac8',
@@ -188,21 +188,22 @@ window.scatterDemografiaChart = crearGraficoScatter({
     NEUTRO: categoriasStack.map(cat => sentimientosPorCategoria[cat]?.NEUTRO || 0),
     NEGATIVO: categoriasStack.map(cat => sentimientosPorCategoria[cat]?.NEGATIVO || 0),
   };
+  const sentimientoLabel = { POSITIVO: 'Positive', NEUTRO: 'Neutral', NEGATIVO: 'Negative' };
   // Crear el gráfico de sentimiento por categoría
   crearGraficoBarrasHorizontal({
     contenedorId: 'grafico-sentimiento-por-categoria',
-    titulo: 'Sentimiento por categoría detectada',
+    titulo: 'Sentiment by detected category',
     categorias: categoriasStack,
     datos: ['POSITIVO', 'NEUTRO', 'NEGATIVO'].map((sent) => ({
-      name: sent,
+      name: sentimientoLabel[sent],
       data: datosStackOrdenado[sent]
     })),
     nombreEjeX: '',
     nombreEjeY: '',
     colores: {
-      POSITIVO: '#267365',
-      NEUTRO: '#F2CB05',
-      NEGATIVO: '#F23030'
+      Positive: '#267365',
+      Neutral: '#F2CB05',
+      Negative: '#F23030'
     }
   });
 
@@ -260,7 +261,7 @@ window.scatterDemografiaChart = crearGraficoScatter({
   }
   const categoriasDisponibles = Object.keys(palabrasSegmentadas).filter(cat => cat !== "Sin categoría");
   selectCategoriaSegmentada.innerHTML = `
-      <option value="TODOS">Todos</option>
+      <option value="TODOS">All</option>
       ${categoriasDisponibles.map(cat => `<option value="${cat}">${cat}</option>`).join("")}
     `;
 
@@ -328,11 +329,11 @@ window.scatterDemografiaChart = crearGraficoScatter({
     const selectWrapper = document.createElement("div");
     selectWrapper.innerHTML = `
       <select id="selectorCriterioTop">
-        <option value="followers_count">Más seguidores</option>
-        <option value="emoji_density">Mayor densidad de emojis</option>
-        <option value="positive">Mayor puntuación positiva</option>
-        <option value="negative">Mayor puntuación negativa</option>
-        <option value="cantidad_keywords">Más palabras clave</option>
+        <option value="followers_count">Most followers</option>
+        <option value="emoji_density">Highest emoji density</option>
+        <option value="positive">Highest positive score</option>
+        <option value="negative">Highest negative score</option>
+        <option value="cantidad_keywords">Most keywords</option>
       </select>
     `;
     contenedorTopPerfiles.appendChild(selectWrapper);
@@ -391,12 +392,12 @@ window.scatterDemografiaChart = crearGraficoScatter({
       <a href="https://www.instagram.com/${p.username}" target="_blank" class="tarjeta-indicador" style="margin-bottom: 0.75rem; text-decoration: none; color: inherit;">
         <div>
           <strong>@${p.username}</strong><br/>
-          Seguidores: ${p.followers?.toLocaleString("es-CO") || '--'}<br/>
-          Sentimiento: ${p.sentiment || 'NEUTRO'}<br/>
+          Followers: ${p.followers?.toLocaleString("en-US") || '--'}<br/>
+          Sentiment: ${(p.sentiment === 'POSITIVO' ? 'Positive' : p.sentiment === 'NEGATIVO' ? 'Negative' : p.sentiment === 'NEUTRO' ? 'Neutral' : p.sentiment) || 'Neutral'}<br/>
           <div style="font-size: 0.8rem; margin-top: 0.3rem;">
-            <strong>Bio:</strong> ${p.biography || 'Sin biografía'}<br/>
-            <strong>Palabras clave:</strong> ${(typeof p.keywords === 'string' ? JSON.parse(p.keywords).join(", ") : p.keywords?.join(", ")) || '--'}<br/>
-            <strong>Análisis:</strong> ${p.interpretation || '--'}
+            <strong>Bio:</strong> ${p.biography || 'No biography'}<br/>
+            <strong>Keywords:</strong> ${(typeof p.keywords === 'string' ? JSON.parse(p.keywords).join(", ") : p.keywords?.join(", ")) || '--'}<br/>
+            <strong>Analysis:</strong> ${p.interpretation || '--'}
           </div>
         </div>
       </a>
@@ -420,12 +421,12 @@ window.scatterDemografiaChart = crearGraficoScatter({
         <a href="https://www.instagram.com/${p.username}" target="_blank" class="tarjeta-indicador" style="margin-bottom: 0.75rem; text-decoration: none; color: inherit;">
           <div>
             <strong>@${p.username}</strong><br/>
-            Seguidores: ${p.followers?.toLocaleString("es-CO") || '--'}<br/>
-            Sentimiento: ${p.sentiment || 'NEUTRO'}<br/>
+            Followers: ${p.followers?.toLocaleString("en-US") || '--'}<br/>
+            Sentiment: ${(p.sentiment === 'POSITIVO' ? 'Positive' : p.sentiment === 'NEGATIVO' ? 'Negative' : p.sentiment === 'NEUTRO' ? 'Neutral' : p.sentiment) || 'Neutral'}<br/>
             <div style="font-size: 0.8rem; margin-top: 0.3rem;">
-              <strong>Bio:</strong> ${p.biography || 'Sin biografía'}<br/>
-              <strong>Palabras clave:</strong> ${(typeof p.keywords === 'string' ? JSON.parse(p.keywords).join(", ") : p.keywords?.join(", ")) || '--'}<br/>
-              <strong>Análisis:</strong> ${p.interpretation || '--'}
+              <strong>Bio:</strong> ${p.biography || 'No biography'}<br/>
+              <strong>Keywords:</strong> ${(typeof p.keywords === 'string' ? JSON.parse(p.keywords).join(", ") : p.keywords?.join(", ")) || '--'}<br/>
+              <strong>Analysis:</strong> ${p.interpretation || '--'}
             </div>
           </div>
         </a>
@@ -475,7 +476,7 @@ window.scatterDemografiaChart = crearGraficoScatter({
     // Crear el gráfico de barras (horizontal)
     crearGraficoBarras({
       contenedorId: 'grafico-emojis-por-categoria',
-      titulo: 'Emojis más utilizados por categoría',
+      titulo: 'Most used emojis by category',
       categorias,
       datos: valores,
       color: '#5caac8',
@@ -499,9 +500,9 @@ function renderizarEditorReglas() {
   // Reglas de ejemplo si no existen
   if (!window.reglasSegmentacionUsuario) {
     window.reglasSegmentacionUsuario = {
-      "Estudiantes": ["universidad", "eafit", "estudiante"],
-      "Músicos": ["música", "banda", "instrumento"],
-      "Gastronomía": ["comida", "chef", "asado"]
+      "Students": ["university", "eafit", "student"],
+      "Musicians": ["music", "band", "instrument"],
+      "Gastronomy": ["food", "chef", "grill"]
     };
   }
   // Validación para evitar error si window.reglasSegmentacionUsuario es undefined o null
@@ -526,9 +527,9 @@ function renderizarEditorReglas() {
 
   const agregarNueva = document.createElement("div");
   agregarNueva.innerHTML = `
-    <input type="text" placeholder="Nueva categoría" id="nuevaCategoria" style="width:20%;" />
-    <input type="text" placeholder="Palabras clave separadas por coma" id="nuevasPalabras" style="width:60%;" />
-    <button id="agregarCategoria">➕ Añadir</button>
+    <input type="text" placeholder="New category" id="nuevaCategoria" style="width:20%;" />
+    <input type="text" placeholder="Keywords separated by comma" id="nuevasPalabras" style="width:60%;" />
+    <button id="agregarCategoria">➕ Add</button>
   `;
   editor.appendChild(agregarNueva);
 

@@ -80,21 +80,21 @@ export function configurarBotonInformePerfiles() {
     const perfiles = window.perfilesCargadosGlobal || [];
 
     if (fuentesSeleccionadas.length === 0 || perfiles.length === 0) {
-      alert("No hay perfiles cargados o seleccionados para generar el informe.");
+      alert("No profiles loaded or selected to generate the report.");
       generandoInforme = false;
       return;
     }
 
     function traducirBooleano(valor) {
-      if (valor === "true") return "Sí";
+      if (valor === "true") return "Yes";
       if (valor === "false") return "No";
-      return "Todas";
+      return "All";
     }
 
     const filtrosSeleccionados = {
       seguidoresMin: document.getElementById("inputSeguidoresMin")?.value || "0",
-      seguidoresMax: document.getElementById("inputSeguidoresMax")?.value || "Sin límite",
-      categoria: document.getElementById("selectorCategoria")?.value || "Todas",
+      seguidoresMax: document.getElementById("inputSeguidoresMax")?.value || "No limit",
+      categoria: document.getElementById("selectorCategoria")?.value || "All",
       negocio: traducirBooleano(document.getElementById("selectorTipoCuenta")?.value),
       privada: traducirBooleano(document.getElementById("selectorPrivacidad")?.value),
       verificada: traducirBooleano(document.getElementById("selectorVerificado")?.value),
@@ -103,11 +103,11 @@ export function configurarBotonInformePerfiles() {
     // Bloque añadido: resumen HTML de filtros
     const filtrosResumenHTML = `
       <ul style="list-style:none; padding-left:0;">
-        <li><strong>Seguidores:</strong> ${filtrosSeleccionados.seguidoresMin} – ${filtrosSeleccionados.seguidoresMax}</li>
-        <li><strong>Categoría:</strong> ${filtrosSeleccionados.categoria}</li>
-        <li><strong>Cuenta de negocio:</strong> ${filtrosSeleccionados.negocio}</li>
-        <li><strong>Privacidad:</strong> ${filtrosSeleccionados.privada}</li>
-        <li><strong>Verificada:</strong> ${filtrosSeleccionados.verificada}</li>
+        <li><strong>Followers:</strong> ${filtrosSeleccionados.seguidoresMin} – ${filtrosSeleccionados.seguidoresMax}</li>
+        <li><strong>Category:</strong> ${filtrosSeleccionados.categoria}</li>
+        <li><strong>Business account:</strong> ${filtrosSeleccionados.negocio}</li>
+        <li><strong>Privacy:</strong> ${filtrosSeleccionados.privada}</li>
+        <li><strong>Verified:</strong> ${filtrosSeleccionados.verificada}</li>
       </ul>
     `;
 
@@ -132,7 +132,7 @@ export function configurarBotonInformePerfiles() {
       nubeBiografias,
       nubeNombres,
       filtrosSeleccionados,
-      tablaResumen: document.querySelector(".resumen-quantitativo-perfiles")?.outerHTML || "<p><em>No hay datos</em></p>",
+      tablaResumen: document.querySelector(".resumen-quantitativo-perfiles")?.outerHTML || "<p><em>No data</em></p>",
       resumenFiltrosHTML: filtrosResumenHTML,
     };
 

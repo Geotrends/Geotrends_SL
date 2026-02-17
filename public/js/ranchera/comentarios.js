@@ -96,16 +96,16 @@ export async function inicializarVistaComentarios() {
     }).filter(Boolean);
 
     chart.setOption({
-      title: { text: 'Publicaciones por fecha y hora', left: 'center' },
+      title: { text: 'Posts by date and time', left: 'center' },
       tooltip: {
         trigger: 'item',
         confine: true,
         formatter: (p) => `
           <div style="max-width: 300px; white-space: normal;">
             <strong>@${p.data.name}</strong><br/>
-            Fecha: ${p.data.value[0]}<br/>
-            Hora: ${p.data.value[1]}<br/>
-            Sentimiento: ${p.data.sentiment}<br/>
+            Date: ${p.data.value[0]}<br/>
+            Time: ${p.data.value[1]}<br/>
+            Sentiment: ${p.data.sentiment}<br/>
             <strong>Caption:</strong> ${p.data.caption || '---'}<br/>
             <strong>Hashtags:</strong> ${Array.isArray(p.data.hashtags) ? p.data.hashtags.join(", ") : '---'}<br/>
             <strong>Resumen:</strong> ${p.data.summary || '---'}<br/>
@@ -116,13 +116,13 @@ export async function inicializarVistaComentarios() {
       },
       xAxis: { 
         type: 'category', 
-        name: 'Fecha', 
+        name: 'Date', 
         axisLabel: { rotate: 45, interval: 'auto' },
         data: [...new Set(scatterData.map(d => d.value[0]))].sort()
       },
       yAxis: { 
         type: 'category', 
-        name: 'Hora',
+        name: 'Time',
         axisLabel: { interval: 'auto' },
         data: [...new Set(scatterData.map(d => d.value[1]))].sort()
       },
@@ -232,14 +232,14 @@ export async function inicializarVistaComentarios() {
       });
 
       chartUsuarios.setOption({
-        title: { text: 'Likes vs Comentarios por Usuario', left: 'center' },
+        title: { text: 'Likes vs Comments by user', left: 'center' },
         tooltip: {
           trigger: 'item',
           formatter: p => `
             <strong>@${p.data.name}</strong><br/>
             Likes: ${p.data.value[0]}<br/>
             Comentarios: ${p.data.value[1]}<br/>
-            Publicaciones: ${p.data.posts || 0}<br/>
+            Posts: ${p.data.posts || 0}<br/>
             Engagement promedio: ${p.data.engagement.toFixed(2)}
           `
         },
@@ -250,7 +250,7 @@ export async function inicializarVistaComentarios() {
           min: 1
         },
         yAxis: { 
-          name: 'Comentarios', 
+          name: 'Comments', 
           type: 'log',
           minorSplitLine: { show: true },
           min: 1
@@ -376,7 +376,7 @@ export async function inicializarVistaComentarios() {
         .map(([emoji, count]) => ({ emoji, count }));
 
       chartEmojis.setOption({
-        title: { text: 'Emojis más usados', left: 'center' },
+        title: { text: 'Most used emojis', left: 'center' },
         tooltip: { trigger: 'axis' },
         xAxis: {
           type: 'category',

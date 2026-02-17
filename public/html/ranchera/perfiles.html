@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Perfiles Semilla - Análisis</title>
+    <title>Seed Profiles - Analysis</title>
     <link rel="stylesheet" href="/css/ranchera/perfiles.css" />
     <link
       rel="stylesheet"
@@ -13,54 +13,17 @@
   <body>
     <main class="contenedor-principal">
       <div class="panel-perfiles-contenedor">
-      <h1 class="panel-perfiles-titulo">Análisis de cuentas</h1>
-      <!-- <section class="indicadores-perfiles" id="indicadoresPerfiles">
-   
-        <div class="tarjeta-indicador">
-          <i class="fa fa-users"></i>
-          <div>
-            <strong id="totalSeguidores">--</strong><br /><span
-              >Total seguidores</span
-            >
-          </div>
-        </div>
-        <div class="tarjeta-indicador">
-          <i class="fa fa-chart-line"></i>
-          <div>
-            <strong id="promedioSeguidores">--</strong><br /><span
-              >Promedio de seguidores</span
-            >
-          </div>
-        </div>
-        <div class="tarjeta-indicador">
-          <i class="fa fa-link"></i>
-          <div>
-            <strong id="seguidoresCompartidos">--</strong><br /><span
-              >Seguidores compartidos</span
-            >
-          </div>
-        </div>
-        <div class="tarjeta-indicador">
-          <i class="fa fa-robot"></i>
-          <div>
-            <strong id="porcentajeBots">--</strong><br /><span
-              >% Cuentas sospechosas</span
-            >
-          </div>
-        </div>
-      </section> -->
+      <h1 class="panel-perfiles-titulo">Account analysis</h1>
 
       <section class="analisis-nube-perfiles">
 
 
-        <h2>Nube de palabras de biografías</h2>
+        <h2>Biography word cloud</h2>
         <p>
-          Esta sección permite visualizar las palabras más representativas extraídas de las biografías y nombres de los perfiles semilla.
-          Puedes filtrar por categoría, privacidad, tipo de cuenta y ajustar el umbral mínimo de frecuencia para enfocarte en términos relevantes.
-          También puedes descargar cada nube como imagen para documentación o análisis externo.
+          Words extracted from seed profile biographies and names. Filter by category, privacy, account type and minimum frequency. You can download each cloud as an image.
         </p>
         <button id="botonDescargarInformePerfiles" class="btn-principal">
-          📄 Descargar informe PDF
+          📄 Download PDF report
         </button>
 
         <div class="controls-nube">
@@ -71,38 +34,36 @@
           </div>
 
            <select id="selectorSentimiento">
-            <option value="">-- Filtrar por sentimiento --</option>
-            <option value="POSITIVO">Positivo</option>
-            <option value="NEUTRO">Neutro</option>
-            <option value="NEGATIVO">Negativo</option>
+            <option value="">-- Filter by sentiment --</option>
+            <option value="POSITIVO">Positive</option>
+            <option value="NEUTRO">Neutral</option>
+            <option value="NEGATIVO">Negative</option>
           </select>
         </div>
 
-        <!-- Scatter plot integrado directamente aquí (solo esta primera gráfica a ancho completo) -->
         <div class="cuadro-grafico-blanco cuadro-primera-grafica">
           <div id="scatterFollowersPosts" style="height: 500px; width: 100%; margin-bottom: 0;"></div>
         </div>
 
         <div class="contenedor-wordclouds-doble">
           <div class="wordcloud-container">
-            <h3>Nube de palabras - Biografías</h3>
-            <label for="sliderBiografias">Frecuencia mínima: <span id="valorBiografias">2</span></label>
+            <h3>Word cloud - Biographies</h3>
+            <label for="sliderBiografias">Minimum frequency: <span id="valorBiografias">2</span></label>
             <input type="range" id="sliderBiografias" min="1" max="10" value="2" />
             <div id="contenedorWordCloud" class="grafico-nube"></div>
-            <button onclick="descargarWordCloud('contenedorWordCloud')">Descargar Biografías</button>
+            <button onclick="descargarWordCloud('contenedorWordCloud')">Download Biographies</button>
           </div>
           <div class="wordcloud-container">
-            <h3>Nube de palabras - Nombres</h3>
-            <label for="sliderNombres">Frecuencia mínima: <span id="valorNombres">2</span></label>
+            <h3>Word cloud - Names</h3>
+            <label for="sliderNombres">Minimum frequency: <span id="valorNombres">2</span></label>
             <input type="range" id="sliderNombres" min="1" max="10" value="2" />
             <div id="contenedorWordCloudNombres" class="grafico-nube"></div>
-            <button onclick="descargarWordCloud('contenedorWordCloudNombres')">Descargar Nombres</button>
+            <button onclick="descargarWordCloud('contenedorWordCloudNombres')">Download Names</button>
           </div>
-          <!-- Fila debajo de las gráficas: textos fuera de las tarjetas -->
           <div class="fila-descripciones-wordclouds" id="filaDescWordclouds"></div>
         </div>
       <div class="grafico-wrapper cuadro-grafico-blanco">
-        <h3>Emojis más usados</h3>
+        <h3>Most used emojis</h3>
         <div id="grafico-emojis" class="grafico" style="height: 400px; width: 100%;"></div>
       </div>
         <section class="resumen-quantitativo-perfiles">
@@ -115,76 +76,42 @@
           </div>
         </section>
       </section>
-      <!-- <section class="resumen-perfil" id="resumenPerfil">
-
-      </section> -->
       <section class="red-conexiones-perfiles">
-        <h2>Red de Conexiones</h2>
+        <h2>Connection network</h2>
         <p>
-          Visualización de la red de perfiles conectados a cada semilla.
-          Permite observar cómo se relacionan los seguidores con los perfiles principales, destacando núcleos, periferias o cuentas puente.
+          Network of profiles connected to each seed. See how followers relate to main profiles, including cores, peripheries and bridge accounts.
         </p>
         <div id="contenedorRed" class="contenedor-red"></div>
       </section>
 
-
-
       <section class="graficos-sentimiento nube-palabras-biografias" style="display: none;">
-        <h2>Análisis de sentimiento en perfiles</h2>
-        <p>
-          Este módulo realiza un análisis de sentimiento sobre los perfiles seleccionados. Incluye:
-        </p>
+        <h2>Profile sentiment analysis</h2>
+        <p>This module runs sentiment analysis on selected profiles. It includes:</p>
         <ul>
-          <li><strong>Distribución de sentimientos:</strong> gráfico circular con la proporción de perfiles con sentimiento positivo, neutro o negativo.</li>
-          <li><strong>Emojis más usados:</strong> gráfico de barras con los emojis más frecuentes, como indicadores del tono emocional.</li>
-          <li><strong>Nubes de palabras por sentimiento:</strong> visualizaciones separadas de términos frecuentes según el sentimiento. Puedes ajustar el umbral mínimo de aparición y descargar cada nube como imagen PNG.</li>
+          <li><strong>Sentiment distribution:</strong> pie chart of positive, neutral and negative profiles.</li>
+          <li><strong>Most used emojis:</strong> bar chart of the most frequent emojis.</li>
+          <li><strong>Word clouds by sentiment:</strong> separate clouds by sentiment; adjust minimum frequency and download as PNG.</li>
         </ul>
-
-        <!--
-          Gráfico de pastel que muestra la distribución de perfiles por tipo de sentimiento (positivo, negativo, neutro).
-          Proporciona una visión general del análisis de sentimiento.
-        -->
         <div id="grafico-pie-sentimiento" style="height: 400px;"></div>
-
-        <!--
-          Sliders de frecuencia mínima para filtrar palabras en las wordclouds por sentimiento.
-          Cada slider ajusta el umbral de aparición de palabras en la nube respectiva (positivo, neutro, negativo).
-          Incluye botones para descargar la imagen PNG de cada wordcloud.
-        -->
         <div class="sliders-sentimiento">
           <div>
-            <!-- Slider y botón para la wordcloud de sentimiento positivo -->
-            <label for="sliderPositivo">Frecuencia mínima (Positivo): <span id="valorPositivo">1</span></label>
+            <label for="sliderPositivo">Minimum frequency (Positive): <span id="valorPositivo">1</span></label>
             <input type="range" id="sliderPositivo" min="1" max="10" value="1" />
-            <!-- Botón de descarga PNG para la wordcloud positiva -->
-            <button onclick="descargarWordCloud('contenedorWordCloudPositivo')">Descargar PNG</button>
+            <button onclick="descargarWordCloud('contenedorWordCloudPositivo')">Download PNG</button>
           </div>
           <div>
-            <!-- Slider y botón para la wordcloud de sentimiento neutro -->
-            <label for="sliderNeutro">Frecuencia mínima (Neutro): <span id="valorNeutro">1</span></label>
+            <label for="sliderNeutro">Minimum frequency (Neutral): <span id="valorNeutro">1</span></label>
             <input type="range" id="sliderNeutro" min="1" max="10" value="1" />
-            <!-- Botón de descarga PNG para la wordcloud neutra -->
-            <button onclick="descargarWordCloud('contenedorWordCloudNeutro')">Descargar PNG</button>
+            <button onclick="descargarWordCloud('contenedorWordCloudNeutro')">Download PNG</button>
           </div>
           <div>
-            <!-- Slider y botón para la wordcloud de sentimiento negativo -->
-            <label for="sliderNegativo">Frecuencia mínima (Negativo): <span id="valorNegativo">1</span></label>
+            <label for="sliderNegativo">Minimum frequency (Negative): <span id="valorNegativo">1</span></label>
             <input type="range" id="sliderNegativo" min="1" max="10" value="1" />
-            <!-- Botón de descarga PNG para la wordcloud negativa -->
-            <button onclick="descargarWordCloud('contenedorWordCloudNegativo')">Descargar PNG</button>
+            <button onclick="descargarWordCloud('contenedorWordCloudNegativo')">Download PNG</button>
           </div>
         </div>
-        <!--
-          Contenedor donde se renderiza la wordcloud de palabras asociadas a sentimiento positivo.
-        -->
         <div id="contenedorWordCloudPositivo" class="grafico-nube"></div>
-        <!--
-          Contenedor donde se renderiza la wordcloud de palabras asociadas a sentimiento neutro.
-        -->
         <div id="contenedorWordCloudNeutro" class="grafico-nube"></div>
-        <!--
-          Contenedor donde se renderiza la wordcloud de palabras asociadas a sentimiento negativo.
-        -->
         <div id="contenedorWordCloudNegativo" class="grafico-nube"></div>
       </section>
 
@@ -194,7 +121,7 @@
     <script src="/js/ranchera/perfiles.js"></script>
 
     <div id="spinnerInforme" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255,255,255,0.8); z-index: 9999; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; color: #024959;">
-      Generando informe, por favor espera...
+      Generating report, please wait...
     </div>
   </body>
 </html>

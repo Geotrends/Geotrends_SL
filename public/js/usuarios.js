@@ -28,7 +28,7 @@ function iniciarUsuarios() {
   tabla = $('#tablaUsuarios').DataTable({
     responsive: true,
     language: {
-      url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+      url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/en.json'
     },
     columns: [
       { data: 'id' },
@@ -57,7 +57,7 @@ function iniciarUsuarios() {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => {
-      if (!res.ok) throw new Error('No autorizado o error de servidor');
+      if (!res.ok) throw new Error('Unauthorized or server error');
       return res.json();
     })
     .then(data => {
@@ -123,12 +123,12 @@ function inicializarFormularioNuevoUsuario() {
     })
       .then(res => res.json())
       .then(data => {
-        mensaje.textContent = '✅ Usuario creado correctamente';
+        mensaje.textContent = '✅ User created successfully';
         mensaje.classList.remove('d-none');
         setTimeout(() => window.location.reload(), 1000);
       })
       .catch(() => {
-        mensaje.textContent = '❌ Error al crear usuario';
+        mensaje.textContent = '❌ Error creating user';
         mensaje.classList.remove('d-none');
       });
   });

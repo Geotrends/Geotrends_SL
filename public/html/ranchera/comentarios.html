@@ -1,48 +1,48 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Comentarios - Ranchera</title>
+  <title>Comments - Ranchera</title>
   <link rel="stylesheet" href="/css/ranchera/comentarios.css" />
 </head>
 <body>
   <section class="comentarios">
     <div class="panel-publicaciones-contenedor">
-    <h1 class="panel-publicaciones-titulo">Comentarios de perfiles</h1>
+    <h1 class="panel-publicaciones-titulo">Profile comments</h1>
     <div class="bloque-contenedor">
-      <h2>Filtro de publicaciones</h2>
+      <h2>Post filters</h2>
       <div class="filtros">
-        <label for="filtroKeyword">Palabra clave:</label>
-        <input type="text" id="filtroKeyword" placeholder="Ej: playa" />
+        <label for="filtroKeyword">Keyword:</label>
+        <input type="text" id="filtroKeyword" placeholder="e.g. beach" />
 
-        <label for="filtroTipo">Tipo:</label>
+        <label for="filtroTipo">Type:</label>
         <select id="filtroTipo">
-          <option value="">Todos</option>
-          <option value="imagen">Imagen</option>
+          <option value="">All</option>
+          <option value="imagen">Image</option>
           <option value="video">Video</option>
-          <option value="carrusel">Carrusel</option>
+          <option value="carrusel">Carousel</option>
         </select>
 
-        <label for="filtroSentimiento">Sentimiento:</label>
+        <label for="filtroSentimiento">Sentiment:</label>
         <select id="filtroSentimiento">
-          <option value="">Todos</option>
-          <option value="POSITIVO">Positivo</option>
-          <option value="NEUTRO">Neutro</option>
-          <option value="NEGATIVO">Negativo</option>
+          <option value="">All</option>
+          <option value="POSITIVO">Positive</option>
+          <option value="NEUTRO">Neutral</option>
+          <option value="NEGATIVO">Negative</option>
         </select>
 
-        <label for="filtroFechaDesde">Desde:</label>
+        <label for="filtroFechaDesde">From:</label>
         <input type="date" id="filtroFechaDesde" />
 
-        <label for="filtroFechaHasta">Hasta:</label>
+        <label for="filtroFechaHasta">To:</label>
         <input type="date" id="filtroFechaHasta" />
 
-        <label for="filtroLikesMinimos">Mín. likes:</label>
-        <input type="number" id="filtroLikesMinimos" min="0" placeholder="Ej: 10" />
+        <label for="filtroLikesMinimos">Min. likes:</label>
+        <input type="number" id="filtroLikesMinimos" min="0" placeholder="e.g. 10" />
 
-        <button id="btnAplicarFiltros">Aplicar filtros</button>
-        <button id="btnDescargarInformeComentarios">Descargar informe PDF</button>
+        <button id="btnAplicarFiltros">Apply filters</button>
+        <button id="btnDescargarInformeComentarios">Download PDF report</button>
       </div>
     </div>
 
@@ -51,21 +51,21 @@
         <div id="graficoScatterComentarios" style="height: 500px; margin-top: 0;"></div>
       </div>
       <div class="grafico-descripcion">
-        Este gráfico muestra las publicaciones según la fecha y hora en que fueron realizadas, con codificación de color por sentimiento y tamaño según número de likes.
+        Posts by date and time, with color by sentiment and size by number of likes.
       </div>
-      <h2 style="margin-top: 2rem;">Distribución por usuario</h2>
+      <h2 style="margin-top: 2rem;">Distribution by user</h2>
       <div class="cuadro-grafico-blanco">
         <div id="graficoScatterUsuarios" style="height: 500px; margin-top: 0;"></div>
       </div>
       <div class="grafico-descripcion">
-        Relación entre likes y comentarios por usuario. El tamaño del punto representa la actividad total del perfil y el color indica el sentimiento predominante.
+        Relationship between likes and comments per user. Point size is total profile activity; color is predominant sentiment.
       </div>
     </div>
 
     <div class="bloque-contenedor">
-      <h2 style="margin-top: 2rem;">Nube de palabras de hashtags</h2>
+      <h2 style="margin-top: 2rem;">Hashtag word cloud</h2>
       <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
-        <label for="sliderFrecuenciaHashtags">Frecuencia mínima:</label>
+        <label for="sliderFrecuenciaHashtags">Minimum frequency:</label>
         <input type="range" id="sliderFrecuenciaHashtags" min="1" max="50" value="2" />
         <span id="valorSliderHashtags">2</span>
       </div>
@@ -73,14 +73,14 @@
         <div id="nubeHashtags" style="height: 400px; margin-top: 0;"></div>
       </div>
       <div class="grafico-descripcion">
-        Nube de palabras generada a partir de los hashtags más usados en las publicaciones, útil para identificar temas o tendencias frecuentes.
+        Word cloud from the most used hashtags in posts, to spot themes or trends.
       </div>
     </div>
 
     <div class="bloque-contenedor">
-      <h2 style="margin-top: 2rem;">Nube de palabras de captions</h2>
+      <h2 style="margin-top: 2rem;">Caption word cloud</h2>
       <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
-        <label for="sliderFrecuenciaCaption">Frecuencia mínima:</label>
+        <label for="sliderFrecuenciaCaption">Minimum frequency:</label>
         <input type="range" id="sliderFrecuenciaCaption" min="1" max="50" value="2" />
         <span id="valorSliderCaption">2</span>
       </div>
@@ -88,14 +88,14 @@
         <div id="nubeCaption" style="height: 400px; margin-top: 0;"></div>
       </div>
       <div class="grafico-descripcion">
-        Palabras más recurrentes en los captions de las publicaciones, lo que permite identificar el tono y los temas del contenido textual.
+        Most frequent words in post captions, to identify tone and textual themes.
       </div>
     </div>
 
     <div class="bloque-contenedor">
-      <h2 style="margin-top: 2rem;">Nube de palabras de keywords</h2>
+      <h2 style="margin-top: 2rem;">Keywords word cloud</h2>
       <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
-        <label for="sliderFrecuenciaKeywords">Frecuencia mínima:</label>
+        <label for="sliderFrecuenciaKeywords">Minimum frequency:</label>
         <input type="range" id="sliderFrecuenciaKeywords" min="1" max="50" value="2" />
         <span id="valorSliderKeywords">2</span>
       </div>
@@ -103,17 +103,17 @@
         <div id="nubeKeywords" style="height: 400px; margin-top: 0;"></div>
       </div>
       <div class="grafico-descripcion">
-        Términos clave extraídos mediante procesamiento de lenguaje natural de las publicaciones. Útiles para análisis temático.
+        Key terms extracted by natural language processing from posts. Useful for thematic analysis.
       </div>
     </div>
 
     <div class="bloque-contenedor">
-      <h2 style="margin-top: 2rem;">Emojis más usados</h2>
+      <h2 style="margin-top: 2rem;">Most used emojis</h2>
       <div class="cuadro-grafico-blanco">
         <div id="graficoTopEmojis" style="height: 400px; margin-top: 0;"></div>
       </div>
       <div class="grafico-descripcion">
-        Gráfico de barras con los emojis más utilizados en las publicaciones analizadas, lo cual refleja expresiones emocionales predominantes.
+        Bar chart of the most used emojis in the analyzed posts, reflecting predominant emotional expressions.
       </div>
     </div>
     </div>
@@ -123,7 +123,7 @@
   <script type="module" src="/js/ranchera/informeCometarios.js"></script>
 
   <div id="spinnerInforme" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255,255,255,0.8); z-index: 9999; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; color: #024959;">
-    Generando informe, por favor espera...
+    Generating report, please wait...
   </div>
 </body>
 </html>

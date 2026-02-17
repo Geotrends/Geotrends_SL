@@ -108,7 +108,7 @@ export function crearWordCloud({ contenedorId, palabras }) {
    * - data: arreglo de objetos con propiedades { name: 'palabra', value: número }
    */
   if (data.length === 0) {
-    contenedor.innerHTML = "<div style='text-align:center; padding: 2rem;'>No hay palabras con la frecuencia mínima seleccionada</div>";
+    contenedor.innerHTML = "<div style='text-align:center; padding: 2rem;'>No words match the selected minimum frequency</div>";
     return;
   }
   

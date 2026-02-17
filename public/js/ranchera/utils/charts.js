@@ -1,7 +1,7 @@
 import * as echarts from 'https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.esm.min.js';
 const colores = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
 
-export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, color = '#C62828', nombreEjeX = 'Perfiles', nombreEjeY = 'Cantidad' }) {
+export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, color = '#C62828', nombreEjeX = 'Profile', nombreEjeY = 'Count' }) {
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
@@ -65,7 +65,7 @@ export function crearGraficoBarras({ contenedorId, titulo, categorias, datos, co
   window.addEventListener('resize', () => chart.resize());
 }
 
-export function crearGraficoBarrasHorizontal({ contenedorId, titulo, categorias, datos, color = '#1976d2', nombreEjeX = 'Cantidad', nombreEjeY = 'Categoría', colores = {} }) {
+export function crearGraficoBarrasHorizontal({ contenedorId, titulo, categorias, datos, color = '#1976d2', nombreEjeX = 'Count', nombreEjeY = 'Category', colores = {} }) {
   const contenedor = document.getElementById(contenedorId);
   if (!contenedor) return;
 
@@ -160,7 +160,7 @@ export function crearGraficoLineas({ contenedorId, titulo, categorias, series })
   },
     xAxis: {
       type: 'category',
-      name: 'Fecha',
+      name: 'Date',
       nameLocation: 'middle',
       nameGap: 35,
       data: categorias,
@@ -168,7 +168,7 @@ export function crearGraficoLineas({ contenedorId, titulo, categorias, series })
     },
     yAxis: {
       type: 'value',
-      name: 'Cantidad de publicaciones',
+      name: 'Post count',
       nameLocation: 'middle',
       nameGap: 50
     },
@@ -204,9 +204,11 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
 
   const perfilesSemillaGlobal = window.perfilesSemillaGlobal || [];
   const nombresSemillas = {};
-  perfilesSemillaGlobal.forEach(p => {
+  const traducir = typeof window.traducirNombrePerfil === "function" ? window.traducirNombrePerfil : (n) => n;
+  (perfilesSemillaGlobal.length ? perfilesSemillaGlobal : datos).forEach(p => {
     if (p.fuente_id != null) {
-      nombresSemillas[p.fuente_id] = p.full_name || p.username || `Semilla ${p.fuente_id}`;
+      const raw = p.full_name || p.username || `Seed ${p.fuente_id}`;
+      nombresSemillas[p.fuente_id] = traducir(raw);
     }
   });
 
@@ -264,10 +266,10 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
             box-shadow: 0 2px 8px rgba(0,0,0,0);
           ">
             <strong style="font-size:15px;">@${username}</strong><br/>
-            <span>👥 <strong>Seguidores:</strong> ${params.data.value[1].toLocaleString('es-CO')}</span><br/>
-            <span>🔗 <strong>Seguidos:</strong> ${params.data.value[0].toLocaleString('es-CO')}</span><br/>
-            <span>📝 <strong>Publicaciones:</strong> ${params.data.posts_count}</span><br/>
-            <a href="${perfilURL}" target="_blank" style="color:#1976d2;font-weight:bold;">➡ Ver en Instagram</a>
+            <span>👥 <strong>Followers:</strong> ${params.data.value[1].toLocaleString('en-US')}</span><br/>
+            <span>🔗 <strong>Following:</strong> ${params.data.value[0].toLocaleString('en-US')}</span><br/>
+            <span>📝 <strong>Posts:</strong> ${params.data.posts_count}</span><br/>
+            <a href="${perfilURL}" target="_blank" style="color:#1976d2;font-weight:bold;">➡ View on Instagram</a>
           </div>`;
       },
       confine: true,
@@ -289,7 +291,7 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
     },
     xAxis: {
       type: 'log',
-      name: 'Seguidos (log)',
+      name: 'Following (log)',
       logBase: 10,
       min: Math.max(1, Math.min(...seguidos)),
       max: Math.max(...seguidos),
@@ -297,7 +299,7 @@ export function crearGraficoScatter({ contenedorId, titulo, datos }) {
     },
     yAxis: {
       type: 'log',
-      name: 'Seguidores (log)',
+      name: 'Followers (log)',
       logBase: 10,
       min: minSeg,
       max: maxSeg,
@@ -329,7 +331,7 @@ export function crearGraficoPie({ contenedorId, titulo, datos }) {
     tooltip: { trigger: 'item' },
     legend: { orient: 'vertical', left: 'left' },
     series: [{
-      name: 'Sentimiento',
+      name: 'Sentiment',
       type: 'pie',
       radius: '50%',
       data: datos,

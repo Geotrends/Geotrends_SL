@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Perfiles Semilla - Análisis</title>
+    <title>Demographics - Ranchera</title>
     <link rel="stylesheet" href="/css/ranchera/demografia.css" />
     <link
       rel="stylesheet"
@@ -13,26 +13,23 @@
     <div class="panel-demografia-contenedor">
     <!-- SCATTER INICIAL -->
     <section class="grafico-scatter-demografia">
-      <h2>Distribución general de perfiles</h2>
+      <h2>Overall profile distribution</h2>
       <p>
-        Esta sección resume la distribución de todos los perfiles analizados antes de aplicar segmentaciones automáticas.
+        This section summarizes the distribution of all analyzed profiles before applying automatic segmentations.
       </p>
 
-          <!-- controles-superiores section removed -->
-    <button id="btnDescargarPDF" class="btn-principal" disabled>📄 Descargar informe PDF</button>
-      <!-- Aquí podría ir el scatter inicial si existe, pero según el código, el scatter se muestra tras segmentar -->
-      <!-- Se deja la sección para mantener la estructura solicitada -->
+    <button id="btnDescargarPDF" class="btn-principal" disabled>📄 Download PDF report</button>
     </section>
 
     <!-- SEGMENTACIÓN -->
     <section class="grafico-segmentacion">
-      <h2>Distribución por segmento de audiencia</h2>
+      <h2>Distribution by audience segment</h2>
       <p>
-        Clasificación automática de perfiles basada en reglas temáticas definidas. El gráfico resultante muestra la relación entre seguidores, seguidos y publicaciones de cada perfil según su segmento.
+        Automatic classification of profiles based on defined thematic rules. The chart shows the relationship between followers, following and posts per profile by segment.
       </p>
       <div id="editorReglasSegmentacion"></div>
       <button id="botonSegmentarAudiencia" class="btn-verde">
-        Segmentar audiencia
+        Segment audience
       </button>
       <div class="cuadro-grafico-blanco">
         <div
@@ -42,14 +39,14 @@
       </div>
     </section>
 
-    <!-- GRAFICOS COMPARATIVOS: barras de categorías y de sentimiento -->
+    <!-- GRAFICOS COMPARATIVOS -->
     <section class="graficos-comparativos grafico-segmentacion">
-      <h2>Distribución de sentimientos</h2>
+      <h2>Sentiment distribution</h2>
       <div class="contenedor-graficos-amplio">
         <div class="fila-graficos-doble">
           <div class="bloque-grafico">
             <p>
-              Cantidad de perfiles agrupados según la categoría temática detectada durante la segmentación.
+              Number of profiles grouped by thematic category detected during segmentation.
             </p>
             <div class="cuadro-grafico-blanco">
               <div
@@ -60,7 +57,7 @@
           </div>
           <div class="bloque-grafico">
             <p>
-              Análisis de sentimientos detectados en perfiles segmentados, agrupados por categoría temática.
+              Sentiment analysis of segmented profiles, grouped by thematic category.
             </p>
             <div class="cuadro-grafico-blanco">
               <div
@@ -75,20 +72,20 @@
 
     <!-- NUBES DE PALABRAS POR SEGMENTO -->
     <section class="nube-palabras-por-segmento">
-      <h2>Nubes de palabras por sentimiento</h2>
+      <h2>Word clouds by sentiment</h2>
       <p>
-        Palabras más representativas extraídas de biografías de usuarios, diferenciadas por sentimiento y categoría. Cada nube representa términos frecuentes que caracterizan la identidad de los perfiles.
+        Most representative words from user biographies, by sentiment and category. Each cloud shows frequent terms that characterize profile identity.
       </p>
 
       <div class="controles-nube-palabras">
-        <label for="selectorCategoriaSegmentada">Filtrar por categoría:</label>
+        <label for="selectorCategoriaSegmentada">Filter by category:</label>
         <select id="selectorCategoriaSegmentada"></select>
       </div>
 
       <div class="sliders-sentimiento">
         <div class="control-slider">
           <label for="sliderSegmentoPositivo"
-            >Frecuencia mínima (Positivo):
+            >Minimum frequency (Positive):
             <span id="valorSegmentoPositivo">1</span></label
           >
           <input
@@ -101,12 +98,12 @@
           <button
             onclick="descargarWordCloud('contenedorWordCloudSegmentoPositivo')"
           >
-            Descargar PNG
+            Download PNG
           </button>
         </div>
         <div class="control-slider">
           <label for="sliderSegmentoNeutro"
-            >Frecuencia mínima (Neutro):
+            >Minimum frequency (Neutral):
             <span id="valorSegmentoNeutro">1</span></label
           >
           <input
@@ -119,12 +116,12 @@
           <button
             onclick="descargarWordCloud('contenedorWordCloudSegmentoNeutro')"
           >
-            Descargar PNG
+            Download PNG
           </button>
         </div>
         <div class="control-slider">
           <label for="sliderSegmentoNegativo"
-            >Frecuencia mínima (Negativo):
+            >Minimum frequency (Negative):
             <span id="valorSegmentoNegativo">1</span></label
           >
           <input
@@ -137,7 +134,7 @@
           <button
             onclick="descargarWordCloud('contenedorWordCloudSegmentoNegativo')"
           >
-            Descargar PNG
+            Download PNG
           </button>
         </div>
       </div>
@@ -153,14 +150,14 @@
             id="contenedorWordCloudSegmentoNegativo"
             class="grafico-nube"
           >
-            <img src="data:image/png;base64,{{nubePalabrasSegmentoNegativo}}" alt="Nube de palabras negativo" style="width:100%; max-height:400px;" />
+            <img src="data:image/png;base64,{{nubePalabrasSegmentoNegativo}}" alt="Negative word cloud" style="width:100%; max-height:400px;" />
           </div>
         {{/if}}
       </div>
       <div class="grafico-emojis-nube">
-        <h3>Emojis más utilizados por categoría</h3>
+        <h3>Most used emojis by category</h3>
         <p class="grafico-descripcion">
-          Visualización de los emojis más utilizados por los usuarios, agrupados por categoría temática. Refleja expresiones emocionales comunes dentro de cada grupo.
+          Most used emojis by users, grouped by thematic category. Reflects common emotional expressions within each group.
         </p>
         <div class="cuadro-grafico-blanco">
           <div id="grafico-emojis-por-categoria" class="grafico-barra-horizontal" style="height: 400px;"></div>
@@ -172,16 +169,15 @@
     <section class="red-usuarios">
       <div class="contenedor-graficos-comparativos">
         <div class="cabecera-seccion">
-          <h2>Red de usuarios segmentados</h2>
+          <h2>Segmented user network</h2>
           <p>
-            Visualización de perfiles conectados según categoría y sentimiento
-            detectado.
+            Visualization of connected profiles by category and detected sentiment.
           </p>
         </div>
         {{#if redUsuarios}}
           <div class="cuadro-grafico-blanco">
             <div id="contenedorRedSegmentacion" class="grafico-red">
-              <img src="data:image/png;base64,{{redUsuarios}}" alt="Red de perfiles" style="width:100%; max-height:400px;" />
+              <img src="data:image/png;base64,{{redUsuarios}}" alt="Profile network" style="width:100%; max-height:400px;" />
             </div>
           </div>
         {{/if}}
@@ -190,9 +186,9 @@
 
     <!-- TOP PERFILES POR SEGMENTO -->
     <section id="topPerfilesPorSegmento" class="top-perfiles">
-      <h2>Top 5 Perfiles por Categoría</h2>
+      <h2>Top 5 Profiles by Category</h2>
       <p>
-        Este bloque muestra los cinco perfiles más relevantes de cada categoría, ordenados según distintos criterios como seguidores, densidad de emojis o sentimiento positivo.
+        The five most relevant profiles per category, ordered by criteria such as followers, emoji density or positive sentiment.
       </p>
     </section>
 
@@ -203,7 +199,7 @@
     <script src="/js/ranchera/informeDemografia.js"></script>
 
     <div id="spinnerInforme" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255,255,255,0.8); z-index: 9999; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; color: #024959;">
-      Generando informe, por favor espera...
+      Generating report, please wait...
     </div>
   </body>
 </html>
