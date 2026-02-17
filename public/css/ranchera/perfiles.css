@@ -1,3 +1,89 @@
+/* Contenedor único con transparencia oscura (título Análisis + todo el contenido) */
+.panel-perfiles-contenedor {
+  background: rgba(12, 12, 22, 0.68);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+}
+
+/* Título principal: blanco y mismo sombreado del div de inicio */
+.panel-perfiles-titulo,
+.panel-perfiles-contenedor h1 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.25rem;
+}
+
+.panel-perfiles-contenedor h2 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.panel-perfiles-contenedor h3 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+  margin-bottom: 0.5rem;
+}
+
+.panel-perfiles-contenedor p {
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 1rem;
+}
+
+.panel-perfiles-contenedor ul {
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 1rem;
+}
+
+.panel-perfiles-contenedor ul li {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.panel-perfiles-contenedor ul li strong {
+  color: #fff;
+}
+
+.panel-perfiles-contenedor label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Cuadros blancos para las gráficas sobre el fondo oscuro */
+.panel-perfiles-contenedor .cuadro-grafico-blanco {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Solo la primera gráfica (scatter Seguidores): ancho completo, sin limitar */
+.panel-perfiles-contenedor .cuadro-primera-grafica {
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 100%;
+  box-sizing: border-box;
+}
+
+.panel-perfiles-contenedor .cuadro-grafico-blanco h3 {
+  margin-top: 0;
+}
+
+/* Dentro del cuadro blanco los títulos van oscuros para leerse */
+.panel-perfiles-contenedor .wordcloud-container h3,
+.panel-perfiles-contenedor .grafico-wrapper.cuadro-grafico-blanco h3 {
+  color: #333;
+  text-shadow: none;
+}
+
+.panel-perfiles-contenedor .wordcloud-container label {
+  color: #444;
+}
 
 .resumen-quantitativo-perfiles {
   width: 100%;
@@ -14,11 +100,11 @@
 
 
 .tarjeta-quantitativa {
-  background: #ffffff;
-  border: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   padding: 0.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   min-height: 80px;
   display: flex;
   flex-direction: column;
@@ -26,6 +112,7 @@
   font-size: 1rem;
   text-align: center;
   line-height: 1.4;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 /* === Nubes de palabras dobles, centradas y responsivas === */
@@ -45,11 +132,31 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #ffffff;
+  background: #fff;
   padding: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Textos de las nubes de palabras: fila debajo de las gráficas, fuera de las tarjetas */
+.fila-descripciones-wordclouds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+  width: 100%;
+  margin-top: 0.75rem;
+  align-items: flex-start;
+}
+
+.fila-descripciones-wordclouds .grafico-descripcion {
+  flex: 1 1 49%;
+  max-width: 49%;
+  margin: 0;
+  padding: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.92);
+  background: transparent;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
 .wordcloud-container label,
@@ -83,8 +190,8 @@
 
 /* .filtros-perfiles eliminado tras la integración */
 
-.analisis-nube-perfiles {
-  border: 1px solid black;
+.panel-perfiles-contenedor .analisis-nube-perfiles {
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -92,7 +199,9 @@
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 1rem;
-  background-color: #f9f9f9;
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .analisis-nube-perfiles button {
@@ -135,18 +244,46 @@
   position: relative;
 }
 
-.controls-nube {
+/* Filtros y zona de texto con tema transparencia como en Publicaciones */
+.panel-perfiles-contenedor .controls-nube {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: flex-start;
   margin-bottom: 1rem;
-  padding: 0.5rem 0;
-  border: 1px dashed #ccc;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  background-color: #fcfcfc;
+  background: rgba(255, 255, 255, 0.06);
   width: 100%;
   box-sizing: border-box;
+}
+
+.panel-perfiles-contenedor .controls-nube label {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+.panel-perfiles-contenedor .controls-nube select,
+.panel-perfiles-contenedor .controls-nube input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  color: #fff;
+  padding: 0.5rem 0.6rem;
+}
+
+.panel-perfiles-contenedor .controls-nube input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Choices.js / Select2 dentro del panel: forzar tema oscuro */
+.panel-perfiles-contenedor .choices__inner,
+.panel-perfiles-contenedor .select2-container--default .select2-selection--single,
+.panel-perfiles-contenedor .select2-container--default .select2-selection--multiple {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #fff;
 }
 
 .controls-nube label,
@@ -208,11 +345,25 @@
   width: 100%;
   margin-top: 1rem;
 }
-.contenedor-principal section {
-  border: 1px solid black;
+
+/* Red de Conexiones: fondo blanco solo para esta gráfica, sin tocar el contenido */
+.panel-perfiles-contenedor .red-conexiones-perfiles .contenedor-red {
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.panel-perfiles-contenedor .red-conexiones-perfiles,
+.panel-perfiles-contenedor .analisis-nube-perfiles,
+.panel-perfiles-contenedor .graficos-sentimiento {
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
+  background: transparent;
 }
 
 
@@ -324,11 +475,12 @@
 
 
 /* === Descripción centrada y coherente para gráficos === */
-.grafico-descripcion {
+.panel-perfiles-contenedor .grafico-descripcion {
   text-align: center;
   font-size: 0.95rem;
-  color: #444;
+  color: rgba(255, 255, 255, 0.92);
   margin-top: -0.5rem;
   margin-bottom: 1.5rem;
   padding: 0 1rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }

@@ -1,3 +1,109 @@
+/* Panel Imágenes: transparencia oscura (solo diseño, sin tocar lógica/IDs/gráficas) */
+.panel-imagenes-contenedor {
+  background: rgba(12, 12, 22, 0.68);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+}
+
+.panel-imagenes-contenedor h1,
+.panel-imagenes-contenedor h2,
+.panel-imagenes-contenedor h3 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+.panel-imagenes-contenedor p,
+.panel-imagenes-contenedor label {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.panel-imagenes-contenedor .bloque-contenedor {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Todas las gráficas: solo fondo blanco (no se modifica lógica ni estructura) */
+.panel-imagenes-contenedor .bloque-contenedor > div[id^="grafico"],
+.panel-imagenes-contenedor .bloque-contenedor > div[id^="grafo"],
+.panel-imagenes-contenedor .bloque-contenedor > div[id^="heatmap"],
+.panel-imagenes-contenedor #graficoRelacionesEtiquetas,
+.panel-imagenes-contenedor #nubeEtiquetasTotales,
+.panel-imagenes-contenedor #nubeEtiquetasUsuario,
+.panel-imagenes-contenedor #heatmapCuentasCategorias,
+.panel-imagenes-contenedor #heatmapTopCuentasCategorias,
+.panel-imagenes-contenedor #grafoUsuariosEtiquetas,
+.panel-imagenes-contenedor #grafoUsuariosCategoriasFijas {
+  background: #fff !important;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.panel-imagenes-contenedor #estadoConexion {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.panel-imagenes-contenedor .titulo-nube {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.panel-imagenes-contenedor .descripcion-nube,
+.panel-imagenes-contenedor .descripcion-grafico {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  line-height: 1.4;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.75rem 1rem;
+  border-left: 4px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+}
+
+.panel-imagenes-contenedor .descripcion-nube strong,
+.panel-imagenes-contenedor .descripcion-grafico strong {
+  color: #fff;
+}
+
+/* Controles: solo estilo visual, misma lógica */
+.panel-imagenes-contenedor #selectorUsuario {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1.25rem;
+}
+.panel-imagenes-contenedor #selectorUsuario option {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+.panel-imagenes-contenedor label input[type="range"] {
+  accent-color: rgba(255, 255, 255, 0.8);
+}
+.panel-imagenes-contenedor label span {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.panel-imagenes-contenedor .pie-imagen {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Estilos base (fuera del panel o fallback) */
 h1 {
   font-size: 2rem;
   color: #024959;

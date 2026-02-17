@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.min.css" />
 
 
-  <!-- Google Fonts (opcional) -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Google Fonts: Inter para toda la tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -49,7 +49,7 @@
   <!-- HEADER -->
   <header class="header">
     <div class="logo-container">
-      <img src="https://geotrends.co/wp-content/uploads/Logo_2-2.png" alt="GeoTrends" class="logo" />
+      <img src="/css/isologo-02.png" alt="GeoTrends" class="logo" />
     </div>
     <div class="user-info">
       <div class="user-box">
@@ -73,6 +73,15 @@
 
   <!-- LAYOUT PRINCIPAL -->
   <div class="layout">
+    <!-- Fondo animado Luma (Inicio + todas las secciones Ranchera) -->
+    <div class="fondo-luma" id="fondoLuma" aria-hidden="true">
+      <iframe
+        src="https://lumalabs.ai/embed/a01cac2e-7732-4525-84e0-9006e7410ddf?mode=sparkles&background=%23ffffff&color=%23000000&showTitle=true&loadBg=true&logoPosition=bottom-left&infoPosition=bottom-right&cinematicVideo=undefined&showMenu=false"
+        title="Animación Luma"
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        allowfullscreen
+      ></iframe>
+    </div>
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
       <button class="toggle-btn" id="toggleSidebar"><i class="fas fa-bars"></i></button>

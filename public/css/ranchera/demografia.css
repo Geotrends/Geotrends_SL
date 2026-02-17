@@ -1,3 +1,146 @@
+/* Panel Demografía: transparencia oscura (todo menos las gráficas) */
+.panel-demografia-contenedor {
+  background: rgba(12, 12, 22, 0.68);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+}
+
+.panel-demografia-contenedor h1,
+.panel-demografia-contenedor h2,
+.panel-demografia-contenedor h3 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+.panel-demografia-contenedor p,
+.panel-demografia-contenedor label {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.panel-demografia-contenedor .grafico-descripcion {
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.panel-demografia-contenedor .cabecera-seccion h2,
+.panel-demografia-contenedor .cabecera-seccion p {
+  color: #fff;
+}
+.panel-demografia-contenedor .cabecera-seccion p {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Solo las gráficas en fondo blanco; no tocar estructura ni ids */
+.panel-demografia-contenedor .cuadro-grafico-blanco {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.panel-demografia-contenedor .grafico-nube {
+  background: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Secciones con fondo transparente */
+.panel-demografia-contenedor .grafico-scatter-demografia,
+.panel-demografia-contenedor .grafico-segmentacion,
+.panel-demografia-contenedor .graficos-comparativos.grafico-segmentacion,
+.panel-demografia-contenedor .nube-palabras-por-segmento,
+.panel-demografia-contenedor .red-usuarios .contenedor-graficos-comparativos,
+.panel-demografia-contenedor section.top-perfiles {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+.panel-demografia-contenedor .controles-nube-palabras label,
+.panel-demografia-contenedor .controles-nube-palabras select,
+.panel-demografia-contenedor .control-slider label,
+.panel-demografia-contenedor .sliders-sentimiento .control-slider {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.panel-demografia-contenedor .controles-nube-palabras select,
+.panel-demografia-contenedor .control-slider input[type="range"] {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.panel-demografia-contenedor .tarjeta-indicador {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.92);
+}
+.panel-demografia-contenedor .tarjeta-indicador strong,
+.panel-demografia-contenedor .tarjeta-indicador p {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Distribución por segmento: títulos de categoría y todo el editor en blanco */
+.panel-demografia-contenedor #editorReglasSegmentacion,
+.panel-demografia-contenedor #editorReglasSegmentacion * {
+  color: #fff;
+}
+.panel-demografia-contenedor #editorReglasSegmentacion strong {
+  color: #fff;
+  font-weight: 600;
+}
+.panel-demografia-contenedor #editorReglasSegmentacion input[type="text"] {
+  color: #1a1a2e;
+  background: #fff;
+}
+.panel-demografia-contenedor #editorReglasSegmentacion input::placeholder {
+  color: #666;
+}
+.panel-demografia-contenedor #editorReglasSegmentacion button {
+  color: #fff;
+}
+
+/* Top 5 Perfiles por Categoría: toda la letra blanca */
+.panel-demografia-contenedor #topPerfilesPorSegmento,
+.panel-demografia-contenedor #topPerfilesPorSegmento * {
+  color: #fff;
+}
+.panel-demografia-contenedor #topPerfilesPorSegmento h2,
+.panel-demografia-contenedor #topPerfilesPorSegmento h4 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.panel-demografia-contenedor #topPerfilesPorSegmento .tarjeta-indicador,
+.panel-demografia-contenedor #topPerfilesPorSegmento .tarjeta-indicador strong,
+.panel-demografia-contenedor #topPerfilesPorSegmento .tarjeta-indicador div,
+.panel-demografia-contenedor #topPerfilesPorSegmento .bloque-categoria h4 {
+  color: #fff;
+}
+.panel-demografia-contenedor #topPerfilesPorSegmento #selectorCriterioTop {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+.panel-demografia-contenedor #topPerfilesPorSegmento #selectorCriterioTop option {
+  background: #1a1a2e;
+  color: #fff;
+}
+.panel-demografia-contenedor #topPerfilesPorSegmento p {
+  color: #fff;
+}
+.panel-demografia-contenedor #topPerfilesPorSegmento a,
+.panel-demografia-contenedor #topPerfilesPorSegmento .tarjeta-indicador:hover {
+  color: #fff;
+}
+
 .contenedor-graficos-comparativos {
   background: #ffffff;
   border: 1px solid #ddd;

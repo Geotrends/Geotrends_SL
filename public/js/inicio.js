@@ -96,6 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.innerHTML = "";
     sidebar.appendChild(contenedorOpcionesSidebar);
 
+    // Cargar automáticamente el contenido de bienvenida al inicio
+    cargarBienvenidaInicial();
+
     // Menú de configuración del header
     const configMenu = document.getElementById("configMenu");
     if (configMenu) {
@@ -147,6 +150,13 @@ document.addEventListener("DOMContentLoaded", () => {
           const html = await res.text();
           const container = document.getElementById("contenidoDinamico");
           container.innerHTML = html;
+
+          // Mostrar fondo Luma en Inicio (bienvenida) y en todas las secciones Ranchera
+          if (url.includes("inicio_bienvenida.html") || url.includes("/ranchera/")) {
+            document.body.classList.add("fondo-luma-activo");
+          } else {
+            document.body.classList.remove("fondo-luma-activo");
+          }
 
           // Detectar si es una vista de la sección Ranchera
           if (url.includes("/ranchera/")) {
@@ -403,6 +413,21 @@ function cargarScriptDinamico(url) {
   script.src = url;
   script.type = "module"; // 🚀 Esto es lo que faltaba
   document.body.appendChild(script);
+}
+
+function cargarBienvenidaInicial() {
+  fetch("/html/secciones/inicio_bienvenida.html")
+    .then((res) => res.text())
+    .then((html) => {
+      const container = document.getElementById("contenidoDinamico");
+      if (container) {
+        container.innerHTML = html;
+        document.body.classList.add("fondo-luma-activo");
+      }
+    })
+    .catch((err) => {
+      console.error("❌ Error al cargar contenido de bienvenida:", err);
+    });
 }
 
 function cargarUsuariosDinamicamente() {

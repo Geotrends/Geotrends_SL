@@ -12,7 +12,8 @@
     </head>
   <body>
     <main class="contenedor-principal">
-      <h1>Análisis de cuentas </h1>
+      <div class="panel-perfiles-contenedor">
+      <h1 class="panel-perfiles-titulo">Análisis de cuentas</h1>
       <!-- <section class="indicadores-perfiles" id="indicadoresPerfiles">
    
         <div class="tarjeta-indicador">
@@ -77,8 +78,10 @@
           </select>
         </div>
 
-        <!-- Scatter plot integrado directamente aquí -->
-        <div id="scatterFollowersPosts" style="height: 500px; width: 100%; margin-bottom: 2rem;"></div>
+        <!-- Scatter plot integrado directamente aquí (solo esta primera gráfica a ancho completo) -->
+        <div class="cuadro-grafico-blanco cuadro-primera-grafica">
+          <div id="scatterFollowersPosts" style="height: 500px; width: 100%; margin-bottom: 0;"></div>
+        </div>
 
         <div class="contenedor-wordclouds-doble">
           <div class="wordcloud-container">
@@ -95,8 +98,10 @@
             <div id="contenedorWordCloudNombres" class="grafico-nube"></div>
             <button onclick="descargarWordCloud('contenedorWordCloudNombres')">Descargar Nombres</button>
           </div>
+          <!-- Fila debajo de las gráficas: textos fuera de las tarjetas -->
+          <div class="fila-descripciones-wordclouds" id="filaDescWordclouds"></div>
         </div>
-      <div class="grafico-wrapper">
+      <div class="grafico-wrapper cuadro-grafico-blanco">
         <h3>Emojis más usados</h3>
         <div id="grafico-emojis" class="grafico" style="height: 400px; width: 100%;"></div>
       </div>
@@ -183,6 +188,7 @@
         <div id="contenedorWordCloudNegativo" class="grafico-nube"></div>
       </section>
 
+      </div>
     </main>
 
     <script src="/js/ranchera/perfiles.js"></script>

@@ -1,12 +1,15 @@
 
-  /* Logo a la izquierda */
+  /* Logo a la izquierda (tamaño amplio, no sobrescribir con valores pequeños) */
   .logo-container {
     display: flex;
     align-items: center;
+    min-width: 320px;
   }
   
   .logo {
-    height: 40px;
+    height: 58px;
+    max-width: 320px;
+    width: auto;
     object-fit: contain;
   }
   
@@ -22,18 +25,22 @@
   }
   
   .logout-btn {
-    background-color: #05678d;
+    background: transparent;
     color: white;
-    border: 0px solid;
-    border-radius: 4px;
-    padding: 0.3rem 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 0;
+    padding: 0.35rem 0.9rem;
     cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
   
   .logout-btn:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   }
 
   /* Botón de configuración */

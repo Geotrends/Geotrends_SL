@@ -1,11 +1,25 @@
 // === Bloque utilitario para descripciones de gráficos ===
 function agregarDescripcionGrafico(id, texto) {
   const grafico = document.getElementById(id);
-  if (grafico && !grafico.nextElementSibling?.classList?.contains("grafico-descripcion")) {
-    const desc = document.createElement("div");
-    desc.className = "grafico-descripcion";
-    desc.textContent = texto;
-    grafico.parentNode.insertBefore(desc, grafico.nextSibling);
+  if (!grafico) return;
+  const parent = grafico.parentNode;
+  const desc = document.createElement("div");
+  desc.className = "grafico-descripcion";
+  desc.textContent = texto;
+  // Nubes de palabras: texto en fila debajo de las gráficas, fuera de las tarjetas
+  const filaDesc = document.getElementById("filaDescWordclouds");
+  if (filaDesc && (id === "contenedorWordCloud" || id === "contenedorWordCloudNombres")) {
+    if (filaDesc.querySelectorAll(".grafico-descripcion").length >= 2) return;
+    filaDesc.appendChild(desc);
+    return;
+  }
+  const yaTieneDesc = parent.nextElementSibling?.classList?.contains("grafico-descripcion") || grafico.nextElementSibling?.classList?.contains("grafico-descripcion");
+  if (yaTieneDesc) return;
+  // Si el gráfico está dentro de .cuadro-grafico-blanco, poner la descripción fuera del cuadro
+  if (parent.classList && parent.classList.contains("cuadro-grafico-blanco")) {
+    parent.parentNode.insertBefore(desc, parent.nextSibling);
+  } else {
+    parent.insertBefore(desc, grafico.nextSibling);
   }
 }
 import { procesarYActualizarWordCloudBiografias, crearWordCloud } from "./utils/wordClouds.js";

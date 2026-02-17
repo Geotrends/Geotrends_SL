@@ -2,11 +2,36 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Fondo animado Luma (Inicio + Ranchera): oculto por defecto, visible con clase en body */
+.fondo-luma {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+body.fondo-luma-activo .fondo-luma {
+    display: block;
+}
+
+.fondo-luma iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    pointer-events: none;
 }
 
 /* 1. Fuente base para toda la interfaz */
 body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     background-color: var(--blanco);
@@ -96,13 +121,16 @@ input, select, textarea {
     text-align: center;
 }
 
+/* Navbar superior: oscuro casi negro, translúcido (estilo glass) */
 .header {
     position: fixed;
     top: 0;
     left: 0;
-    height: 60px;
+    height: 72px;
     width: 100%;
-    background-color: var( --azul-brillante);
+    background: rgba(12, 12, 22, 0.68);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
     color: var(--blanco);
     display: flex;
     justify-content: space-between;
@@ -110,19 +138,23 @@ input, select, textarea {
     padding: 0 1.5rem;
     z-index: 1000;
     overflow: visible;
-    box-shadow: 8px 8px 16px #9a9a9a, -8px -8px 16px #cccccc;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
 }
 
 .logo-container {
     display: flex;
     align-items: center;
+    min-width: 320px;
+    padding: 0.35rem 0;
 }
 
 .logo {
-    height: 38px;
+    height: 58px;
+    width: auto;
     object-fit: contain;
-    max-width: 160px;
-    margin-left: 25px;
+    max-width: 320px;
+    margin-left: 20px;
 }
 
 .user-info {
@@ -138,26 +170,43 @@ input, select, textarea {
     white-space: nowrap;
 }
 
-/* Botones */
-.logout-btn,
+/* Botones del header */
 .settings-btn {
-    background: #000;
-
+    background: rgba(255, 255, 255, 0.12);
     color: var(--blanco);
     padding: 0.3rem 0.8rem;
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.85rem;
-    /* box-shadow: 3px 3px 6px #000000, -3px -3px 6px #1a1a1a; */
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .settings-btn i {
     font-size: 1.1rem;
 }
 
-.logout-btn:hover,
 .settings-btn:hover {
-    background-color: #cdcdcd;
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Botón Cerrar sesión: cuadrado, transparente, borde blanco, se alza al hover */
+.logout-btn {
+    background: transparent;
+    color: var(--blanco);
+    padding: 0.35rem 0.9rem;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .settings-dropdown {

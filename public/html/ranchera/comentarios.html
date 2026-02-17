@@ -8,7 +8,8 @@
 </head>
 <body>
   <section class="comentarios">
-    <h1>Comentarios de perfiles</h1>
+    <div class="panel-publicaciones-contenedor">
+    <h1 class="panel-publicaciones-titulo">Comentarios de perfiles</h1>
     <div class="bloque-contenedor">
       <h2>Filtro de publicaciones</h2>
       <div class="filtros">
@@ -46,12 +47,16 @@
     </div>
 
     <div class="bloque-contenedor">
-      <div id="graficoScatterComentarios" style="height: 500px; margin-top: 2rem;"></div>
+      <div class="cuadro-grafico-blanco">
+        <div id="graficoScatterComentarios" style="height: 500px; margin-top: 0;"></div>
+      </div>
       <div class="grafico-descripcion">
         Este gráfico muestra las publicaciones según la fecha y hora en que fueron realizadas, con codificación de color por sentimiento y tamaño según número de likes.
       </div>
       <h2 style="margin-top: 2rem;">Distribución por usuario</h2>
-      <div id="graficoScatterUsuarios" style="height: 500px; margin-top: 1rem;"></div>
+      <div class="cuadro-grafico-blanco">
+        <div id="graficoScatterUsuarios" style="height: 500px; margin-top: 0;"></div>
+      </div>
       <div class="grafico-descripcion">
         Relación entre likes y comentarios por usuario. El tamaño del punto representa la actividad total del perfil y el color indica el sentimiento predominante.
       </div>
@@ -64,7 +69,9 @@
         <input type="range" id="sliderFrecuenciaHashtags" min="1" max="50" value="2" />
         <span id="valorSliderHashtags">2</span>
       </div>
-      <div id="nubeHashtags" style="height: 400px; margin-top: 1rem;"></div>
+      <div class="cuadro-grafico-blanco">
+        <div id="nubeHashtags" style="height: 400px; margin-top: 0;"></div>
+      </div>
       <div class="grafico-descripcion">
         Nube de palabras generada a partir de los hashtags más usados en las publicaciones, útil para identificar temas o tendencias frecuentes.
       </div>
@@ -77,7 +84,9 @@
         <input type="range" id="sliderFrecuenciaCaption" min="1" max="50" value="2" />
         <span id="valorSliderCaption">2</span>
       </div>
-      <div id="nubeCaption" style="height: 400px; margin-top: 1rem;"></div>
+      <div class="cuadro-grafico-blanco">
+        <div id="nubeCaption" style="height: 400px; margin-top: 0;"></div>
+      </div>
       <div class="grafico-descripcion">
         Palabras más recurrentes en los captions de las publicaciones, lo que permite identificar el tono y los temas del contenido textual.
       </div>
@@ -90,7 +99,9 @@
         <input type="range" id="sliderFrecuenciaKeywords" min="1" max="50" value="2" />
         <span id="valorSliderKeywords">2</span>
       </div>
-      <div id="nubeKeywords" style="height: 400px; margin-top: 1rem;"></div>
+      <div class="cuadro-grafico-blanco">
+        <div id="nubeKeywords" style="height: 400px; margin-top: 0;"></div>
+      </div>
       <div class="grafico-descripcion">
         Términos clave extraídos mediante procesamiento de lenguaje natural de las publicaciones. Útiles para análisis temático.
       </div>
@@ -98,10 +109,13 @@
 
     <div class="bloque-contenedor">
       <h2 style="margin-top: 2rem;">Emojis más usados</h2>
-      <div id="graficoTopEmojis" style="height: 400px; margin-top: 1rem;"></div>
+      <div class="cuadro-grafico-blanco">
+        <div id="graficoTopEmojis" style="height: 400px; margin-top: 0;"></div>
+      </div>
       <div class="grafico-descripcion">
         Gráfico de barras con los emojis más utilizados en las publicaciones analizadas, lo cual refleja expresiones emocionales predominantes.
       </div>
+    </div>
     </div>
   </section>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>

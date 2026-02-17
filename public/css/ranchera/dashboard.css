@@ -1,5 +1,38 @@
+/* Contenedor principal: título, párrafos y cards con transparencia oscura */
+.panel-ranchera-contenedor {
+  background: rgba(12, 12, 22, 0.68);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Mismo sombreado que el div de inicio para todos los títulos */
+.panel-ranchera-header h1 {
+  color: #fff;
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.panel-ranchera-header p {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.panel-ranchera-subtitulo {
+  color: #fff;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
 .contador.sin-datos {
-  color: #999;
+  color: rgba(255, 255, 255, 0.6);
   font-style: italic;
 }
 #resumen-estadisticas {
@@ -11,33 +44,36 @@
   margin: 1rem;
 }
 
+.panel-ranchera-contenedor .tarjeta-resumen,
 .tarjeta-resumen {
   flex: 0 0 400px;
   width: 400px;
-  background-color: #f9f9f9;
+  background: rgba(255, 255, 255, 0.12);
   padding: 0.2rem 0.3rem;
-  border-radius: 6px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   line-height: 1.1;
 }
 
+.panel-ranchera-contenedor .tarjeta-resumen h3,
 .tarjeta-resumen h3 {
-
   font-size: 1.5rem;
   margin-top: 1rem;
   font-weight: 600;
-  color: var( --verde-principal);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
 }
 
+.panel-ranchera-contenedor .tarjeta-resumen p,
 .tarjeta-resumen p {
   margin-top: 0.3rem;
   font-size: 0.7rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.88);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -47,9 +83,10 @@
   line-height: 1.1;
 }
 
+.panel-ranchera-contenedor .tarjeta-resumen p i,
 .tarjeta-resumen p i {
   font-size: 0.8rem;
-  color: #444;
+  color: rgba(255, 255, 255, 0.9);
   width: 1rem;
   text-align: center;
 }
@@ -157,6 +194,101 @@
 
 
 
+/* Panel Perfiles semilla: mismo estilo oscuro translúcido */
+.panel-ranchera-perfiles {
+  background: rgba(12, 12, 22, 0.68);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.panel-ranchera-perfiles #informacion-semilla {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.panel-ranchera-perfiles .grafico-wrapper {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Solo el cuadro de la gráfica en blanco; contenedor y textos siguen sobre fondo oscuro */
+.panel-ranchera-perfiles .cuadro-grafico-blanco {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Solo los títulos/descripciones de las gráficas en blanco con mismo sombreado del inicio */
+.panel-ranchera-perfiles .grafico-descripcion {
+  color: rgba(255, 255, 255, 0.95);
+  background: transparent;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+/* Panel Top perfiles: mismo estilo oscuro translúcido */
+.panel-ranchera-top {
+  background: rgba(12, 12, 22, 0.68);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.panel-ranchera-top #top-perfiles-semilla {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.panel-ranchera-top .grafico-descripcion {
+  color: rgba(255, 255, 255, 0.95);
+  background: transparent;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+/* Tarjetas de perfil dentro del panel top: legibles sobre fondo oscuro */
+.panel-ranchera-top .perfil-tarjeta {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.panel-ranchera-top .perfil-info p,
+.panel-ranchera-top .nombre-completo,
+.panel-ranchera-top .indicador {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.panel-ranchera-top .indicador strong {
+  color: #fff;
+}
+
+/* Título "Top 6 perfiles..." en blanco y con el mismo sombreado del div de inicio */
+.panel-ranchera-top h3,
+#top-perfiles-semilla h3 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+.panel-ranchera-top #top-perfiles-semilla > p {
+  color: rgba(255, 255, 255, 0.92);
+}
+
 #informacion-semilla {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -175,18 +307,24 @@
   font-size: 0.9rem;
 }
 
+/* #informacion-clave ya va dentro de .panel-ranchera-contenedor con estilo propio */
+#informacion-clave {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0.5rem 0;
+}
 
+.panel-ranchera-top #top-perfiles-semilla {
+  padding: 0.5rem 0;
+}
 
-#informacion-clave,
-#informacion-semilla,
-#top-perfiles-semilla,
 #graficos {
   background: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   padding: 0.5rem;
-
 }
 
 .spinner-contenedor {

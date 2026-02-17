@@ -10,8 +10,7 @@
     />
   </head>
   <body>
-
-
+    <div class="panel-demografia-contenedor">
     <!-- SCATTER INICIAL -->
     <section class="grafico-scatter-demografia">
       <h2>Distribución general de perfiles</h2>
@@ -35,10 +34,12 @@
       <button id="botonSegmentarAudiencia" class="btn-verde">
         Segmentar audiencia
       </button>
-      <div
-        id="grafico-scatter-demografia"
-        style="height: 500px; margin-bottom: 2rem"
-      ></div>
+      <div class="cuadro-grafico-blanco">
+        <div
+          id="grafico-scatter-demografia"
+          style="height: 500px; margin-bottom: 0"
+        ></div>
+      </div>
     </section>
 
     <!-- GRAFICOS COMPARATIVOS: barras de categorías y de sentimiento -->
@@ -50,19 +51,23 @@
             <p>
               Cantidad de perfiles agrupados según la categoría temática detectada durante la segmentación.
             </p>
-            <div
-              id="grafico-cantidad-por-categoria"
-              class="grafico-barra-horizontal"
-            ></div>
+            <div class="cuadro-grafico-blanco">
+              <div
+                id="grafico-cantidad-por-categoria"
+                class="grafico-barra-horizontal"
+              ></div>
+            </div>
           </div>
           <div class="bloque-grafico">
             <p>
               Análisis de sentimientos detectados en perfiles segmentados, agrupados por categoría temática.
             </p>
-            <div
-              id="grafico-sentimiento-por-categoria"
-              class="grafico-barra-horizontal"
-            ></div>
+            <div class="cuadro-grafico-blanco">
+              <div
+                id="grafico-sentimiento-por-categoria"
+                class="grafico-barra-horizontal"
+              ></div>
+            </div>
           </div>
         </div>
       </div>
@@ -157,7 +162,9 @@
         <p class="grafico-descripcion">
           Visualización de los emojis más utilizados por los usuarios, agrupados por categoría temática. Refleja expresiones emocionales comunes dentro de cada grupo.
         </p>
-        <div id="grafico-emojis-por-categoria" class="grafico-barra-horizontal" style="height: 400px;"></div>
+        <div class="cuadro-grafico-blanco">
+          <div id="grafico-emojis-por-categoria" class="grafico-barra-horizontal" style="height: 400px;"></div>
+        </div>
       </div>
     </section>
 
@@ -172,8 +179,10 @@
           </p>
         </div>
         {{#if redUsuarios}}
-          <div id="contenedorRedSegmentacion" class="grafico-red">
-            <img src="data:image/png;base64,{{redUsuarios}}" alt="Red de perfiles" style="width:100%; max-height:400px;" />
+          <div class="cuadro-grafico-blanco">
+            <div id="contenedorRedSegmentacion" class="grafico-red">
+              <img src="data:image/png;base64,{{redUsuarios}}" alt="Red de perfiles" style="width:100%; max-height:400px;" />
+            </div>
           </div>
         {{/if}}
       </div>
@@ -187,6 +196,7 @@
       </p>
     </section>
 
+    </div>
     <style></style>
 
     <script src="/js/ranchera/demografia.js"></script>

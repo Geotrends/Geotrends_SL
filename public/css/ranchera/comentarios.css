@@ -1,8 +1,100 @@
-contenedor-filtros-scatter {
+/* Contenedor único con transparencia oscura (solo diseño; no se tocan los divs de gráficas) */
+.panel-publicaciones-contenedor {
+  background: rgba(12, 12, 22, 0.68);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   padding: 2rem;
-  background: #f9f9f9;
+}
+
+/* Títulos SIEMPRE blancos en Publicaciones (especificidad alta para que no los pise nada) */
+.panel-publicaciones-titulo,
+.panel-publicaciones-contenedor h1,
+.comentarios .panel-publicaciones-contenedor h1 {
+  color: #fff !important;
+  font-size: 2rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.25rem;
+}
+
+.panel-publicaciones-contenedor h2,
+.panel-publicaciones-contenedor .bloque-contenedor h2,
+.comentarios .panel-publicaciones-contenedor h2 {
+  color: #fff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.45);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.panel-publicaciones-contenedor .grafico-descripcion {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 0.5rem;
+  background: transparent;
+  padding: 0.75rem 0;
+  border-left: none;
+  border-radius: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.panel-publicaciones-contenedor label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.panel-publicaciones-contenedor .bloque-contenedor {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  box-shadow: none;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.panel-publicaciones-contenedor .filtros label {
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.panel-publicaciones-contenedor .filtros input,
+.panel-publicaciones-contenedor .filtros select {
+  padding: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.panel-publicaciones-contenedor .filtros input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.panel-publicaciones-contenedor span#valorSliderHashtags,
+.panel-publicaciones-contenedor span#valorSliderCaption,
+.panel-publicaciones-contenedor span#valorSliderKeywords {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Cuadros blancos para las gráficas sobre el fondo oscuro */
+.panel-publicaciones-contenedor .cuadro-grafico-blanco {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.panel-publicaciones-contenedor .bloque-contenedor > .cuadro-grafico-blanco:first-child {
+  margin-top: 2rem;
+}
+
+.contenedor-filtros-scatter {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
   margin-top: 1rem;
 }
 
@@ -24,7 +116,6 @@ contenedor-filtros-scatter {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
 
 .comentarios {
   padding: 2rem;

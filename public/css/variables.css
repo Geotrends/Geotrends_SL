@@ -1,4 +1,7 @@
 :root {
+    /* Tipografía global */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
     /* Neumorfismo base */
     --color-base: #e0e5ec;
     --color-shadow-dark: #babecc;
