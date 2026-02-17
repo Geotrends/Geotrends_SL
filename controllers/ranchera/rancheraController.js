@@ -290,7 +290,8 @@ SELECT
   p.is_verified AS verified,
   p.is_business,
   a.sentiment,
-  a.most_common AS emoji_mas_comun -- 👈 Aquí está la clave
+  a.most_common AS emoji_mas_comun,
+  a.keywords
 FROM 
   zenu_social_listening.perfiles_instagram p
 LEFT JOIN 
@@ -532,7 +533,6 @@ exports.obtenerBiografiasWordCloud = async (req, res) => {
 // Nueva función: obtener análisis de sentimiento de perfiles
 exports.obtenerAnalisisSentimientoPerfiles = async (req, res) => {
   try {
-    console.log("📥 Recibido en analisis-sentimiento:", req.body);
     const { fuentes } = req.body;
 
     if (!Array.isArray(fuentes) || fuentes.length === 0) {
@@ -609,17 +609,29 @@ exports.obtenerComentariosParaScatter = async (req, res) => {
     const where = condiciones.length ? `WHERE ${condiciones.join(" AND ")}` : "";
 
     const query = `
-      SELECT 
-        p.*, 
-        a.*
-      FROM 
+      SELECT
+        p.id,
+        p.owner_username,
+        p.timestamp,
+        p.type,
+        p.likes_count,
+        p.comments_count,
+        p.caption,
+        p.hashtags,
+        p.url,
+        p.display_url,
+        a.sentiment,
+        a.top_keywords,
+        a.summary,
+        a.top_emojis,
+        a.engagement_score
+      FROM
         zenu_social_listening.instagram_posts p
-      JOIN 
+      JOIN
         zenu_social_listening.analisis_instagram_posts a
         ON p.id = a.post_id
       ${where}
-      ORDER BY 
-        p.timestamp DESC;
+      ;
     `;
 
     const result = await pool.query(query, valores);

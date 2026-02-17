@@ -277,6 +277,25 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+/* Ocultar controles de frecuencia mínima (sliders) */
+#sliderBiografias,
+#sliderNombres,
+#sliderPositivo,
+#sliderNeutro,
+#sliderNegativo,
+label[for="sliderBiografias"],
+label[for="sliderNombres"],
+label[for="sliderPositivo"],
+label[for="sliderNeutro"],
+label[for="sliderNegativo"],
+#valorBiografias,
+#valorNombres,
+#valorPositivo,
+#valorNeutro,
+#valorNegativo {
+  display: none !important;
+}
+
 /* Choices.js / Select2 dentro del panel: forzar tema oscuro */
 .panel-perfiles-contenedor .choices__inner,
 .panel-perfiles-contenedor .select2-container--default .select2-selection--single,

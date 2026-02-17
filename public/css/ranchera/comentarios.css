@@ -148,3 +148,16 @@
   border-left: 4px solid #ccc;
   border-radius: 4px;
 }
+
+/* Ocultar controles de frecuencia mínima (sliders) */
+#sliderFrecuenciaHashtags,
+#sliderFrecuenciaCaption,
+#sliderFrecuenciaKeywords,
+label[for="sliderFrecuenciaHashtags"],
+label[for="sliderFrecuenciaCaption"],
+label[for="sliderFrecuenciaKeywords"],
+#valorSliderHashtags,
+#valorSliderCaption,
+#valorSliderKeywords {
+  display: none !important;
+}

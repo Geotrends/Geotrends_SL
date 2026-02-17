@@ -28,12 +28,61 @@ export async function inicializarVistaComentarios() {
   const contenedorUsuarios = document.getElementById("graficoScatterUsuarios");
   const contenedorTopEmojis = document.getElementById("graficoTopEmojis");
 
-  const chart = echarts.init(contenedor);
-  const chartUsuarios = contenedorUsuarios ? echarts.init(contenedorUsuarios) : null;
-  const chartEmojis = contenedorTopEmojis ? echarts.init(contenedorTopEmojis) : null;
+  const chart = echarts.init(contenedor, null, { renderer: 'canvas', useDirtyRect: true });
+  const chartUsuarios = contenedorUsuarios ? echarts.init(contenedorUsuarios, null, { renderer: 'canvas', useDirtyRect: true }) : null;
+  const chartEmojis = contenedorTopEmojis ? echarts.init(contenedorTopEmojis, null, { renderer: 'canvas', useDirtyRect: true }) : null;
+  const MAX_PUNTOS_SCATTER = 3000;
 
   // Variables para guardar datos originales y procesados
   let dataOriginal = [];
+  let dataFiltradaActual = [];
+  let listaHashtagsActual = [];
+  let textoCaptionsActual = "";
+  let textoKeywordsActual = "";
+  let topEmojisActual = [];
+  let fetchController = null;
+
+  const toArray = (value) => (Array.isArray(value) ? value : []);
+  const obtenerFechaHoraLocal = (timestamp) => {
+    const fechaISO = new Date(timestamp);
+    if (Number.isNaN(fechaISO.getTime())) return null;
+    const fechaStr = fechaISO.toISOString().split("T")[0];
+    const fechaLocal = new Date(fechaISO.getTime() - (5 * 60 * 60 * 1000));
+    const horaStr = fechaLocal.toTimeString().substring(0, 5);
+    return { fechaStr, horaStr };
+  };
+
+  const normalizarPost = (post) => {
+    const hashtags = toArray(post.hashtags);
+    const topKeywords = toArray(post.top_keywords);
+    const topEmojis = toArray(post.top_emojis);
+    const caption = post.caption || "";
+    const fechaHora = obtenerFechaHoraLocal(post.timestamp);
+    if (!fechaHora) return null;
+    const { fechaStr, horaStr } = fechaHora;
+
+    return {
+      ...post,
+      hashtags,
+      top_keywords: topKeywords,
+      top_emojis: topEmojis,
+      caption,
+      likes_count: Number(post.likes_count || 0),
+      comments_count: Number(post.comments_count || 0),
+      engagement_score: Number(post.engagement_score || 0),
+      __fechaStr: fechaStr,
+      __horaStr: horaStr,
+      __searchText: `${caption} ${hashtags.join(" ")} ${topKeywords.join(" ")}`.toLowerCase()
+    };
+  };
+
+  const crearDebounce = (fn, ms = 250) => {
+    let timeoutId = null;
+    return (...args) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => fn(...args), ms);
+    };
+  };
 
   async function cargarDatos() {
     const tipo = filtroTipo.value;
@@ -52,37 +101,60 @@ export async function inicializarVistaComentarios() {
     if (likesMinimos) query.append("likesMinimos", likesMinimos);
 
     try {
-      const res = await fetch(`/api/ranchera/comentarios-scatter?${query.toString()}`);
+      if (fetchController) fetchController.abort();
+      fetchController = new AbortController();
+      chart.showLoading('default', { text: 'Loading posts...' });
+
+      const res = await fetch(`/api/ranchera/comentarios-scatter?${query.toString()}`, {
+        signal: fetchController.signal
+      });
       const data = await res.json();
       if (!Array.isArray(data)) {
         throw new Error("Respuesta inesperada del servidor");
       }
-      dataOriginal = data;
+      dataOriginal = data.map(normalizarPost).filter(Boolean);
       actualizarGraficosYNubes();
     } catch (error) {
+      if (error.name === "AbortError") return;
       console.error("❌ Error al cargar scatter de comentarios:", error);
+    } finally {
+      chart.hideLoading();
     }
   }
 
   function actualizarGraficosYNubes() {
     if (!dataOriginal.length) return;
 
-    // Procesar scatter comentarios
     const filtroKeywordValue = filtroKeyword ? filtroKeyword.value.trim().toLowerCase() : "";
-    const scatterData = dataOriginal.map(post => {
-      if (filtroKeywordValue && !(
-        (post.caption || "").toLowerCase().includes(filtroKeywordValue) ||
-        (Array.isArray(post.hashtags) && post.hashtags.some(h => h.toLowerCase().includes(filtroKeywordValue))) ||
-        (Array.isArray(post.top_keywords) && post.top_keywords.some(k => k.toLowerCase().includes(filtroKeywordValue)))
-      )) {
-        return null;
-      }
-      const fechaISO = new Date(post.timestamp);
-      const fechaStr = fechaISO.toISOString().split("T")[0];
-      const fechaLocal = new Date(fechaISO.getTime() - (5 * 60 * 60 * 1000));
-      const horaStr = fechaLocal.toTimeString().substring(0, 5);
+    dataFiltradaActual = filtroKeywordValue
+      ? dataOriginal.filter((post) => post.__searchText.includes(filtroKeywordValue))
+      : dataOriginal;
+
+    const hashtagsTodos = dataFiltradaActual.flatMap(post => post.hashtags);
+    const frecuenciaHashtags = hashtagsTodos.reduce((acc, tag) => {
+      const limpio = tag.trim().toLowerCase();
+      acc[limpio] = (acc[limpio] || 0) + 1;
+      return acc;
+    }, {});
+    listaHashtagsActual = Object.entries(frecuenciaHashtags).map(([text, weight]) => ({ text, weight }));
+
+    textoCaptionsActual = dataFiltradaActual.map(p => p.caption || "").join(" ");
+    textoKeywordsActual = dataFiltradaActual.flatMap(p => p.top_keywords).join(" ");
+
+    const conteoEmojis = {};
+    dataFiltradaActual.forEach(p => {
+      p.top_emojis.forEach(e => {
+        conteoEmojis[e] = (conteoEmojis[e] || 0) + 1;
+      });
+    });
+    topEmojisActual = Object.entries(conteoEmojis)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([emoji, count]) => ({ emoji, count }));
+
+    let scatterData = dataFiltradaActual.map(post => {
       return {
-        value: [fechaStr, horaStr],
+        value: [post.__fechaStr, post.__horaStr],
         name: post.owner_username,
         post_id: post.id,
         sentiment: post.sentiment,
@@ -93,7 +165,28 @@ export async function inicializarVistaComentarios() {
         likes: post.likes_count || 1,
         display_url: post.display_url || '#'
       };
-    }).filter(Boolean);
+    });
+    if (scatterData.length > MAX_PUNTOS_SCATTER) {
+      scatterData = scatterData.slice(0, MAX_PUNTOS_SCATTER);
+    }
+
+    if (!scatterData.length) {
+      chart.clear();
+      chart.setOption({
+        title: { text: 'Posts by date and time', left: 'center' },
+        graphic: {
+          type: 'text',
+          left: 'center',
+          top: 'middle',
+          style: { text: 'No data to display with current filters', fill: '#666', fontSize: 14 }
+        }
+      }, { notMerge: true, lazyUpdate: true });
+      return;
+    }
+
+    const likesArray = scatterData.map((p) => p.likes || 1);
+    const minLikes = likesArray.length ? Math.min(...likesArray) : 1;
+    const maxLikes = likesArray.length ? Math.max(...likesArray) : 1;
 
     chart.setOption({
       title: { text: 'Posts by date and time', left: 'center' },
@@ -143,10 +236,10 @@ export async function inicializarVistaComentarios() {
       ],
       series: [{
         type: 'scatter',
-        data: scatterData.map(d => ({
-          ...d,
-          url: dataOriginal.find(p => p.id === d.post_id)?.url || '#'
-        })),
+        data: scatterData,
+        animation: false,
+        progressive: 3000,
+        progressiveThreshold: 1500,
         itemStyle: {
           color: function (params) {
             const sentimiento = params.data.sentiment;
@@ -162,10 +255,6 @@ export async function inicializarVistaComentarios() {
           const likes = params.data.likes || 1;
           const minSize = 8;
           const maxSize = 100;
-
-          const likesArray = scatterData.map(p => p.likes || 1);
-          const minLikes = Math.min(...likesArray);
-          const maxLikes = Math.max(...likesArray);
           const scale = (likes - minLikes) / (maxLikes - minLikes || 1);
 
           return minSize + scale * (maxSize - minSize);
@@ -177,7 +266,7 @@ export async function inicializarVistaComentarios() {
           }
         }
       }]
-    });
+    }, { notMerge: true, lazyUpdate: true });
 
     // Añadir clic para abrir publicación
     chart.off('click');
@@ -191,14 +280,7 @@ export async function inicializarVistaComentarios() {
     // Procesar scatter usuarios si existe contenedor
     if (chartUsuarios && contenedorUsuarios) {
       const agregadosPorUsuario = {};
-      dataOriginal.forEach(post => {
-        if (filtroKeywordValue && !(
-          (post.caption || "").toLowerCase().includes(filtroKeywordValue) ||
-          (Array.isArray(post.hashtags) && post.hashtags.some(h => h.toLowerCase().includes(filtroKeywordValue))) ||
-          (Array.isArray(post.top_keywords) && post.top_keywords.some(k => k.toLowerCase().includes(filtroKeywordValue)))
-        )) {
-          return;
-        }
+      dataFiltradaActual.forEach(post => {
         const usuario = post.owner_username;
         if (!agregadosPorUsuario[usuario]) {
           agregadosPorUsuario[usuario] = { 
@@ -208,10 +290,10 @@ export async function inicializarVistaComentarios() {
             posts: 0
           };
         }
-        agregadosPorUsuario[usuario].likes += post.likes_count || 0;
-        agregadosPorUsuario[usuario].comments += post.comments_count || 0;
+        agregadosPorUsuario[usuario].likes += post.likes_count;
+        agregadosPorUsuario[usuario].comments += post.comments_count;
         agregadosPorUsuario[usuario].posts += 1;
-        agregadosPorUsuario[usuario].engagement_total = (agregadosPorUsuario[usuario].engagement_total || 0) + (post.engagement_score || 0);
+        agregadosPorUsuario[usuario].engagement_total = (agregadosPorUsuario[usuario].engagement_total || 0) + post.engagement_score;
         const s = post.sentiment;
         agregadosPorUsuario[usuario].sentimientos[s] = (agregadosPorUsuario[usuario].sentimientos[s] || 0) + 1;
       });
@@ -230,6 +312,9 @@ export async function inicializarVistaComentarios() {
           engagement: datos.engagement
         };
       });
+      const totalesUsuario = scatterUsuarioData.map(p => (p.value[0] || 0) + (p.value[1] || 0));
+      const minTotalUsuario = totalesUsuario.length ? Math.min(...totalesUsuario) : 0;
+      const maxTotalUsuario = totalesUsuario.length ? Math.max(...totalesUsuario) : 1;
 
       chartUsuarios.setOption({
         title: { text: 'Likes vs Comments by user', left: 'center' },
@@ -278,15 +363,14 @@ export async function inicializarVistaComentarios() {
         series: [{
           type: 'scatter',
           data: scatterUsuarioData,
+          animation: false,
+          progressive: 2000,
+          progressiveThreshold: 1000,
           symbolSize: function (val, params) {
             const total = (val[0] || 0) + (val[1] || 0);
             const minSize = 10;
             const maxSize = 100;
-
-            const valores = scatterUsuarioData.map(p => (p.value[0] || 0) + (p.value[1] || 0));
-            const min = Math.min(...valores);
-            const max = Math.max(...valores);
-            const scale = (total - min) / ((max - min) || 1);
+            const scale = (total - minTotalUsuario) / ((maxTotalUsuario - minTotalUsuario) || 1);
 
             return minSize + scale * (maxSize - minSize);
           },
@@ -308,31 +392,14 @@ export async function inicializarVistaComentarios() {
             }
           }
         }]
-      });
+      }, { notMerge: true, lazyUpdate: true });
     }
 
-    // Filtrar data para nubes y emojis según palabra clave
-    const dataFiltrada = dataOriginal.filter(post => {
-      return !filtroKeywordValue || (
-        (post.caption || "").toLowerCase().includes(filtroKeywordValue) ||
-        (Array.isArray(post.hashtags) && post.hashtags.some(h => h.toLowerCase().includes(filtroKeywordValue))) ||
-        (Array.isArray(post.top_keywords) && post.top_keywords.some(k => k.toLowerCase().includes(filtroKeywordValue)))
-      );
-    });
-
-    // Nube de palabras de hashtags con sliderFrecuenciaHashtags
-    const hashtagsTodos = dataFiltrada.flatMap(post => Array.isArray(post.hashtags) ? post.hashtags : []);
-    const frecuenciaHashtags = hashtagsTodos.reduce((acc, tag) => {
-      const limpio = tag.trim().toLowerCase();
-      acc[limpio] = (acc[limpio] || 0) + 1;
-      return acc;
-    }, {});
-    const arregloHashtags = Object.entries(frecuenciaHashtags).map(([text, weight]) => ({ text, weight }));
-
+    // Nube de palabras de hashtags
     if (sliderFrecuenciaHashtags && valorSliderHashtags) {
       const minFrecuencia = parseInt(sliderFrecuenciaHashtags.value, 10) || 1;
       valorSliderHashtags.textContent = minFrecuencia;
-      const filtradas = arregloHashtags.filter(p => p.weight >= minFrecuencia);
+      const filtradas = listaHashtagsActual.filter(p => p.weight >= minFrecuencia);
       crearWordCloud({
         contenedorId: 'nubeHashtags',
         palabras: filtradas
@@ -341,9 +408,8 @@ export async function inicializarVistaComentarios() {
 
     // Nube de palabras captions
     if (sliderFrecuenciaCaption && valorSliderCaption) {
-      const textoCaptions = dataFiltrada.map(p => p.caption || "").join(" ");
       procesarYActualizarWordCloudBiografias({
-        texto: textoCaptions,
+        texto: textoCaptionsActual,
         sliderId: "sliderFrecuenciaCaption",
         valorSliderId: "valorSliderCaption",
         contenedorId: "nubeCaption"
@@ -352,9 +418,8 @@ export async function inicializarVistaComentarios() {
 
     // Nube de palabras keywords
     if (sliderFrecuenciaKeywords && valorSliderKeywords) {
-      const textoKeywords = dataFiltrada.flatMap(p => Array.isArray(p.top_keywords) ? p.top_keywords : []).join(" ");
       procesarYActualizarWordCloudBiografias({
-        texto: textoKeywords,
+        texto: textoKeywordsActual,
         sliderId: "sliderFrecuenciaKeywords",
         valorSliderId: "valorSliderKeywords",
         contenedorId: "nubeKeywords"
@@ -363,47 +428,24 @@ export async function inicializarVistaComentarios() {
 
     // Gráfico emojis más usados
     if (chartEmojis && contenedorTopEmojis) {
-      const conteoEmojis = {};
-      dataFiltrada.forEach(p => {
-        (Array.isArray(p.top_emojis) ? p.top_emojis : []).forEach(e => {
-          conteoEmojis[e] = (conteoEmojis[e] || 0) + 1;
-        });
-      });
-
-      const arregloEmojis = Object.entries(conteoEmojis)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 20)
-        .map(([emoji, count]) => ({ emoji, count }));
-
       chartEmojis.setOption({
         title: { text: 'Most used emojis', left: 'center' },
         tooltip: { trigger: 'axis' },
         xAxis: {
           type: 'category',
-          data: arregloEmojis.map(e => e.emoji),
+          data: topEmojisActual.map(e => e.emoji),
           axisLabel: { fontSize: 24 }
         },
         yAxis: { type: 'value', name: '' },
         series: [{
           type: 'bar',
-          data: arregloEmojis.map(e => e.count),
+          data: topEmojisActual.map(e => e.count),
           itemStyle: {
             color: '#5caac8'
           }
         }]
-      });
+      }, { notMerge: true, lazyUpdate: true });
     }
-    // Oculta temporalmente todos los bloques mientras carga
-document.querySelectorAll('.bloque-contenedor').forEach(div => {
-  div.classList.remove('visible');
-});
-
-// Luego, después de que todo se ha cargado, los muestra suavemente
-setTimeout(() => {
-  document.querySelectorAll('.bloque-contenedor').forEach(div => {
-    div.classList.add('visible');
-  });
-}, 100);
   }
 
   // Añadir eventos para actualizar datos y gráficos al cambiar filtros o sliders
@@ -411,27 +453,47 @@ setTimeout(() => {
 
   if (sliderFrecuenciaHashtags) {
     sliderFrecuenciaHashtags.addEventListener('input', () => {
-      if (dataOriginal.length) actualizarGraficosYNubes();
+      if (!dataOriginal.length) return;
+      const minFrecuencia = parseInt(sliderFrecuenciaHashtags.value, 10) || 1;
+      if (valorSliderHashtags) valorSliderHashtags.textContent = minFrecuencia;
+      crearWordCloud({
+        contenedorId: 'nubeHashtags',
+        palabras: listaHashtagsActual.filter(p => p.weight >= minFrecuencia)
+      });
     });
   }
   if (sliderFrecuenciaCaption) {
     sliderFrecuenciaCaption.addEventListener('input', () => {
-      if (dataOriginal.length) actualizarGraficosYNubes();
+      if (!dataOriginal.length) return;
+      procesarYActualizarWordCloudBiografias({
+        texto: textoCaptionsActual,
+        sliderId: "sliderFrecuenciaCaption",
+        valorSliderId: "valorSliderCaption",
+        contenedorId: "nubeCaption"
+      });
     });
   }
   if (sliderFrecuenciaKeywords) {
     sliderFrecuenciaKeywords.addEventListener('input', () => {
-      if (dataOriginal.length) actualizarGraficosYNubes();
+      if (!dataOriginal.length) return;
+      procesarYActualizarWordCloudBiografias({
+        texto: textoKeywordsActual,
+        sliderId: "sliderFrecuenciaKeywords",
+        valorSliderId: "valorSliderKeywords",
+        contenedorId: "nubeKeywords"
+      });
     });
   }
 
   // También se puede actualizar al cambiar filtros (opcional)
-  [filtroKeyword, filtroTipo, filtroSentimiento, filtroFechaDesde, filtroFechaHasta, filtroLikesMinimos].forEach(elem => {
-    if (elem) {
-      elem.addEventListener('change', () => {
-        cargarDatos();
-      });
-    }
+  const actualizarConDebounce = crearDebounce(actualizarGraficosYNubes, 220);
+  if (filtroKeyword) {
+    filtroKeyword.addEventListener('input', () => {
+      if (dataOriginal.length) actualizarConDebounce();
+    });
+  }
+  [filtroTipo, filtroSentimiento, filtroFechaDesde, filtroFechaHasta, filtroLikesMinimos].forEach(elem => {
+    if (elem) elem.addEventListener('change', cargarDatos);
   });
 
   // Inicializar carga de datos y gráficos

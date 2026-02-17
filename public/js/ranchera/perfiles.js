@@ -45,6 +45,44 @@ function nombrePerfilEnIngles(nombre) {
 if (typeof window !== "undefined") window.traducirNombrePerfil = nombrePerfilEnIngles;
 
 let perfilesSemillaGlobal = []; // Declarar al inicio del archivo para usar globalmente
+const cachePerfilesPorFuente = new Map();
+const cacheAnalisisSentimiento = new Map();
+
+function crearClaveFuentes(fuentes = []) {
+  return [...new Set((fuentes || []).map(String))].sort().join(",");
+}
+
+async function obtenerPerfilesPorFuentes(fuentes = []) {
+  const clave = crearClaveFuentes(fuentes);
+  if (!clave) return [];
+  if (cachePerfilesPorFuente.has(clave)) return cachePerfilesPorFuente.get(clave);
+
+  const res = await fetch("/api/ranchera/perfiles-por-fuente", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fuentes }),
+  });
+  const data = await res.json();
+  const perfiles = Array.isArray(data) ? data : [];
+  cachePerfilesPorFuente.set(clave, perfiles);
+  return perfiles;
+}
+
+async function obtenerAnalisisSentimientoPorFuentes(fuentes = []) {
+  const clave = crearClaveFuentes(fuentes);
+  if (!clave) return [];
+  if (cacheAnalisisSentimiento.has(clave)) return cacheAnalisisSentimiento.get(clave);
+
+  const res = await fetch('/api/ranchera/analisis-sentimiento', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fuentes })
+  });
+  const data = await res.json();
+  const analisis = Array.isArray(data) ? data : [];
+  cacheAnalisisSentimiento.set(clave, analisis);
+  return analisis;
+}
 
 export function inicializarVistaPerfiles() {
   console.log("✅ Vista de perfiles inicializada");
@@ -354,7 +392,6 @@ export function inicializarVistaPerfiles() {
 
         perfilesFiltrados.forEach(p => {
           let emojis = {};
-          console.log("🔍 Procesando emojis para:", p.emoji_mas_comun);
           try {
             if (typeof p.emoji_mas_comun === 'string') {
               emojis = JSON.parse(p.emoji_mas_comun);
@@ -368,8 +405,6 @@ export function inicializarVistaPerfiles() {
           });
         });
 
-        console.log("📊 Datos emojis filtrados:", frecuenciaEmojis);
-
         const topEmojis = Object.entries(frecuenciaEmojis)
           .sort((a, b) => b[1] - a[1])
           .slice(0, 15);
@@ -380,9 +415,6 @@ export function inicializarVistaPerfiles() {
         if (datosEmojis.length === 0) {
           datosEmojis.push(['No emojis', 1]);
         }
-
-        // Añadir log antes de crear el gráfico de barras de emojis
-        console.log("📊 Datos para gráfico de emojis:", datosEmojis);
 
         crearGraficoBarras({
           contenedorId: 'grafico-emojis',
@@ -485,9 +517,7 @@ export function inicializarVistaPerfiles() {
       });
 
       // Ejecutar el análisis automáticamente después de poblar los perfiles y select2
-      generarAnalisisInicial().then(() => {
-        aplicarFiltrosNube();
-      });
+      generarAnalisisInicial();
     })
     .catch((err) => {
       console.error("❌ Error al cargar perfiles semilla:", err);
@@ -572,20 +602,18 @@ export function inicializarVistaPerfiles() {
     }
 }
 
-async function cargarGraficosSentimiento() {
+async function cargarGraficosSentimiento(dataInicial = null, fuentesIniciales = null) {
   try {
     const selector = document.getElementById("selectorPerfil");
-    const fuentesSeleccionadas = Array.from(selector.selectedOptions).map(opt => opt.value);
+    const fuentesSeleccionadas = Array.isArray(fuentesIniciales) && fuentesIniciales.length
+      ? fuentesIniciales
+      : Array.from(selector.selectedOptions).map(opt => opt.value);
 
     if (fuentesSeleccionadas.length === 0) return;
 
-    const res = await fetch('/api/ranchera/analisis-sentimiento', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fuentes: fuentesSeleccionadas })
-    });
-
-    const data = await res.json();
+    const data = Array.isArray(dataInicial) && dataInicial.length
+      ? dataInicial
+      : await obtenerAnalisisSentimientoPorFuentes(fuentesSeleccionadas);
 
     const conteoSentimiento = { POSITIVO: 0, NEGATIVO: 0, NEUTRO: 0 };
     const frecuenciaEmojis = {};
@@ -688,8 +716,9 @@ async function cargarGraficosSentimiento() {
         agregarDescripcionGrafico(mapeoContenedores[sent], txt);
       };
       
-      document.getElementById(sliderId).removeEventListener('input', actualizar);
-      document.getElementById(sliderId).addEventListener('input', actualizar);
+      const slider = document.getElementById(sliderId);
+      if (!slider) return;
+      slider.oninput = actualizar;
       actualizar();
     });
 
@@ -764,17 +793,13 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
   agregarDescripcionGrafico('grafico-segmentacion-audiencia', 'Este gráfico muestra la cantidad de perfiles detectados en cada categoría según la segmentación de audiencia.');
 
   // === NUEVO BLOQUE: Gráfico de sentimiento por categoría ===
-  const responseAnalisis = await fetch('/api/ranchera/analisis-sentimiento', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fuentes: fuentesSeleccionadas })
-  });
-
-  const analisis = await responseAnalisis.json();
+  const analisis = await obtenerAnalisisSentimientoPorFuentes(fuentesSeleccionadas);
+  const analisisByUser = new Map(analisis.map((a) => [a.username, a]));
+  const categoriaByUser = new Map(data.map((d) => [d.username, d.categoria_detectada]));
   const sentimientosPorCategoria = {};
 
   data.forEach(perfil => {
-    const sentimiento = analisis.find(a => a.username === perfil.username)?.sentiment || "NEUTRO";
+    const sentimiento = analisisByUser.get(perfil.username)?.sentiment || "NEUTRO";
     const categoria = perfil.categoria_detectada;
     if (!sentimientosPorCategoria[categoria]) {
       sentimientosPorCategoria[categoria] = { POSITIVO: 0, NEUTRO: 0, NEGATIVO: 0 };
@@ -821,7 +846,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
   const palabrasSegmentadas = {};
 
   analisis.forEach(p => {
-    const categoria = data.find(d => d.username === p.username)?.categoria_detectada || 'Sin categoría';
+    const categoria = categoriaByUser.get(p.username) || 'Sin categoría';
     const sent = p.sentiment || 'NEUTRO';
     if (!palabrasSegmentadas[categoria]) palabrasSegmentadas[categoria] = {};
     if (!palabrasSegmentadas[categoria][sent]) palabrasSegmentadas[categoria][sent] = {};
@@ -863,7 +888,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
     NEGATIVO: 'contenedorWordCloudSegmentoNegativo'
   };
 
-  selectCategoriaSegmentada.addEventListener("change", () => {
+  selectCategoriaSegmentada.onchange = () => {
     const categoriaSeleccionada = selectCategoriaSegmentada.value;
     Object.entries(sentimMap).forEach(([sent, contenedor]) => {
       const min = parseInt(document.getElementById(`sliderSegmento${sent.charAt(0) + sent.slice(1).toLowerCase()}`).value);
@@ -879,7 +904,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
       if (sent === 'NEGATIVO') txt = 'Nube de palabras negativas extraídas de los perfiles de esta categoría. Las palabras más grandes son las más frecuentes en el sentimiento negativo.';
       agregarDescripcionGrafico(contenedor, txt);
     });
-  });
+  };
 
   // Inicializar nubes con la primera categoría seleccionada
   document.getElementById("selectorCategoriaSegmentada").dispatchEvent(new Event("change"));
@@ -911,7 +936,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
   // Agrupar perfiles por categoría detectada
   const perfilesPorCategoria = {};
   analisis.forEach(p => {
-    const cat = data.find(d => d.username === p.username)?.categoria_detectada || "Sin categoría";
+    const cat = categoriaByUser.get(p.username) || "Sin categoría";
     if (!perfilesPorCategoria[cat]) perfilesPorCategoria[cat] = [];
     perfilesPorCategoria[cat].push(p);
   });
@@ -974,7 +999,7 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
   });
 
   // Listener para actualizar el bloque al cambiar el selector
-  selectorCriterio.addEventListener("change", () => {
+  selectorCriterio.onchange = () => {
     contenedorTopPerfiles.innerHTML = "<h3>Top 5 por categoría</h3>";
     contenedorTopPerfiles.insertBefore(selectorCriterio, contenedorTopPerfiles.firstChild);
 
@@ -1008,10 +1033,10 @@ async function realizarSegmentacionAudiencia(reglas = reglasSegmentacionUsuario)
       bloque.innerHTML += tarjetas;
       contenedorTopPerfiles.appendChild(bloque);
     });
-  });
+  };
 }
 // === Lógica de análisis de perfiles, ejecutada automáticamente ===
-function generarAnalisisInicial() {
+async function generarAnalisisInicial() {
   const selector = document.getElementById("selectorPerfil");
   // Obtener todos los fuente_id seleccionados, o si no hay selección, todos los fuente_id de perfilesSemillaGlobal
   let seleccionados = Array.from(selector.selectedOptions).map((opt) => opt.value);
@@ -1024,18 +1049,11 @@ function generarAnalisisInicial() {
     console.warn("⚠️ No profiles selected for analysis.");
     return;
   }
-  fetch("/api/ranchera/perfiles-por-fuente", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ fuentes: seleccionados }),
-  })
-    .then((res) => res.json())
-    .then((perfiles) => {
+  try {
+      const perfiles = await obtenerPerfilesPorFuentes(seleccionados);
       window.ultimoPerfilesAnalizados = perfiles;
-      window.perfilesCargadosGlobal = perfiles; // Guardar para filtros posteriores
-      return perfiles;
-    })
-    .then((perfiles) => {
+      window.perfilesCargadosGlobal = perfiles;
+
       // Extraer y poblar el selector de categorías desde perfiles
       const categoriasSet = new Set();
       perfiles.forEach((p) => {
@@ -1082,15 +1100,17 @@ function generarAnalisisInicial() {
       const data = { top3: semillasSeleccionadas };
 
       const contenedorRed = document.getElementById("contenedorRed");
-      contenedorRed.innerHTML = "";
-    //  console.log("🔍 Datos enviados a la red:", {
-     //   semillas: data.top3,
-     //   perfiles,
-     // });
-      generarRedPerfiles(
-        { semillas: data.top3, perfiles },
-        "contenedorRed"
-      );
+      if (contenedorRed) {
+        contenedorRed.innerHTML = "";
+      //  console.log("🔍 Datos enviados a la red:", {
+       //   semillas: data.top3,
+       //   perfiles,
+       // });
+        generarRedPerfiles(
+          { semillas: data.top3, perfiles },
+          "contenedorRed"
+        );
+      }
 
       crearGraficoScatter({
         contenedorId: "scatterFollowersPosts",
@@ -1180,16 +1200,8 @@ procesarYActualizarWordCloudBiografias({
 });
 agregarDescripcionGrafico('contenedorWordCloudNombres', 'Word cloud from profile names. Larger words are the most frequent names.');
       // Llamar a los gráficos de sentimiento tras el análisis
-      cargarGraficosSentimiento();
-
-      // Llamar también a aplicarFiltrosNube() para inicializar todos los gráficos, incluido el de Emojis
-      if (typeof aplicarFiltrosNube === "function") {
-        aplicarFiltrosNube();
-      }
-
-
-    })
-    .catch((err) => {
-      console.error("❌ Error cargando biografías por fuente_id:", err);
-    });
+      await cargarGraficosSentimiento(perfiles, seleccionados);
+  } catch (err) {
+    console.error("❌ Error cargando biografías por fuente_id:", err);
+  }
 }

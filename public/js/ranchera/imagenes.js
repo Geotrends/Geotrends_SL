@@ -7,15 +7,28 @@ const TAG_LABEL_EN = {
 };
 
 export function inicializarVistaImagenes() {
-    console.log("JS activo");
-   // const estado = document.getElementById("estadoConexion");
-    if (estado) {
-     // estado.textContent = "✅ Conexión JS establecida correctamente";
-    } else {
-      console.warn("No se encontró el elemento con ID estadoConexion");
-    }
+  console.log("JS activo");
+  const estado = document.getElementById("estadoConexion");
+  if (estado) {
+    estado.textContent = "✅ Conexión JS establecida correctamente";
   }
 
+  const contenido = document.querySelector(".imagenes-contenido");
+  if (contenido) contenido.innerHTML = "";
+
+  const selector = document.getElementById("selectorUsuario");
+  if (selector) {
+    selector.innerHTML = '<option value="">-- Select a user --</option>';
+  }
+
+  const galeria = document.getElementById("galeriaUsuario");
+  if (galeria) galeria.innerHTML = "";
+
+  cargarGraficosImagenes();
+  cargarCarruselPorUsuario();
+}
+
+function cargarGraficosImagenes() {
   fetch("/api/ranchera/imagenes-etiquetas")
   .then((res) => {
     if (!res.ok) throw new Error("Error al obtener etiquetas");
@@ -407,6 +420,9 @@ export function inicializarVistaImagenes() {
       */
     }).then(() => {
       // === GRAFO USUARIO ↔ ETIQUETAS ===
+      const HABILITAR_GRAFO_USUARIO_ETIQUETAS = false;
+      if (HABILITAR_GRAFO_USUARIO_ETIQUETAS) {
+
       const usuarios = {};
       const etiquetas = {};
       const conexiones = new Set();
@@ -680,13 +696,16 @@ export function inicializarVistaImagenes() {
         }]
       });
       */
+      }
     });
 })
 .catch((err) => {
   console.error("❌ Error al consultar etiquetas:", err);
 });
+}
 
 // Carrusel por usuario (versión original)
+function cargarCarruselPorUsuario() {
 fetch("/api/ranchera/imagenes-etiquetas")
   .then((res) => res.json())
   .then((data) => {
@@ -843,3 +862,4 @@ fetch("/api/ranchera/imagenes-etiquetas")
         contenido.style.opacity = "1";
       }, 300);
     }
+}
